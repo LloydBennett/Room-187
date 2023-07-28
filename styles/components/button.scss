@@ -20,6 +20,16 @@
   }
 }
 
+.button--primary {
+  background-color: $colour--gold-400;
+  color: $colour--black;
+
+  &:visited {
+    background-color: $colour--gold-400;
+    color: $colour--black;
+  }
+}
+
 .button--margin-top {
   margin-top: spacing(6);
 }
