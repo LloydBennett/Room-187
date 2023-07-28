@@ -1,0 +1,19 @@
+.hamburger {
+  display: inline-block;
+  cursor: pointer;
+  width: 2.4rem;
+}
+
+.hamburger__line {
+  display: block;
+  height: 3px;
+  background-color: $colour--grit-500;
+
+  & + & {
+    margin-top: $spacing-rule-half;
+
+    @include media-query($breakpoint--x-large) {
+      margin-top: $spacing-rule;
+    }
+  }
+}

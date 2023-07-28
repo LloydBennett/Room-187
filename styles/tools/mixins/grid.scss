@@ -1,0 +1,29 @@
+@mixin grid($device: null, $fromBeginning: false) {
+	@if $device == null {
+		@if $fromBeginning == true {
+			display: grid;
+			grid-template-columns: repeat(4, 1fr);
+			grid-column-gap: spacing(3);
+		}
+		@else {
+			@include media-query($breakpoint--small) {
+				display: grid;
+			}
+		}
+	}
+	@else {
+		@include media-query($device) {
+			display: grid;
+		}
+	}
+  
+	@include media-query($breakpoint--small) {
+		grid-column-gap: spacing(3);
+		grid-template-columns: repeat(8, 1fr);
+	}
+
+	@include media-query($breakpoint--x-large) {
+		grid-column-gap: spacing(4);
+		grid-template-columns: repeat(10, 1fr);
+	}
+}

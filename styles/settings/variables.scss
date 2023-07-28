@@ -1,0 +1,35 @@
+/* Colours */
+$colour--passion: #f56308;
+$colour--grit-500: #202020;
+$colour--grit-400: #3C3C3C;
+$colour--grit-300: #535353;
+$colour--grit-200: #949494;
+$colour--grit-100: #D4D4D4;
+$colour--grit-50: #F2F2F2;
+
+$colour--white: white;
+$colour--black: black;
+
+/* Type */
+$type--line-height: 1.5;
+$type--family-display: "aktiv-grotesk-extended", sans-serif;
+$type--family-body: "aktiv-grotesk", sans-serif;
+
+$type--font-weight-reg: 400;
+$type--font-weight-m: 500;
+$type--font-weight-bold: 700;
+$type--font-weight-x-bold: 800;
+
+/* Spacing */
+$spacing-rule: 0.8rem;
+$spacing-rule-half: calc($spacing-rule / 2);
+$spacing-rule-quarter: calc($spacing-rule-half / 2);
+
+/* Breakpoints */
+$breakpoint--small: 550px;
+$breakpoint--medium: 768px;
+$breakpoint--large: 960px;
+$breakpoint--x-large: 1200px;
+$breakpoint--tweakpoint: 1470px;
+$breakpoint--xx-large: 1600px;
+$breakpoint--xxx-large: 2000px;

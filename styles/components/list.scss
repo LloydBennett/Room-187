@@ -1,0 +1,15 @@
+.list {
+  & + & {
+    margin-top: spacing(6);
+
+    @include media-query($breakpoint--medium) {
+      margin-top: spacing(9);
+    }
+  }
+}
+
+.list__item {
+  & + & {
+    margin-top: spacing(1);
+  }
+}

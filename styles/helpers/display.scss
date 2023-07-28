@@ -1,0 +1,16 @@
+.block {
+  display: block;
+}
+
+.block--full-width {
+  @extend .block;
+  width: 100%;
+}
+
+.flex {
+  display: flex;
+}
+
+.inline-block {
+  display: inline-block;
+}

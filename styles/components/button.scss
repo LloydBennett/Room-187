@@ -1,0 +1,55 @@
+.button {
+  @include text-size;
+  @include capitalised-text;
+  @include button;
+
+  &:hover {
+    .button__text {
+      color: $colour--passion;
+      transition: color 500ms ease;
+    }
+
+    .button__line {
+      animation: link-hover 600ms ease 0s 1 forwards;
+      transition: 500ms ease 100ms;
+      background-color: $colour--passion;
+    }
+  }
+}
+
+.button--main {
+  .button__text {
+    color: $colour--black;
+  }
+
+  .button__line {
+    background-color: $colour--black;
+  }
+}
+
+.button--inverted {
+  .button__text {
+    color: $colour--white;
+  }
+
+  .button__line {
+    background-color: $colour--white;
+  }
+}
+
+.button__text {
+  display: block;
+  transition: color 500ms ease;
+}
+
+.button__line {
+  display: block;
+  height: 0.2rem;
+  width: 100%;
+  margin-top: $spacing-rule-half;
+  transition: transform 500ms ease;
+}
+
+.button--margin-top {
+  margin-top: spacing(6);
+}

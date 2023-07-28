@@ -1,0 +1,15 @@
+<% let menu = navigation.data.menu_links %>
+
+<ul class="<%- container_class %>">
+  <% menu.forEach((l, i) => { %>
+    <% let uid = l.link.uid.replace(/[_-]/g, " ");
+       let name = uid.charAt(0).toUpperCase() + uid.slice(1);
+    %>
+  
+    <li class="<%- list_class %>" <% if(dataAttr) {%><%- dataAttr %><%}%>>
+      <a href="<%- l.link.url %>" class="<%- list_text_class %>">
+        <%- name %>
+      </a>
+    </li>
+  <% }) %>
+</ul>

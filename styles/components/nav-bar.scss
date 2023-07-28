@@ -1,0 +1,21 @@
+.nav-bar {
+  padding: spacing(2) 0;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 500;
+}
+
+.nav-bar__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+
+  @include media-query($breakpoint--small) {
+    grid-column: 8 / 9;
+	}
+
+  @include media-query($breakpoint--x-large) {
+    grid-column: 10 / 11;
+  }
+}

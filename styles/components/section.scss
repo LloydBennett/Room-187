@@ -1,0 +1,47 @@
+.section--l-m-b {
+  @include section--l;
+}
+
+.section--l-m-t {
+  @include section--l(top, margin);
+}
+
+.section--l-p-t {
+  @include section--l(top, padding);
+}
+
+.section--l-p-b {
+  @include section--l(bottom, padding);
+}
+
+.section--m-m-b {
+  @include section--m;
+}
+
+.section--m-p-b {
+  @include section--m(bottom, padding);
+}
+
+.section--m-m-t {
+  @include section--m(top, margin);
+}
+
+.section--m-p-t {
+  @include section--m(top, padding);
+}
+
+.section--s-m-b {
+  @include section--s;
+}
+
+.section--s-m-t {
+  @include section--s(top, margin);
+}
+
+.section--s-p-b {
+  @include section--s(bottom, padding);
+}
+
+.section--s-p-t {
+  @include section--s(top, padding);
+}

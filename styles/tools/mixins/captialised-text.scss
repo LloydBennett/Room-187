@@ -1,0 +1,7 @@
+@mixin capitalised-text( $letter-spacing: false) {
+  text-transform: uppercase;
+
+  @if ($letter-spacing == true) {
+    letter-spacing: 1px;  
+  }
+}

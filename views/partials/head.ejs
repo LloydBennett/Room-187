@@ -1,0 +1,30 @@
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/ico" href="../images/favicon.png" />
+
+  <% if (page !== "home") { %>
+  <title><%- `${document.data.title} | ${meta.data.title}` %></title>
+  <% } else { %>
+  <title><%- meta.data.title %></title>
+  <% } %>
+  
+  <meta name="description" content="<%- meta.data.description %>">
+  <meta property="og:url" content="https://www.lloydjamiebennett.co.uk" />
+  <meta property="og:title" content="<%- meta.data.title %>" />
+  <meta property="og:description" content="<%- meta.data.description %>" />
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="<%- meta.data.image.url %>"/>
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@LloydBennett_" />
+  <meta name="twitter:title" content="<%- meta.data.title %>"/>
+  <meta name="twitter:description" content="<%- meta.data.description %>" />
+  <meta name="twitter:image" content="<%- meta.data.image.twitter.url %>" />
+
+  <link rel="stylesheet" href="https://use.typekit.net/etq3jip.css">
+  <link rel="stylesheet" href="/main.css">
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+</head>

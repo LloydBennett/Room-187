@@ -1,0 +1,9 @@
+@mixin button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+}

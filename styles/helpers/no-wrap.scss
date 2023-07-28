@@ -1,0 +1,9 @@
+.no-wrap {
+  white-space: nowrap;
+}
+
+.no-wrap--and-break {
+  @extend .no-wrap;
+  @extend .block;
+  line-height: 1;
+}

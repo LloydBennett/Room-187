@@ -1,0 +1,34 @@
+<% let page = pageType %>
+
+<%- include('./partials/head', { page: page } ) -%>
+
+<body>
+  <main id="main" data-page="<%- page %>" data-scroll-speed="-14" class="main <%- page %>">
+    
+    <%- include('./partials/navigation-menu') -%>
+
+    <div>
+      <%- include('./partials/navigation-bar') -%>
+      <div class="section--s-top">
+        <% switch(page) {
+          case 'contact' : %>
+            <%- include('./pages/contact') %>
+            <%  break; %>
+          <% case 'about' : %>
+            <%- include('./pages/about') -%>
+            <% break; %>
+          <% default : %>
+          <%- include('./pages/home') -%>
+        <% } %>
+      </div>
+      
+    </div>
+    
+    <%- include('./partials/footer') -%>
+    
+  </main>
+  
+  <script src="/main.js"></script>
+</body>
+
+
