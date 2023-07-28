@@ -2,52 +2,22 @@
   @include text-size;
   @include capitalised-text;
   @include button;
+}
 
-  &:hover {
-    .button__text {
-      color: $colour--passion;
-      transition: color 500ms ease;
-    }
+.button--l {
+  padding: spacing(2) spacing(3);
 
-    .button__line {
-      animation: link-hover 600ms ease 0s 1 forwards;
-      transition: 500ms ease 100ms;
-      background-color: $colour--passion;
-    }
+  @include media-query($breakpoint--large) {
+    padding: spacing(3) spacing(6);
   }
 }
 
-.button--main {
-  .button__text {
-    color: $colour--black;
+.button--s {
+  padding: 1.2rem spacing(2);
+
+  @include media-query($breakpoint--large) {
+    padding: spacing(2) spacing(3);
   }
-
-  .button__line {
-    background-color: $colour--black;
-  }
-}
-
-.button--inverted {
-  .button__text {
-    color: $colour--white;
-  }
-
-  .button__line {
-    background-color: $colour--white;
-  }
-}
-
-.button__text {
-  display: block;
-  transition: color 500ms ease;
-}
-
-.button__line {
-  display: block;
-  height: 0.2rem;
-  width: 100%;
-  margin-top: $spacing-rule-half;
-  transition: transform 500ms ease;
 }
 
 .button--margin-top {

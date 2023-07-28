@@ -7,7 +7,7 @@
 .hamburger__line {
   display: block;
   height: 3px;
-  background-color: $colour--grit-500;
+  background-color: $colour--white;
 
   & + & {
     margin-top: $spacing-rule-half;
