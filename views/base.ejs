@@ -8,7 +8,9 @@
     <%- include('./partials/navigation-menu') -%>
 
     <div>
+      <% if (page !== "home") { %>
       <%- include('./partials/navigation-bar') -%>
+      <% } %>
       <div class="section--s-top">
         <% switch(page) {
           case 'contact' : %>

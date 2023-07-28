@@ -1,3 +1,7 @@
 .grid {
   @include grid;
 }
+
+.grid--all {
+  @include grid(null, true);
+}

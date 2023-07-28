@@ -1,17 +1,21 @@
 <section class="hero">
-  <div class="container grid">
+  <%- include('../partials/navigation-bar') -%>
+  <div class="container grid--all">
     
-    <div class="hero__heading">
-      <h1 class="type--xxl type--display type--caps type--x-bold type--outline-black">
+    <div class="h-hero__title text-right">
+      <h1 class="type--xxl type--display type--caps type--x-bold type--outline-white">
         <%- document.data.hero_title %>
       </h1>
+
+      
     </div>
 
-    <div class="hero__cta button--m-t">
-      <a href="<%- siteDetails.data.main_cta_link.url %>" class="button button--l button--primary">
+    <div class="h-hero__cta button--m-t">
+      <a href="<%- siteDetails.data.main_cta_link.url %>" class="button button--l button--primary block--full-width">
         <%- siteDetails.data.main_cta_text %>
       </a>
     </div>
+    
     
   </div>
 </section>

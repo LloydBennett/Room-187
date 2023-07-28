@@ -1,0 +1,36 @@
+.h-hero__title {
+  grid-column: 1 / 7;
+
+  @include media-query($breakpoint--small) {
+    grid-column: 1 / 9;
+  }
+
+  @include media-query($breakpoint--medium) {
+    grid-column: 4 / 9;
+  }
+
+  @include media-query($breakpoint--x-large) {
+		grid-column: 5 / 9;
+	}
+
+  @include media-query($breakpoint--xxx-large) {
+		grid-column: 6 / 9;
+	}
+}
+
+.h-hero__cta {
+  grid-column: 1 / 7;
+
+  @include media-query($breakpoint--small) {
+    grid-column: 5 / 9;
+  }
+
+  @include media-query($breakpoint--medium) {
+    grid-column: 6 / 9;
+  }
+
+  @include media-query($breakpoint--x-large) {
+    grid-column: 7 / 9;
+  }
+  
+}

@@ -1,14 +1,8 @@
-@mixin text-size($small: 1.6, $medium: 1.8, $large: 2) {
+@mixin text-size($small: 1.6, $large: 1.8) {
 	font-size: #{$small}rem;
 
-	@if $medium != null {
-		@include media-query($breakpoint--medium) {
-			font-size: #{$medium}rem;
-		}
-	}
-	
 	@if $large != null {
-		@include media-query($breakpoint--xx-large) {
+		@include media-query($breakpoint--medium) {
 			font-size: #{$large}rem;
 		}
 	}
