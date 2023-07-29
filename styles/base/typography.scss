@@ -95,6 +95,10 @@ body {
 	}
 }
 
+.type--tiny {
+	@include text-size(1.4rem, null, null);
+}
+
 .type--l-margin {
 	margin: 0 0 spacing(3);
 
@@ -133,6 +137,10 @@ body {
 
 .type--white {
 	color: $colour--white;
+
+	&:visited {
+		color: $colour--white;
+	}
 }
 
 .type--grey-200 {

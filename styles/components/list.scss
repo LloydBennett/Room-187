@@ -10,6 +10,6 @@
 
 .list__item {
   & + & {
-    margin-top: spacing(1);
+    margin-top: spacing(2);
   }
 }

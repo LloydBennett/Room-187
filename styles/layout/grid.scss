@@ -6,6 +6,36 @@
   @include grid(null, true);
 }
 
+.grid--gap-xs {
+  @include media-query($breakpoint--small - 1, max-width) {
+    grid-row-gap: spacing(5);
+  }
+}
+
+.grid--gap-sm {
+  @extend .grid--gap-xs;
+  @media screen and (min-width: $breakpoint--small) and
+  (max-width: $breakpoint--medium - 1) {
+    grid-row-gap: spacing(8);
+  }
+}
+
+.grid--gap-md {
+  @extend .grid--gap-xs;
+  @media screen and (min-width: $breakpoint--small) and
+  (max-width: $breakpoint--large - 1) {
+    grid-row-gap: spacing(8);
+  }
+}
+
+.grid--gap-xl {
+  @extend .grid--gap-md;
+  
+  @include media-query($breakpoint--large) {
+    grid-row-gap: spacing(11);
+  }
+}
+
 .grid--staggered {
   grid-row-gap: spacing(5);
 

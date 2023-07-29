@@ -1,5 +1,39 @@
+<% 
+  let date = new Date() 
+  let year = date.getFullYear()
+%>
 <footer class="footer">
-  <div class="container grid">
+  <div class="container grid grid--all grid--gap-xl">
+    <div class="footer__col-one">
+      <h4 class="type--caps type--bold type--white type--display type--xs type--s-margin">
+        Company
+      </h4>
+      <%- include('../partials/menu-links', { container_class: "list", list_class: "list__item", list_text_class: "type--white type--xs", dataAttr: null }) -%>
+    </div>
+    <div class="footer__col-two">
+      <h4 class="type--caps type--bold type--white type--display type--xs type--s-margin">
+        Info
+      </h4>
 
+    </div>
+    <div class="footer__form">
+      <h4 class="type--caps type--bold type--white type--display type--xs type--s-margin">
+        Join our newsletter
+      </h4>
+      <form>
+        <div class="input relative">
+          <input type="email" placeholder="Enter your email" name="email" class="input__field">
+          <span class="input__line"></span>
+        </div>
+      </form>
+    </div>
+    <div class="footer__socials flex gap--s flex--middle">
+      <%- include('../partials/display-socials') -%>
+    </div>
+    <div class="footer__signage">
+      <span class="type--xs type--white">
+        &copy;<%- year %>&nbsp;<%- siteDetails.data.brand_name %>
+      </span>
+    </div>
   </div>
 </footer>
