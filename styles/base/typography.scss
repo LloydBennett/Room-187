@@ -32,6 +32,15 @@ body {
 	}
 }
 
+.type--special {
+	font-size: 16vw;
+	line-height: 1.2;
+
+	@include media-query($breakpoint--medium) {
+		font-size: 11vw;
+	}
+}
+
 .type--xl {
 	font-size: 7.2rem;
 
