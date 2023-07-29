@@ -1,0 +1,22 @@
+<div class="container section--l-m-b">
+  <h3 class="type--m type--white type--x-bold type--display type--caps section--l-m-b">
+    The Founders
+  </h3>
+  <div class="grid">
+    <% members.forEach((member) => { %>
+      <div class="three--columns-slim">
+        <div class="thumbnail relative avatar__stack">
+          <div class="avatar--bio avatar--m-b relative" style="background-image: url(<%- member.data.avatar.url %>)"></div>
+          <div class="avatar--bio avatar--highlighted avatar--m-b overlay" style="background-image: url(<%- member.data.avatar.highlighted.url %>)"></div>
+        </div>
+        <h4 class="type--s type--bold type--white">
+          <%- member.data.title %>
+        </h4>
+        <span class="type--xs type--bold type--grey-200">
+          <%- member.data.role %>
+        </span>
+      </div>
+
+    <% }) %>
+  </div>
+</div>

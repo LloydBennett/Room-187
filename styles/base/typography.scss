@@ -16,7 +16,7 @@ body {
 }
   
 .type--xxl {
-	font-size: 9.6rem;
+	font-size: 8.4rem;
 	line-height: 1;
 
 	@include media-query($breakpoint--small) {
@@ -149,6 +149,10 @@ body {
 
 .type--white {
 	color: $colour--white;
+}
+
+.type--grey-200 {
+	color: $colour--grey-200;
 }
 
 .type--caps {

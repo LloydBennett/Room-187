@@ -33,3 +33,43 @@
 		}
 	}
 }
+
+.three--columns-slim {
+	&:nth-child(odd) {
+		@include media-query($breakpoint--large - 1, max-width) {
+			grid-column: 1 / 5;
+		}
+	}
+
+	&:nth-child(even) {
+		@include media-query($breakpoint--large - 1, max-width) {
+			grid-column: 5 / 9;
+			margin-bottom: spacing(8);
+		}
+	}
+
+	&:nth-child(3n + 1) {
+		@include media-query($breakpoint--large) {
+			grid-column: 1 / 3;
+		}
+	}
+
+	&:nth-child(3n + 2) {
+
+		@include media-query($breakpoint--large) {
+			grid-column: 4 / 6;
+		}
+	}
+
+	&:nth-child(3n + 3) {
+		@include media-query($breakpoint--large) {
+			grid-column: 7 / 9;
+		}
+	}
+
+	& + & {
+		@include media-query($breakpoint--small - 1, max-width) {
+			margin-top: spacing(8);
+		}
+	}
+}
