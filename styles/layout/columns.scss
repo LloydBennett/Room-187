@@ -2,6 +2,14 @@
 	grid-column: 1 / 9;
 }
 
+.column--header {
+	grid-column: 1 / 5;
+}
+
+.column--content {
+	grid-column: 6 / 9;
+}
+
 .two--columns {
 	&:nth-child(odd) {
 		grid-column: 1 / 9;
