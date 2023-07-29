@@ -81,7 +81,6 @@
 	}
 
 	&:nth-child(3n + 2) {
-
 		@include media-query($breakpoint--large) {
 			grid-column: 4 / 6;
 		}
@@ -121,17 +120,11 @@
 		grid-row: 2;
 
 		@include media-query($breakpoint--small) {
-			grid-column: 4 / 9;
-			
-		}
-		
-		@include media-query($breakpoint--medium) {
-			grid-column: 4 / 9;
+			grid-column: 6 / 9;
 		}
 
 		@include media-query($breakpoint--x-large) {
 			margin-top: spacing(13);
-			grid-column: 6 / 9;
 			grid-row: 1;
 		}
 	}
@@ -139,7 +132,7 @@
 	&:nth-child(3n + 3) {
 		grid-row: 3;
 
-		@include media-query($breakpoint--medium) {
+		@include media-query($breakpoint--small) {
 			grid-column: 2 / 7;
 		}
 
