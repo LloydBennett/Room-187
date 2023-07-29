@@ -1,9 +1,13 @@
 .nav-bar {
-  padding: spacing(2) 0;
+  padding: spacing(1) 0;
   position: sticky;
   top: 0;
   left: 0;
   z-index: 500;
+
+  @include media-query($breakpoint--small) {
+    padding: spacing(2) 0;
+  }
 }
 
 .nav-bar__trigger {
@@ -18,4 +22,8 @@
   @include media-query($breakpoint--x-large) {
     grid-column: 10 / 11;
   }
+}
+
+.nav-bar__logo {
+  width: 4rem;
 }
