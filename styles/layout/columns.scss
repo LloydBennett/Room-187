@@ -1,0 +1,35 @@
+.column--full-width {
+	grid-column: 1 / 9;
+}
+
+.two--columns {
+	&:nth-child(odd) {
+		grid-column: 1 / 9;
+
+		@include media-query($breakpoint--medium) {
+			grid-column: 1 / 5;
+		}
+
+		@include media-query($breakpoint--x-large) {
+			grid-column: 1 / 4;
+		}
+	}
+
+	&:nth-child(even) {
+		grid-column: 1 / 9;
+
+		@include media-query($breakpoint--medium) {
+			grid-column: 5 / 9;
+		}
+
+		@include media-query($breakpoint--x-large) {
+			grid-column: 5 / 8;
+		}
+	}
+
+	& + & {
+		@include media-query($breakpoint--medium - 1, max-width) {
+			margin-top: spacing(8);
+		}
+	}
+}

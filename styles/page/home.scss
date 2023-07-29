@@ -1,6 +1,7 @@
 .h-hero__grid {
   padding-top: spacing(6);
   flex-grow: 1;
+  
   @include media-query($breakpoint--medium) {
     padding-top: 0;
   }
@@ -77,5 +78,4 @@
   @include media-query($breakpoint--x-large) {
     grid-column: 7 / 9;
   }
-  
 }

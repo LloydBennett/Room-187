@@ -1,8 +1,41 @@
-<div class="container grid">
+<% let content = document.data.content %>
+<section class="section--l-m-b section--m-p-t">
+  <div class="container grid">
     
-  
-  <h1 class="type--xl">
-    <%- document.data.title %>
-  </h1>
+    <div class="column--full-width contact__heading">
+      <h1 class="type--xxl type--white type--display type--x-bold type--caps">
+        <%- document.data.title %>
+      </h1>
+    </div>
     
-</div>
+  </div>
+</section>
+
+<% if(content !== null) { %>
+<section class="section--l-m-b">
+  <div class="container grid">
+    <% content.forEach((block) => { %>
+
+    <div class="two--columns">
+      <h3 class="type--m type--x-bold type--white type--caps type--display type--l-margin">
+        <%- block.content_title %>
+      </h3>
+      <p class="type--xs type--white">
+        <%- block.content_paragraph %>
+      </p>
+    </div>
+    <% }) %>
+    
+  </div>
+
+</section>
+<% } %>
+<section class="section--l-m-b">
+  <div class="container grid">
+    <div class="column--full-width">
+      <a href="mailto:" target="_blank" class="type--m type--white">
+        <%- siteDetails.data.email_address %>
+      </a>
+    </div>
+  </div>
+</section>

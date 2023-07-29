@@ -3,10 +3,8 @@
 <%- include('./partials/head', { page: page } ) -%>
 
 <body>
-  <main id="main" data-page="<%- page %>" data-scroll-speed="-14" class="main <%- page %>">
-    
+  <main id="main" data-page="<%- page %>" data-scroll-speed="-14" class="main <%- page %> relative">
     <%- include('./partials/navigation-menu') -%>
-
     <div>
       <% if (page !== "home") { %>
       <%- include('./partials/navigation-bar') -%>
