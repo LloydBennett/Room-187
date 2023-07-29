@@ -1,7 +1,16 @@
-<section class="hero">
+<section class="hero flex flex--column">
   <%- include('../partials/navigation-bar') -%>
-  <div class="container grid--all">
-    
+  <div class="container grid--all h-hero__grid">
+    <div class="h-hero__intro">
+      <span class="type--xs type--caps type--bold type--white type--display">
+        <%- siteDetails.data.brand_description %>
+      </span>
+    </div>
+    <div class="h-hero__alt">
+      <span class="inline-block type--display type--m type--white">
+        <%- document.data.alt_text %>
+      </span>
+    </div>
     <div class="h-hero__title text-right">
       <h1 class="type--xxl type--display type--caps type--x-bold type--outline-white">
         <%- document.data.hero_title %>
