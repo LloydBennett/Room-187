@@ -1,9 +1,28 @@
+<%
+// sort members array in alphabetical order
+
+let compare = (a, b) => {
+  let aName = a.data.title
+  let bName = b.data.title
+
+  if ( aName < bName ){
+    return -1;
+  }
+  if ( aName > bName ){
+    return 1;
+  }
+  return 0;
+}
+
+let team = members.sort(compare) 
+%>
+
 <div class="container section--l-m-b">
   <h3 class="type--m type--white type--x-bold type--display type--caps section--l-m-b">
     The Founders
   </h3>
   <div class="grid">
-    <% members.forEach((member) => { %>
+    <% team.forEach((member) => { %>
       <div class="three--columns-slim">
         <div class="thumbnail relative avatar__stack">
           <div class="avatar--bio avatar--m-b relative" style="background-image: url(<%- member.data.avatar.url %>)"></div>
