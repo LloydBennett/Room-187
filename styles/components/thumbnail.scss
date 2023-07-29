@@ -7,3 +7,10 @@
     display: block;
   }
 }
+
+.thumbnail--poster {
+  @include media-query($breakpoint--medium) {
+		padding-left: 5%;
+    padding-right: 5%;
+  }
+}
