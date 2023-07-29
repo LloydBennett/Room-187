@@ -5,3 +5,15 @@
 .grid--all {
   @include grid(null, true);
 }
+
+.grid--staggered {
+  grid-row-gap: spacing(5);
+
+  @include media-query($breakpoint--small) {
+    grid-row-gap: spacing(8);
+  }
+  
+  @include media-query($breakpoint--medium) {
+    grid-row-gap: spacing(11);
+  }
+}

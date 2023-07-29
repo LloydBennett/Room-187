@@ -1,0 +1,21 @@
+<% 
+let stats = siteDetails.data.stats
+%>
+
+<% if(stats !== null) { %>
+<section class="section--l-m-b">
+  <div class="container grid grid--all grid--staggered">
+    <% stats.forEach((stat) => { %>
+      <div class="column--staggered">
+        <span class="type--xl block type--white type--bold type--display">
+          <% let number = new Intl.NumberFormat().format(stat.numerical_value) %>
+          <%- number %>
+        </span>
+        <span class="type--xs type--grey-200">
+          <%- stat.platform_name %>&nbsp;<%- stat.unit %>
+        </span>
+      </div>
+    <% }) %>
+  </div>
+</section>
+<% } %>
