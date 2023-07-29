@@ -4,6 +4,10 @@
   @include media-query($breakpoint--large) {
     padding: spacing(7) 0 spacing(3);
   }
+
+  @include media-query($breakpoint--xx-large) {
+    padding: spacing(11) 0 spacing(3);
+  }
 }
 
 .footer__col-one {
