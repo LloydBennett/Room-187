@@ -1,9 +1,5 @@
 @mixin section--m($margin-pos: bottom, $property: margin) {
-  #{$property}-#{$margin-pos}: spacing(5);
-
-  @include media-query($breakpoint--small) {
-    #{$property}-#{$margin-pos}: spacing(8);
-  }
+  #{$property}-#{$margin-pos}: spacing(8);
   
   @include media-query($breakpoint--medium) {
     #{$property}-#{$margin-pos}: spacing(11);

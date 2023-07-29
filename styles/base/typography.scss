@@ -115,6 +115,14 @@ body {
 	}
 }
 
+.type--xs-margin {
+	margin: 0 0 spacing(1);
+
+	@include media-query($breakpoint--medium) {
+		margin: 0 0 spacing(2);
+	}
+}
+
 .type--display {
 	font-family: $type--family-display;
 }

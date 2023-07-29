@@ -8,7 +8,7 @@
 
 .grid--gap-xs {
   @include media-query($breakpoint--small - 1, max-width) {
-    grid-row-gap: spacing(5);
+    grid-row-gap: spacing(8);
   }
 }
 
