@@ -4,11 +4,14 @@
 
 
 <section class="section--l-m-b">
-  <div class="container grid">
+  <div class="container artist__grid">
     <% artists.forEach((artist, i) => { %>
-      <span class="type--xl type--display type--caps type--x-bold <% if((i + 1) % 2 == 0) { %> type--outline-white <% } else { %> type--white <% } %>">
-        <%- artist.artist_name %>
-      </span>
+      <div class="artist__item">
+        <span class="artist__title type--display type--caps type--x-bold <% if((i + 1) % 2 == 0) { %> type--outline-white <% } else { %> type--white <% } %>">
+          <%- artist.artist_name %>
+        </span>
+      </div>
+      
     <% }) %>
   </div>
 </section>

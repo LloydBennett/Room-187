@@ -1,0 +1,56 @@
+.artist__grid {
+  @include grid;
+  grid-row-gap: spacing(3);
+}
+
+.artist__item {
+  grid-column: 1 / 9;
+
+  & + & {
+    @include media-query($breakpoint--small - 1, max-width) {
+      margin-top: spacing(1);
+    }
+  }
+
+  &:nth-child(4n + 1) {
+    text-align: right;
+    
+    @include media-query($breakpoint--medium) {
+      grid-column: 1 / 8;
+    }
+  }
+
+  &:nth-child(4n + 3) {
+    @include media-query($breakpoint--medium - 1, max-width) {
+      text-align: center;
+    }
+
+    @include media-query($breakpoint--medium) {
+      grid-column: 2 / 9;
+    }
+  }
+
+  &:nth-child(4n + 4) {
+    text-align: center;
+  }
+}
+
+.artist__title {
+  font-size: 3.6rem;
+
+  @include media-query(400px) {
+    font-size: 4.2rem;
+  }
+
+  @include media-query($breakpoint--small) {
+		font-size: 5.6rem;
+	}
+
+  @include media-query($breakpoint--medium) {
+		font-size: 7.2rem;
+	}
+
+  @include media-query($breakpoint--large) {
+		font-size: 9vw;
+	}
+}
