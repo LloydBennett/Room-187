@@ -33,7 +33,7 @@ body {
 }
 
 .type--special {
-	font-size: 16vw;
+	font-size: 15.5vw;
 	line-height: 1.2;
 
 	@include media-query($breakpoint--medium) {
@@ -123,6 +123,19 @@ body {
 	}
 }
 
+.type--call-out {
+	font-size: 3.2rem;
+	line-height: $type--line-height;
+
+	@include media-query($breakpoint--small) {
+		font-size: 4.8rem;
+	}
+
+	@include media-query($breakpoint--medium) {
+		font-size: 6.4rem;
+	}
+}
+
 .type--display {
 	font-family: $type--family-display;
 }
@@ -165,4 +178,12 @@ body {
 
 .type--outline-black {
 	@include text-outline;
+}
+
+.type--highlighted {
+	background-color: $colour--gold-300;
+}
+
+.type--base-l-h {
+	line-height: $type--line-height;
 }

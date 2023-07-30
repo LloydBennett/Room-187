@@ -1,3 +1,38 @@
+.avatar {
+  border-radius: 100%;
+  overflow: hidden;
+  flex-shrink: 0;
+
+  img {
+    width: 100%;
+  }
+}
+
+.avatar--s {
+  width: 4rem;
+  height: 4rem;
+
+  @include media-query($breakpoint--medium) {
+    width: 6.4rem;
+    height: 6.4rem;
+  }
+}
+
+.avatar--l {
+  width: 6.4rem;
+  height: 6.4rem;
+
+  @include media-query($breakpoint--medium) {
+    width: 8rem;
+    height: 8rem;
+  }
+
+  @include media-query($breakpoint--x-large) {
+    width: 10rem;
+    height: 10rem;
+  }
+}
+
 .avatar--bio {
   @include background-image;
   padding-bottom: 80%;
