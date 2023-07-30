@@ -1,0 +1,14 @@
+<% 
+  let artists = slice.items
+%>
+
+
+<section class="section--l-m-b">
+  <div class="container grid">
+    <% artists.forEach((artist, i) => { %>
+      <span class="type--xl type--display type--caps type--x-bold <% if((i + 1) % 2 == 0) { %> type--outline-white <% } else { %> type--white <% } %>">
+        <%- artist.artist_name %>
+      </span>
+    <% }) %>
+  </div>
+</section>
