@@ -1,0 +1,42 @@
+.carousel {
+  overflow-x: hidden;
+}
+
+.carousel__container {
+  display: flex;
+  padding-left: 5%;
+  gap: 5%;
+
+  @include media-query($breakpoint--small) {
+    gap: 10%;
+  }
+
+  @include media-query($breakpoint--medium) {
+    gap: spacing(10);
+  }
+}
+
+.carousel__item {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 90%;
+
+  @include media-query($breakpoint--small) {
+    width: 70%;
+  }
+
+  @include media-query($breakpoint--medium) {
+    width: 50%;
+  }
+
+  @include media-query($breakpoint--x-large) {
+    width: 40%;
+  }
+
+  @include media-query($breakpoint--xx-large) {
+    width: 35%;
+  }
+}
+

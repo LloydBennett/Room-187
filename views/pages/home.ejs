@@ -1,33 +1,38 @@
-<section class="hero flex flex--column relative">
-  <div class="hero__bg overlay" style="background-image: url('<%- document.data.hero_image.url %>')"></div>
-  <div class="hero__g-overlay overlay"></div>
-  <%- include('../partials/navigation-bar') -%>
-  <div class="container grid--all h-hero__grid">
-    <div class="h-hero__intro">
-      <span class="type--xs type--caps type--bold type--white type--display">
-        <%- siteDetails.data.brand_description %>
-      </span>
+<section class="hero flex flex--column">
+  <div class="relative">
+    <div class="hero__bg overlay" style="background-image: url('<%- document.data.hero_image.url %>')"></div>
+    <div class="hero__g-overlay overlay"></div>
+    <%- include('../partials/navigation-bar') -%>
+    <div class="container grid--all h-hero__grid">
+      <div class="h-hero__intro">
+        <span class="type--xs type--caps type--bold type--white type--display">
+          <%- siteDetails.data.brand_description %>
+        </span>
+      </div>
+      <div class="h-hero__alt">
+        <span class="inline-block type--display type--m type--white">
+          <%- document.data.alt_text %>
+        </span>
+      </div>
+      <div class="h-hero__title text-right">
+        <h1 class="type--xl type--display type--caps type--x-bold type--outline-white">
+          <%- document.data.hero_title %>
+        </h1>      
+      </div>
+  
+      <div class="h-hero__cta button--m-t">
+        <a href="<%- siteDetails.data.main_cta_link.url %>" class="button button--l button--primary block--full-width">
+          <%- siteDetails.data.main_cta_text %>
+        </a>
+      </div>
+      
+      
     </div>
-    <div class="h-hero__alt">
-      <span class="inline-block type--display type--m type--white">
-        <%- document.data.alt_text %>
-      </span>
-    </div>
-    <div class="h-hero__title text-right">
-      <h1 class="type--xl type--display type--caps type--x-bold type--outline-white">
-        <%- document.data.hero_title %>
-      </h1>      
-    </div>
-
-    <div class="h-hero__cta button--m-t">
-      <a href="<%- siteDetails.data.main_cta_link.url %>" class="button button--l button--primary block--full-width">
-        <%- siteDetails.data.main_cta_text %>
-      </a>
-    </div>
-    
-    
   </div>
+  
 </section>
-<%- include('../SliceZone.ejs', { SliceZone: document.data.body, testimonials: testimonials }) %>
-<%- include('../partials/stats') -%>
-<%- include('../partials/cta-block') -%>
+<div class="scroll-over section--l-p-t bg--black">
+  <%- include('../SliceZone.ejs', { SliceZone: document.data.body, testimonials: testimonials }) %>
+  <%- include('../partials/stats') -%>
+  <%- include('../partials/cta-block') -%>
+</div>

@@ -43,14 +43,15 @@
       </div>
     </div> 
   </div>
-  <div>
-    <div class="container grid">
+
+  <div class="carousel">
+    <div class="carousel__container">
       <% if(quotes != null) { %>
         <% quotes.forEach((q) => { %>
           <% let qid = q.supporting_quotes.id %>
           <% testimonials.forEach((testimony) => { %>
             <% if(testimony.id === qid) { %>
-              <div class="two--columns">
+              <div class="carousel__item">
                 
                 <span class="block type--s type--white type--l-margin type--base-l-h">
                   <%- testimony.data.quote %>
@@ -64,7 +65,7 @@
                     <span class="type--xs type--display type--white type--bold block">
                       <%- testimony.data.author %>
                     </span>
-                    <span class="type--xs type--grey-200 type--reg block">
+                    <span class="type--xs type--grey-200 type--reg no-margin--top block">
                       <%- testimony.data.role %>
                     </span>
                   </div>

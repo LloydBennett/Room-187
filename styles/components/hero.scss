@@ -1,6 +1,8 @@
 .hero {
   min-height: 100vh;
   padding-bottom: spacing(6);
+  position: sticky;
+  top: 0;
 }
 
 .hero__bg {
