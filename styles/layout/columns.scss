@@ -1,5 +1,18 @@
 .column--full-width {
-	grid-column: 1 / 9;
+	grid-column: 1 / 7;
+
+	@include media-query($breakpoint--small) {
+		grid-column: 1 / 9;
+	}
+}
+
+.column--centered {
+	@extend .column--full-width;
+	text-align: center;
+
+	@include media-query($breakpoint--large) {
+		grid-column: 2 / 8;
+	}
 }
 
 .column--header {

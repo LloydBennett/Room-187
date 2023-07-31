@@ -1,6 +1,9 @@
 <% getSlices = ((SliceZone) => {
   return SliceZone.reduce((prevSlices, slice) => {
     switch(slice.slice_type) {
+      case 'introduction':
+        return prevSlices + include('./slices/Introduction.ejs', { slice: slice })
+        break;
       case 'testimonials':
         return prevSlices + include('./slices/Testimonials.ejs', { slice: slice })
         break;

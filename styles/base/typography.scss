@@ -48,8 +48,12 @@ body {
 }
 
 .type--l {
-	font-size: 4.8rem;
+	font-size: 3.6rem;
 	line-height: 1.1;
+
+	@include media-query(375px) {
+		font-size: 4.8rem;
+	}
 
 	@include media-query($breakpoint--medium) {
 		font-size: 6.4rem;

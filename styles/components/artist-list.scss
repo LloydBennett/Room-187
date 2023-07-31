@@ -69,14 +69,14 @@
     bottom: spacing(5);
   }
   
-  @include media-query($breakpoint--x-large) {
+  @include media-query($breakpoint--xx-large) {
     width: auto;
     height: auto;
     bottom: spacing(6);
   }
 
   svg {
-    @include media-query($breakpoint--x-large - 1, max-width) {
+    @include media-query($breakpoint--xx-large - 1, max-width) {
       height: 100%;
     }
   }
