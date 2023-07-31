@@ -12,10 +12,10 @@
       
     <% }) %>
     <div class="artist__video column--full-width relative">
-      <video class="block--full-width" poster="<%- slice.primary.video_poster.url %>" data-video>
+      <video class="video" poster="<%- slice.primary.video_poster.url %>" data-video>
         <source src="<%- slice.primary.video.url %>" type="video/mp4">
       </video>
-      <div class="thumbnail artist__play-btn">
+      <div class="play--button thumbnail artist__play-btn" data-play>
         <%- include('../partials/play-button') -%>
       </div>
     </div>
