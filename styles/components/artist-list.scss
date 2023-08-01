@@ -1,6 +1,6 @@
 .artist__grid {
   @include grid;
-  grid-row-gap: spacing(3);
+  grid-row-gap: spacing(2);
 }
 
 .artist__item {
@@ -50,14 +50,7 @@
 
 .artist__play-btn {
   position: absolute;
-  width: 7.2rem;
-  height: 7.2rem;
-
-  @include media-query($breakpoint--small) {
-    width: 10rem;
-    height: 10rem;
-  }
-
+  
   @include media-query($breakpoint--medium - 1, max-width) {
     top: 50%;
     left: 50%;
