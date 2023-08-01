@@ -24,8 +24,7 @@ export default class Preloader extends Components {
     let delay = 2000
     let title = document.querySelector('[data-testing]')
     this.elements.images.forEach((img, i) => {
-      delay = delay + 500
-      this.tl.to(img, { opacity: 1, duration: 0.1, ease: "linear" }, "+=0.2")
+      this.tl.to(img, { opacity: 1, duration: 0.05, ease: "linear" }, "+=0.15")
     });
 
     this.tl.to(title, { opacity: 0 })
