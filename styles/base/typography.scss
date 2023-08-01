@@ -1,5 +1,4 @@
 /* Typography */
-$type--tweakpoint: 400px;
 
 ::selection {
 	background: $colour--purple-300;
@@ -23,12 +22,12 @@ body {
 }
   
 .type--xl {
-	font-size: 7.2rem;
+	font-size: 6rem;
 	line-height: 1;
 
-	@include media-query($type--tweakpoint) {
-		font-size: 8.4rem;
-	}
+	@include media-query($breakpoint--x-small) {
+    font-size: 8.4rem;
+  }
 
 	@include media-query($breakpoint--small) {
 		font-size: 9.6rem;

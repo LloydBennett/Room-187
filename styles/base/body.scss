@@ -1,0 +1,7 @@
+body {
+  &.no--scrolling {
+    position: fixed;
+    overflow: hidden;
+    width: 100%;
+  }
+}

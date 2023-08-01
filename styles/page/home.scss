@@ -1,11 +1,7 @@
 $hero--tweakpoint: 1080px;
 
 .h-hero__grid {
-  padding-top: spacing(12);
-
-  @include media-query($breakpoint--small) {
-		padding-top: 11.1rem;
-	}
+  padding-top: 11.1rem;
 }
 
 .h-hero__title {
@@ -31,10 +27,14 @@ $hero--tweakpoint: 1080px;
 }
 
 .h-hero__intro {
-  grid-column: 4 / 7;
+  grid-column: 3 / 7;
   text-align: right;
   grid-row: 1;
   margin-bottom: spacing(6);
+
+  @include media-query($breakpoint--x-small) {
+    grid-column: 4 / 7;
+  }
 
   @include media-query($breakpoint--small) {
     grid-column: 7 / 9;
@@ -85,9 +85,13 @@ $hero--tweakpoint: 1080px;
 
 
 .h-hero__play {
-  width: 7.2rem;
-  height: 7.2rem;
-  top: 59%;
+  width: 5.6rem;
+  height: 5.6rem;
+  top: 51%;
+
+  @include media-query($breakpoint--x-small) {
+    top: 49%;
+  }
 
   @include media-query($breakpoint--small) {
     width: 10rem;

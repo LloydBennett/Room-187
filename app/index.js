@@ -2,9 +2,11 @@ import About from 'pages/About'
 import Home from 'pages/Home'
 import Project from 'pages/Project'
 import Navigation from 'components/Navigation'
+import Preloader from 'components/Preloader'
 
 class App {
   constructor() {
+    this.createPreloader()
     this.createContent()
     //this.createPages()
     this.addLinkListeners()
@@ -13,6 +15,10 @@ class App {
     //   el: document.querySelector('[data-page]'),
     //   smooth: true
     // });
+  }
+
+  createPreloader() {
+    this.preloader = new Preloader()
   }
 
   createNavigation() {

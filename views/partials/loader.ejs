@@ -1,0 +1,7 @@
+<div class="loader bg--black fixed" data-loader>
+  <% preloader.data.gallery.forEach((el) => { %>
+    <div class="loader__item thumbnail__inline" data-loader-image>
+      <img src="<%- el.image.url %>">
+    </div>
+  <% }) %>
+</div>

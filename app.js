@@ -49,13 +49,15 @@ const handleRequest = async api => {
   const siteDetails = await client.getSingle('site_det')
   const members = await client.getAllByType('team_members')
   const testimonials = await client.getAllByType('testimonials')
-
+  const preloader = await client.getSingle('preloader')
+  
   return {
     meta,
     navigation,
     siteDetails,
     members,
-    testimonials
+    testimonials,
+    preloader
   }
 }
 
