@@ -1,0 +1,37 @@
+.about__content {
+  @include section--l;
+
+  @include media-query($breakpoint--x-large) {
+    margin-bottom: 0;
+  }
+}
+
+.about__hero {
+  grid-column: 1 / 9;
+  margin-top: spacing(8);
+
+  @include media-query($breakpoint--medium) {
+    grid-column: 4 / 9;
+    margin-top: spacing(11);
+  }
+
+  @include media-query($breakpoint--x-large) {
+		grid-column: 6 / 9;
+    margin-top: spacing(32);
+    grid-row: 2;
+  }
+
+  @include media-query($breakpoint--xxx-large) {
+    margin-top: spacing(50);
+  }
+}
+
+.about__side {
+  display: none;
+
+  @include media-query($breakpoint--x-large) {
+		grid-column: 1 / 5;
+    display: block;
+    grid-row: 2;
+  }
+}

@@ -11,6 +11,18 @@
   display: flex;
 }
 
+.flex--column {
+  flex-direction: column;
+}
+
+.flex--space-btwn {
+  justify-content: space-between;
+}
+
+.flex--middle {
+  align-items: center;
+}
+
 .inline-block {
   display: inline-block;
 }

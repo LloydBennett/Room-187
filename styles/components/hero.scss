@@ -1,0 +1,25 @@
+.hero {
+  min-height: 100vh;
+  position: sticky;
+  top: 0;
+
+  .relative {
+    height: 100%;
+  }
+}
+
+.hero__bg {
+  z-index: -2;
+  background-size: cover;
+  background-position: top left;
+  background-repeat: no-repeat;
+
+  @include media-query($breakpoint--medium) {
+    background-position: top center;
+  }
+}
+
+.hero__g-overlay {
+  z-index: -1;
+  background: linear-gradient(270deg, rgba(0, 0, 0, 0.80) 0%, rgba(0, 0, 0, 0.00) 120%);
+}

@@ -9,9 +9,7 @@ export default class Page {
   create() {
     this.element = document.querySelector(this.selector)
     this.elements = {}
-    // this.selectorChildren.forEach(element => {
-      
-    // });
+    
     console.log('Create', this.id, this.element)
   }
   show() {

@@ -1,0 +1,5 @@
+.cta-block-span {
+  @include media-query(524px) {
+    display: block;
+  }
+}

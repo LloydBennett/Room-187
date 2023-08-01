@@ -1,8 +1,48 @@
-<div class="container grid">
+<% 
+  let content = document.data.content 
+  let thumbnail = document.data.image
+%>
+<section class="section--l-m-b">
+  <div class="container grid">
+    <div class="column--full-width contact__heading">
+      <h1 class="type--special type--white type--display type--x-bold type--s-margin type--caps">
+        <%- document.data.title %>
+      </h1>
+    </div>
+  </div>
+  <picture class="block--full-width thumbnail thumbnail--poster">
+    <source media="(max-width: 767px)" srcset="<%- thumbnail.small.url %>">
+    <source media="(max-width: 1199px)" srcset="<%- thumbnail.url %>">
+    <source media="(min-width: 1200px)" srcset="<%- thumbnail.large.url %>">
+    <img src="<%- thumbnail.url %>" alt="<%- thumbnail.alt %>">
+  </picture>
+</section>
+
+<% if(content !== null) { %>
+<section class="section--l-m-b">
+  <div class="container grid">
+    <% content.forEach((block) => { %>
+
+    <div class="two--columns">
+      <h3 class="type--m type--x-bold type--white type--caps type--display type--l-margin">
+        <%- block.content_title %>
+      </h3>
+      <p class="type--xs type--white">
+        <%- block.content_paragraph %>
+      </p>
+    </div>
+    <% }) %>
     
-  
-  <h1 class="type--xl">
-    <%- document.data.title %>
-  </h1>
-    
-</div>
+  </div>
+
+</section>
+<% } %>
+<section class="section--l-m-b">
+  <div class="container grid">
+    <div class="column--full-width">
+      <a href="mailto:" target="_blank" class="type--m type--white">
+        <%- siteDetails.data.email_address %>
+      </a>
+    </div>
+  </div>
+</section>

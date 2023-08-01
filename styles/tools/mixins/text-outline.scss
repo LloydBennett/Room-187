@@ -1,9 +1,8 @@
-@mixin text-outline($colour: $colour--black) {
-  -webkit-text-stroke-width: 0.3rem;
-  -webkit-text-stroke-color: $colour;
-	color: transparent;
+@mixin text-outline($colour: $colour--black, $fillColour: transparent) {
+  -webkit-text-stroke: 0.1rem $colour;
+	color: $fillColour;
 
-	@include media-query($breakpoint--medium) {
-		-webkit-text-stroke-width: 0.5rem;
-	}
+  @include media-query($breakpoint--medium) {
+    -webkit-text-stroke: 0.3rem $colour;
+  }
 }

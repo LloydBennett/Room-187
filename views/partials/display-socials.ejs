@@ -1,0 +1,10 @@
+<% siteDetails.data.social_media.forEach((d)=> { %>
+  <a href="<%- d.platform_link.url %>" class="thumbnail" target="_blank">
+    <% 
+      let channelName = d.platform.toLowerCase() 
+      let iconPath = `../partials/svg/socials/${channelName}`
+    %>
+    <%- include(iconPath) -%>
+  </a>
+
+<% }) %>

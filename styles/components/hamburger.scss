@@ -1,16 +1,16 @@
 .hamburger {
   display: inline-block;
   cursor: pointer;
-  width: 2.4rem;
+  width: 3.5rem;
 }
 
 .hamburger__line {
   display: block;
-  height: 3px;
-  background-color: $colour--grit-500;
+  height: 2px;
+  background-color: $colour--white;
 
   & + & {
-    margin-top: $spacing-rule-half;
+    margin-top: 0.6rem;
 
     @include media-query($breakpoint--x-large) {
       margin-top: $spacing-rule;

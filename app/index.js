@@ -6,7 +6,7 @@ import Navigation from 'components/Navigation'
 class App {
   constructor() {
     this.createContent()
-    this.createPages()
+    //this.createPages()
     this.addLinkListeners()
     this.createNavigation()
     // const scroll = new LocomotiveScroll({
@@ -27,8 +27,7 @@ class App {
   createPages(){
     this.pages = {
       home: new Home(),
-      about: new About(),
-      project: new Project()
+      about: new About()
     }
     
     this.page = this.pages[this.template]

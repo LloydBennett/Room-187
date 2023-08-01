@@ -48,12 +48,14 @@ const handleRequest = async api => {
   const navigation = await client.getSingle('navigation')
   const siteDetails = await client.getSingle('site_det')
   const members = await client.getAllByType('team_members')
+  const testimonials = await client.getAllByType('testimonials')
 
   return {
     meta,
     navigation,
     siteDetails,
-    members
+    members,
+    testimonials
   }
 }
 

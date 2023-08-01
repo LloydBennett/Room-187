@@ -22,6 +22,7 @@
 @import './tools/mixins/captialised-text.scss';
 @import './tools/mixins/button.scss';
 @import './tools/mixins/text-outline.scss';
+@import './tools/mixins/background-image.scss';
 
 @import './tools/animations/link-hover.scss';
 // ------------------------------------ // ------------------------------------------
@@ -39,6 +40,7 @@
 @import './helpers/no-wrap.scss';
 @import './helpers/text-alignment.scss';
 @import './helpers/no-overflow.scss';
+@import './helpers/position.scss';
 
 
 // ------------------------------------ // ------------------------------------------
@@ -63,7 +65,20 @@
 @import './components/list.scss';
 @import './components/footer.scss';
 @import './components/bg.scss';
+@import './components/overlay.scss';
+@import './components/thumbnail.scss';
+@import './components/avatar.scss';
+@import './components/cta-block.scss';
+@import './components/input.scss';
+@import './components/gap.scss';
+@import './components/carousel.scss';
+@import './components/scroll-over.scss';
+@import './components/artist-list.scss';
+@import './components/video.scss';
 
 // ------------------------------------ // ------------------------------------------
 // -------------------------------- P A G E S ---------------------------------------
 // ------------------------------------ // ------------------------------------------
+@import './page/home.scss';
+@import './page/contact.scss';
+@import './page/about.scss';

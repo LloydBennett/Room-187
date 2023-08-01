@@ -1,4 +1,42 @@
-<div class="container grid">
-  <h1 class="type--xl"><%- document.data.title %></h1>
-    
+<% 
+let section = document.data.section
+let heroImage = document.data.hero_image 
+let sideImage = document.data.side_image 
+%>
+
+<div class="container grid about__content">
+  <div class="column--header section--m-m-b">
+    <h1 class="type--xl type--white type--x-bold type--display type--caps">
+      <%- document.data.title %>
+    </h1>
+  </div>
+  <% if(section !== null ) { %>
+  <div class="column--content">
+    <% section.forEach((s) => { %>
+    <p class="type--xs type--white">
+      <%- s.paragraph %>
+    </p>
+    <% }) %>
+  </div>
+  <% } %>
+  <div class="about__hero">
+    <picture class="thumbnail">
+      <source media="(max-width: 1199px)" srcset="<%- heroImage.url %>">
+      <source media="(min-width: 1200px)" srcset="<%- heroImage.large.url %>">
+      <img src="<%- heroImage.url %>" alt="<%- heroImage.alt %>">
+    </picture>
+  </div>
+
+  <div class="about__side">
+    <picture class="thumbnail">
+      <source media="(max-width: 1199px)" srcset="<%- sideImage.url %>">
+      <source media="(min-width: 1200px)" srcset="<%- sideImage.large.url %>">
+      <img src="<%- heroImage.url %>" alt="<%- sideImage.alt %>">
+    </picture>
+  </div>
+  
 </div>
+
+<%- include('../partials/team-members') -%>
+<%- include('../partials/stats') -%>
+<%- include('../partials/cta-block') -%>

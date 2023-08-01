@@ -1,0 +1,11 @@
+.gap--xs {
+  gap: $spacing-rule-half;
+}
+
+.gap--s {
+  gap: spacing(2);
+}
+
+.gap--m {
+  gap: spacing(3);
+}

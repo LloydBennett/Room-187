@@ -1,17 +1,41 @@
 <section class="hero">
-  <div class="container grid">
-    
-    <div class="hero__heading">
-      <h1 class="type--xl type--display type--caps type--x-bold type--outline-black">
-        <%- document.data.hero_title %>
-      </h1>
-    </div>
+  <div class="relative flex section--m-p-b">
+    <div class="hero__bg overlay" style="background-image: url('<%- document.data.hero_image.url %>')"></div>
+    <div class="hero__g-overlay overlay"></div>
+    <div class="container grid--all h-hero__grid">
+      <div class="h-hero__intro">
+        <span class="type--xs type--caps type--bold type--white type--display">
+          <%- siteDetails.data.brand_description %>
+        </span>
+      </div>
+      <div class="h-hero__alt">
+        <span class="inline-block type--display type--m type--white">
+          <%- document.data.alt_text %>
+        </span>
+      </div>
+      <div class="h-hero__title text-right">
+        <h1 class="type--xl type--display type--caps type--x-bold type--outline-white">
+          <%- document.data.hero_title %>
+        </h1>      
+      </div>
 
-    <div class="hero__cta">
-      <a href="<%- siteDetails.data.main_cta_link.url %>" class="button">
-        <%- siteDetails.data.main_cta_text %>
-      </a>
+      <div class="play--button thumbnail h-hero__play" data-play>
+        <%- include('../partials/play-button') -%>
+      </div>
+
+      <div class="h-hero__cta button--m-t">
+        <a href="<%- siteDetails.data.main_cta_link.url %>" class="button button--l button--primary block--full-width">
+          <%- siteDetails.data.main_cta_text %>
+        </a>
+      </div>
+      
     </div>
-    
   </div>
+  
 </section>
+<div class="scroll-over section--l-p-t bg--black">
+  <%- include('../SliceZone.ejs', { SliceZone: document.data.body, testimonials: testimonials }) %>
+  <%- include('../partials/stats') -%>
+  <%- include('../partials/cta-block') -%>
+  <%- include('../partials/footer') -%>
+</div>

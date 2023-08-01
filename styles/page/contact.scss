@@ -1,0 +1,5 @@
+.contact__heading {
+  @include media-query($breakpoint--large) {
+		text-align: center;
+  }
+}

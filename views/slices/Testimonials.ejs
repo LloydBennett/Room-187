@@ -1,0 +1,78 @@
+<% 
+  let quotes = slice.items
+  let headline = slice.primary.headline_quote
+  const id = headline.id
+  let main = {}
+
+  testimonials.forEach((el) => { 
+    if(id === el.id) {
+      main.quote = el.data.quote
+      main.author = el.data.author
+      main.role = el.data.role
+      main.imageUrl = el.data.avatar.url
+      main.imageAlt = el.data.avatar.alt
+    }
+  })
+%>
+
+<% if(main !== null)  { %>
+<section class="section--l-m-b">
+  <div class="container grid section--m-m-b">
+    <div class="column--full-width">
+      <div class="section--s-m-b">
+        <span class="type--call-out type--highlighted type--black type--m-w">
+          <%- main.quote %>
+        </span>
+      </div>
+      
+      <div class="flex flex--middle gap--m">
+        <div class="avatar avatar--l">
+          <img src="<%- main.imageUrl %>" alt="<%- main.imageAlt %>">
+        </div>
+        <div class="flex flex--column gap--xs">
+          <span class="type--s type--display type--white type--bold block">
+            <%- main.author %>
+          </span>
+          <span class="type--xs type--grey-200 type--reg block">
+            <%- main.role %>
+          </span>
+        </div>
+      </div>
+    </div> 
+  </div>
+
+  <div class="carousel">
+    <div class="carousel__container">
+      <% if(quotes != null) { %>
+        <% quotes.forEach((q) => { %>
+          <% let qid = q.supporting_quotes.id %>
+          <% testimonials.forEach((testimony) => { %>
+            <% if(testimony.id === qid) { %>
+              <div class="carousel__item">
+                
+                <span class="block type--s type--white type--l-margin type--base-l-h">
+                  <%- testimony.data.quote %>
+                </span>
+  
+                <div class="flex flex--middle gap--m">
+                  <div class="avatar avatar--s">
+                    <img src="<%- testimony.data.avatar.url %>" alt="<%- testimony.data.avatar.alt %>">
+                  </div>
+                  <div class="flex flex--column gap--xs">
+                    <span class="type--xs type--display type--white type--bold block">
+                      <%- testimony.data.author %>
+                    </span>
+                    <span class="type--xs type--grey-200 type--reg no-margin--top block">
+                      <%- testimony.data.role %>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            <% } %>
+          <% }) %>
+        <% }) %>
+      <% } %>
+    </div>
+  </div>
+</section>
+<% } %>

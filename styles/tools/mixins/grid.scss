@@ -2,7 +2,7 @@
 	@if $device == null {
 		@if $fromBeginning == true {
 			display: grid;
-			grid-template-columns: repeat(4, 1fr);
+			grid-template-columns: repeat(6, 1fr);
 			grid-column-gap: spacing(3);
 		}
 		@else {
@@ -24,6 +24,5 @@
 
 	@include media-query($breakpoint--x-large) {
 		grid-column-gap: spacing(4);
-		grid-template-columns: repeat(10, 1fr);
 	}
 }
