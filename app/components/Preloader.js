@@ -7,7 +7,9 @@ export default class Preloader extends Components {
       element: '[data-loader]',
       elements: {
         images: '[data-loader-image]',
-        body: 'body'
+        mainTitle: '[data-main-title] [data-char]',
+        body: 'body',
+        bg: '[data-bg]'
       }
     })  
     
@@ -27,7 +29,12 @@ export default class Preloader extends Components {
       this.tl.to(img, { opacity: 1, duration: 0.05, ease: "linear" }, "+=0.15")
     });
 
-    this.tl.to(title, { opacity: 0 })
+    this.tl.to(this.element, { opacity: 0, duration: 0.4 })
+    this.tl.fromTo(this.elements.bg, { scale: 0.3 }, { scale: 1, duration: 0.4, ease: "CubicEaseOut" })
+
+    this.tl.fromTo(this.elements.mainTitle, { y: "100%" }, { y: 0, duration: 0.35, stagger: 0.05 }, "-=0.2")
+
+    //this.tl.to(title, { opacity: 0 })
     
   }
 }

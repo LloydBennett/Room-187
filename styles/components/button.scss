@@ -8,7 +8,7 @@
   padding: spacing(2) spacing(3);
 
   @include media-query($breakpoint--x-large) {
-    padding: 2rem 4rem;
+    padding: spacing(3) 4rem;
   }
 }
 
