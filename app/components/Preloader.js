@@ -29,10 +29,16 @@ export default class Preloader extends Components {
       this.tl.to(img, { opacity: 1, duration: 0.05, ease: "linear" }, "+=0.15")
     });
 
-    this.tl.to(this.element, { opacity: 0, duration: 0.4 })
+    this.tl.to(this.element, { opacity: 0, duration: 0.4, onComplete: () => {
+      this.element.style.display = "none"
+    } })
     this.tl.fromTo(this.elements.bg, { scale: 0.3 }, { scale: 1, duration: 0.4, ease: "CubicEaseOut" })
 
-    this.tl.fromTo(this.elements.mainTitle, { y: "100%" }, { y: 0, duration: 0.35, stagger: 0.05 }, "-=0.2")
+    this.tl.fromTo(this.elements.mainTitle, { y: "100%" }, { y: 0, duration: 0.35, stagger: 0.05, onComplete: () => {
+      this.elements.body.classList.remove('no--scrolling')
+
+    } }, "-=0.2")
+
 
     //this.tl.to(title, { opacity: 0 })
     
