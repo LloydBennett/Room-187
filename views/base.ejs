@@ -9,7 +9,7 @@
     <%- include('./partials/navigation-menu') -%>
     <div>
       <%- include('./partials/navigation-bar') -%>
-      <div <% if (page !== "home") { %>class="section--m-p-t"<% } %> data-scroll-container>
+      <div <% if (page !== "home") { %>class="hero--p-t"<% } %> data-scroll-container>
         <% switch(page) {
           case 'contact' : %>
             <%- include('./pages/contact') %>
@@ -21,11 +21,11 @@
           <%- include('./pages/home') -%>
         <% } %>
       </div>
-      
+      <% if (page !== "home") { %>
+        <%- include('./partials/footer') -%>
+      <% } %>
     </div>
-    <% if (page !== "home") { %>
-    <%- include('./partials/footer') -%>
-    <% } %>
+    
     
   </main>
   

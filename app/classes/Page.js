@@ -37,7 +37,7 @@ export default class Page {
 
       this.animationOut = GSAP.timeline()
 
-      this.animationOut.to({
+      this.animationOut.to(this.element, {
         autoAlpha: 0,
         onComplete: resolve
       })

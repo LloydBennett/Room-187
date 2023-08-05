@@ -10,10 +10,6 @@ class App {
     this.createPages()
     this.addLinkListeners()
     this.createNavigation()
-    // const scroll = new LocomotiveScroll({
-    //   el: document.querySelector('[data-page]'),
-    //   smooth: true
-    // });
   }
 
   createPreloader() {
