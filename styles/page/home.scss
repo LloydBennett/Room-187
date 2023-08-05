@@ -226,5 +226,29 @@ $hero--tweakpoint: 1080px;
   @include media-query($breakpoint--x-large) {
     margin-top: -#{spacing(25)}
   }
+}
 
+.step__wrapper {
+  grid-column: 1 / 9;
+
+  @include media-query($breakpoint--medium) {
+    grid-column: 2 / 4;
+  }
+}
+
+.step__outline {
+  @include media-query($breakpoint--medium) {
+    grid-column: 2 / 4;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+  }
+
+}
+
+.step__controls {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
 }

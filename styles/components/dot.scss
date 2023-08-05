@@ -1,0 +1,23 @@
+.dot {
+  width: 1rem;
+  height: 1rem;
+  background-color: $colour--white;
+  border-radius: 100%;
+}
+
+.dot__highlight,
+.dot__wrapper {
+  width: 4rem;
+  height: 4rem;
+}
+
+.dot__wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dot__highlight {
+  border: 0.2rem solid $colour--gold-300;
+  border-radius: 100%;
+}
