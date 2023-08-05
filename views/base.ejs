@@ -9,7 +9,7 @@
     <%- include('./partials/navigation-menu') -%>
     <div>
       <%- include('./partials/navigation-bar') -%>
-      <div <% if (page !== "home") { %>class="section--m-p-t"<% } %>>
+      <div <% if (page !== "home") { %>class="section--m-p-t"<% } %> data-scroll-container>
         <% switch(page) {
           case 'contact' : %>
             <%- include('./pages/contact') %>

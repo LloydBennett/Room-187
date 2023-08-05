@@ -1,4 +1,5 @@
 import GSAP from 'gsap'
+import LocomotiveScroll from 'locomotive-scroll'
 
 export default class Page {
   constructor({ elements, element, id }) {
@@ -14,15 +15,29 @@ export default class Page {
   }
   show() {
     return new Promise(resolve => {
-      GSAP.from(this.element, {
-        autoAlpha: 0,
-        onComplete: resolve
+      this.animationIn = GSAP.timeline()
+
+      this.animationIn.fromTo(this.element, {
+        autoAlpha: 0
+      }, {
+        autoAlpha: 1
+      })
+
+      this.animationIn.call(_ => {
+        this.scroll = new LocomotiveScroll({
+          el: document.querySelector('[data-scroll-container]'),
+          smooth: true
+        })
+        resolve()
       })
     })
   }
   hide() {
     return new Promise(resolve => {
-      GSAP.from(this.element, {
+
+      this.animationOut = GSAP.timeline()
+
+      this.animationOut.to({
         autoAlpha: 0,
         onComplete: resolve
       })

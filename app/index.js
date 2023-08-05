@@ -1,6 +1,5 @@
 import About from 'pages/About'
 import Home from 'pages/Home'
-import Project from 'pages/Project'
 import Navigation from 'components/Navigation'
 import Preloader from 'components/Preloader'
 
@@ -8,7 +7,7 @@ class App {
   constructor() {
     this.createPreloader()
     this.createContent()
-    //this.createPages()
+    this.createPages()
     this.addLinkListeners()
     this.createNavigation()
     // const scroll = new LocomotiveScroll({
