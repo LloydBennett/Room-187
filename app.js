@@ -85,6 +85,15 @@ app.get('/contact', async (req, res) => {
   res.render('base', { ...defaults, document, pageType })
 })
 
+app.get('*', async (req, res) => {
+  let pageType = "error"
+  //res.status(404).send('what???');
+  let document = {
+    data: { title: '404 Error' }
+  }
+  const defaults = await handleRequest(req)
+  res.render('base', { ...defaults, document, pageType })
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port http://localhost:${port}`)

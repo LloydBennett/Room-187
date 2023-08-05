@@ -17,6 +17,9 @@
           <% case 'about' : %>
             <%- include('./pages/about') -%>
             <% break; %>
+          <% case 'error' : %>
+            <%- include('./pages/error') -%>
+            <% break; %>
           <% default : %>
           <%- include('./pages/home') -%>
         <% } %>
