@@ -15,9 +15,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
 .dot__highlight {
   border: 0.2rem solid $colour--gold-300;
   border-radius: 100%;
+  position: absolute;
 }

@@ -3,14 +3,23 @@
   height: 600px;
   position: relative;
   transform-style: preserve-3d;
-  cursor: pointer;
   transition: 800ms ease;
   transform: rotateY(0);
-  
-  // &:hover {
-  //   transform: rotateY(-180deg);
-  //   transition: 800ms ease;
-  // }
+}
+
+.room-key__wrapper {
+  perspective: 9000px;
+  display: inline-block;
+  cursor: pointer;
+  height: fit-content;
+  left: 50%;
+  transform: translateX(-50%);
+  position: absolute;
+
+  &:hover .room-key {
+    transform: rotateY(-180deg);
+    transition: 800ms ease;
+  }
 }
 
 .room-key__face {
@@ -42,6 +51,8 @@
   position: absolute;
   transform: rotateY(180deg);
   backface-visibility: hidden;
+  display: flex;
+  justify-content: space-between;
 }
 
 .room-key__logo {
@@ -70,4 +81,22 @@
 
 .room--key-type {
   font-size: 1.6rem;
+}
+
+.room-key__qr {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.room-key-back__label {
+  font-size: 1.6rem;
+}
+
+.room-key__icon {
+  justify-content: center;
+
+  path {
+    fill: $colour--black;
+  }
 }

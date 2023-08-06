@@ -1,21 +1,37 @@
-<div class="room-key">
-  <div class="room-key__face room-key__front">
-    <div class="room-key__logo">
-      <%- include('../partials/svg/logo.ejs') %>
+<div class="room-key__wrapper">
+  <div class="room-key">
+    <div class="room-key__face room-key__front">
+      <div class="room-key__logo">
+        <%- include('../partials/svg/logo.ejs') %>
+      </div>
+      <div class="room-key__tagline">
+        <p class="type--xs type--display type--x-bold type--white type--caps type--base-l-h">
+          <span class="block type--base-l-h">Your accomodation for</span>
+          <span class="block">old-school R&B and Hip Hop</span>
+        </p>
+      </div>
     </div>
-    <div class="room-key__tagline">
-      <p class="type--xs type--display type--x-bold type--white type--caps type--base-l-h">
-        <span class="block type--base-l-h">Your accomodation for</span>
-        <span class="block">old-school R&B and Hip Hop</span>
-      </p>
-    </div>
-  </div>
-  <div class="room-key__face room-key__back">
-    <div class="titles text-center">
-      <p class="instructions type--caps">Karaoke List</p>
-      <p class="type--caps type--xs">Please scan to reveal</p>
+    <div class="room-key__face room-key__back">
+      <div class="text-center">
+        <span class="block type--s type--xs-margin type--display type--x-bold type--caps">Karaoke List</span>
+        <p class="type--display type--caps room-key-back__label">Please scan to reveal</p>
+      </div>
+      <div class="room-key__qr thumbnail">
+        <img src="/qr-code.png" alt="QR Code">
+      </div>
+      <div class="room-key__icon flex gap--s flex--middle">
+        <span class="thumbnail icon">
+          <%- include('../partials/svg/socials/twitter') -%>
+        </span>
+        <span class="thumbnail icon">
+          <%- include('../partials/svg/socials/instagram') -%>
+        </span>
+        <span class="thumbnail icon">
+          <%- include('../partials/svg/socials/tiktok') -%>
+        </span>
+      </div>
     </div>
     
   </div>
-  
+
 </div>
