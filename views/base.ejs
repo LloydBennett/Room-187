@@ -6,10 +6,10 @@
 
 <body>
   <main id="main" data-page="<%- page %>" data-scroll-speed="-14" class="main <%- page %> relative">
-    <%- include('./partials/navigation-menu') -%>
+    <% if (page !== "error") { %><%- include('./partials/navigation-menu') -%><% } %>
     <div>
-      <%- include('./partials/navigation-bar') -%>
-      <div <% if (page !== "home") { %>class="hero--p-t"<% } %> data-scroll-container>
+      <% if (page !== "error") { %><%- include('./partials/navigation-bar') -%><% } %>
+      <div <% if (page !== "home" && page !== "error") { %>class="hero--p-t"<% } %> data-scroll-container>
         <% switch(page) {
           case 'contact' : %>
             <%- include('./pages/contact') %>

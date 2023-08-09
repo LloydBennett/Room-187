@@ -228,6 +228,10 @@ $hero--tweakpoint: 1080px;
   }
 }
 
+.step {
+  height: 100vh;
+}
+
 .step__wrapper {
   grid-column: 1 / 9;
 
@@ -243,7 +247,6 @@ $hero--tweakpoint: 1080px;
     display: flex;
     align-items: center;
   }
-
 }
 
 .step__controls {
