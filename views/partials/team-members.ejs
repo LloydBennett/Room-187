@@ -25,15 +25,18 @@ let team = members.sort(compare)
     <% team.forEach((member) => { %>
       <div class="three--columns-slim">
         <div class="thumbnail relative avatar__stack">
-          <div class="avatar--bio avatar--m-b relative" style="background-image: url(<%- member.data.avatar.url %>)"></div>
-          <div class="avatar--bio avatar--highlighted avatar--m-b overlay" style="background-image: url(<%- member.data.avatar.highlighted.url %>)"></div>
+          <div class="avatar--bio relative" style="background-image: url(<%- member.data.avatar.url %>)"></div>
+          <div class="avatar--bio avatar--highlighted overlay" style="background-image: url(<%- member.data.avatar.highlighted.url %>)"></div>
         </div>
-        <h4 class="type--s type--bold type--white">
-          <%- member.data.title %>
-        </h4>
-        <span class="type--xs type--bold type--grey-200">
-          <%- member.data.role %>
-        </span>
+        <div class="avatar--m-t">
+          <h4 class="type--s type--bold type--white">
+            <%- member.data.title %>
+          </h4>
+          <span class="type--xs type--bold type--grey-200">
+            <%- member.data.role %>
+          </span>
+        </div>
+        
       </div>
 
     <% }) %>

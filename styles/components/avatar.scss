@@ -45,7 +45,20 @@
 }
 
 .avatar__stack {
+  transition: 400ms ease outline,
+                400ms ease box-shadow;
+  outline: $spacing-rule solid transparent;
+  box-shadow: 0 0 20px 0 transparent;
+  box-shadow: 0 10px 0 5px transparent;
+
+
   &:hover {
+    outline: $spacing-rule solid $colour--gold-400;
+    transition: 400ms ease outline,
+                400ms ease box-shadow;
+    box-shadow: 0 10px 80px 5px rgba(234, 186, 15, 0.25);
+
+
     .avatar--highlighted {
       opacity: 1;
       transition: 300ms ease;
@@ -60,4 +73,8 @@
 
 .avatar--m-b {
   margin-bottom: spacing(4);
+}
+
+.avatar--m-t {
+  margin-top: spacing(4);
 }
