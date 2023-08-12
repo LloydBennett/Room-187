@@ -24,10 +24,10 @@ let team = members.sort(compare)
   <div class="grid">
     <% team.forEach((member) => { %>
       <div class="three--columns-slim">
-        <div class="thumbnail relative avatar__stack">
+        <a href="<%- member.url %>" class="thumbnail relative avatar__stack">
           <div class="avatar--bio avatar--bio--s relative" style="background-image: url(<%- member.data.avatar.url %>)"></div>
           <div class="avatar--bio avatar--bio--s avatar--highlighted overlay" style="background-image: url(<%- member.data.avatar.highlighted.url %>)"></div>
-        </div>
+        </a>
         <div class="avatar--m-t">
           <h4 class="type--s type--bold type--white">
             <%- member.data.title %>
