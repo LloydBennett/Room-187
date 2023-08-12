@@ -1,0 +1,40 @@
+.bio__role,
+.bio__image {
+  grid-column: 1 / 7;
+
+  @include media-query($breakpoint--small) {
+    grid-column: 1 / 9;
+  }
+}
+
+.bio__role {
+  @include section--m;
+  grid-row: 2;
+
+  @include media-query($breakpoint--x-large) {
+    grid-row: 1;
+		grid-column: 6 / 9;
+    margin-bottom: 0;
+	}
+}
+
+.bio__image {
+  grid-row: 3;
+
+  @include media-query($breakpoint--x-large) {
+    grid-column: 1 / 4;
+  }
+}
+
+.bio__content,
+.bio__header {
+  grid-column: 1 / 7;
+}
+
+.bio__header {
+  @include section--s;
+
+  @include media-query($breakpoint--x-large) {
+    @include section--m;
+  }
+}

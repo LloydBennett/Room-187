@@ -35,10 +35,6 @@
 	@include media-query($breakpoint--x-large) {
 		grid-column: 6 / 9;
 	}
-
-	@include media-query($breakpoint--x-large) {
-		grid-column: 6 / 9;
-	}
 }
 
 .two--columns {

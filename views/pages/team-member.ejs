@@ -1,0 +1,35 @@
+<div class="container grid grid--all section--l-m-b">
+  <div class="bio__header column--header">
+    <h1 class="type--l type--x-bold type--display type--caps type--white">
+      <%- document.data.title %>
+    </h1>
+  </div>
+  <div class="bio__image">
+    <div class="avatar--bio avatar--bio--l" style="background-image: url('<%- document.data.avatar.url %>')"></div>
+  </div>
+
+  <div class="bio__role">
+    <span class="inline-block type--xs type--bold type--white type--caps">
+      <%- document.data.role %>
+    </span>
+  </div>
+
+  <div class="bio__content column--content flex flex--column flex--space-btwn">
+    <p class="type--white type--xs">
+      <%- document.data.bio %>
+    </p>
+    <div class="flex">
+      <% document.data.social_links.forEach((social)=> { %>
+        <a href="<%- social.link.url %>" class="thumbnail" target="_blank">
+          <% 
+            let channelName = social.platform.toLowerCase() 
+            let iconPath = `../partials/svg/socials/${channelName}`
+          %>
+          <%- include(iconPath) -%>
+        </a>
+      
+      <% }) %>
+    </div>
+  </div>
+  
+</div>
