@@ -48,7 +48,11 @@
 }
 
 .avatar--bio--l {
-  padding-bottom: 120.159%;
+  padding-bottom: 80%;
+
+  @include media-query($breakpoint--x-large) {
+    padding-bottom: 120.159%;
+  }
 }
 
 .avatar__stack {

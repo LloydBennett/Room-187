@@ -1,7 +1,12 @@
+<%
+  let memberName = document.data.title 
+  let memberNameArr = memberName.split(" ")
+%>
+
 <div class="container grid grid--all section--l-m-b">
   <div class="bio__header column--header">
     <h1 class="type--l type--x-bold type--display type--caps type--white">
-      <%- document.data.title %>
+      <% memberNameArr.forEach((title) => { %><span class="no-wrap--and-break"><%- title %></span><% }) %>
     </h1>
   </div>
   <div class="bio__image">
