@@ -28,14 +28,14 @@ let team = members.sort(compare)
           <div class="avatar--bio avatar--bio--s relative" style="background-image: url(<%- member.data.avatar.url %>)"></div>
           <div class="avatar--bio avatar--bio--s avatar--highlighted overlay" style="background-image: url(<%- member.data.avatar.highlighted.url %>)"></div>
         </a>
-        <div class="avatar--m-t">
+        <a href="<%- member.url %>" class="inline-block avatar--m-t">
           <h4 class="type--s type--bold type--white">
             <%- member.data.title %>
           </h4>
           <span class="type--xs type--bold type--grey-200">
             <%- member.data.role %>
           </span>
-        </div>
+        </a>
         
       </div>
 
