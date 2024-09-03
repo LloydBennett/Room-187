@@ -1,5 +1,9 @@
 @mixin container {
 	margin-right: auto;
 	margin-left: auto;
-	width: 90%;
+	width: 95%;
+
+	@include media-query($breakpoint--large) {
+		width: calc(100% - spacing(8));
+	}
 }
