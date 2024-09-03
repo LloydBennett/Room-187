@@ -141,6 +141,10 @@ body {
 	}
 }
 
+.type--xxs-margin {
+	margin: 0 0 spacing(1);
+}
+
 .type--call-out {
 	font-size: 3.2rem;
 	line-height: $type--line-height;
