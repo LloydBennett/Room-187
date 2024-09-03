@@ -4,7 +4,7 @@
 
 .carousel__container {
   display: flex;
-  padding-left: 5%;
+  padding-left: 2.5%;
   gap: 5%;
 
   @include media-query($breakpoint--small) {
@@ -13,6 +13,10 @@
 
   @include media-query($breakpoint--medium) {
     gap: spacing(10);
+  }
+
+  @include media-query($breakpoint--large) {
+    padding-left: spacing(4);
   }
 }
 
