@@ -89,25 +89,36 @@ export default class SplitText extends Components {
 
   getLines(text) {
     let lines = [];
-    let line
+    let line = []
     let words = text.children
-    let lastTop;
+    let lastTop = null
 
     // Error handling: Ensure text contains children
-    if (!text || !text.children || text.children.length === 0) {
+    if (!words || words.length === 0) {
       console.warn('No child elements found in text.');
       return lines;
     }
 
     for (var i = 0; i < words.length; i++) {
-      let word = words[i];
-      if (word.offsetTop != lastTop) {
-        lastTop = word.offsetTop;
+      let word = words[i]
+      let currentTop = word.getBoundingClientRect().top
+
+      if (lastTop === null || currentTop > lastTop) {
+        if (line.length > 0) {
+          lines.push(line);
+        }
         line = [];
-        lines.push(line);
       }
+
       line.push(word);
+      lastTop = currentTop;
     }
+
+    // Push the last line
+    if (line.length > 0) {
+      lines.push(line);
+    }
+
     return lines;
   }
 
@@ -118,29 +129,32 @@ export default class SplitText extends Components {
       console.warn('No lines generated from text.');
       return;
     }
+
+    // Clear the text container before appending new spans
+    text.innerHTML = '';
     
     //DocumentFragment to batch DOM manipulations
     let fragment = document.createDocumentFragment()
 
     lines.forEach((lineWords, i) => {
-      let lineSpan = document.createElement('span')
       let lineWrapper = document.createElement('span')
-      lineSpan.classList.add('inline-block', 'no-overflow-y', 'white-space')
-      lineWrapper.classList.add('inline-block')
-
-      i = i + 1;
+      lineWrapper.classList.add('inline-block', 'no-overflow-y', 'white-space')
+      // lineWrapper.setAttribute('data-text-reveal', i + 1)
       
-      lineWords.forEach((word, index) => {
-        
-        word.classList.add('inline-block')
-        if(index < lineWords.length - 1) {
-          word.innerHTML += "&nbsp;"
+      lineWords.forEach((word, wordIndex) => {
+        const wordSpan = document.createElement('span')
+        wordSpan.classList.add('inline-block')
+        wordSpan.innerHTML = word.innerHTML
+        wordSpan.setAttribute('data-text-reveal', i + 1)
+
+        if (wordIndex < lineWords.length - 1) {
+          wordSpan.innerHTML += '&nbsp;'
         }
-        lineWrapper.setAttribute('data-text-reveal', i)
-        lineWrapper.appendChild(word)
-        lineSpan.appendChild(lineWrapper)
+        
+        lineWrapper.appendChild(wordSpan)
       })
-      fragment.appendChild(lineSpan)
+      
+      fragment.appendChild(lineWrapper)
     })
 
     text.appendChild(fragment)
