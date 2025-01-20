@@ -18,12 +18,17 @@ module.exports = {
     path.join(dirStyles, 'index.scss'),
   ],
   resolve: {
+    fallback: {
+      fs: false, // Webpack cannot polyfill fs; use an empty module
+      os: require.resolve('os-browserify/browser'),
+      path: require.resolve('path-browserify'),
+    },
     modules: [
       dirApp,
       dirShared,
       dirStyles,
       dirNode
-    ]
+    ],
   },
 
   plugins: [
@@ -71,7 +76,10 @@ module.exports = {
             loader: 'postcss-loader',
           },
           {
-            loader: 'sass-loader'
+            loader: 'sass-loader',
+            options: {
+              implementation: require('sass'), // Explicitly set Dart Sass
+            }
           }
         ]
       },
