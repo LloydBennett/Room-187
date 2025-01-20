@@ -23,7 +23,7 @@
 .button--primary {
   color: $colour--black;
   background-color: $colour--gold-400;
-  
+
   &:visited {
     color: $colour--black;
   }
@@ -54,5 +54,10 @@
   @include media-query($breakpoint--small) {
     width: 10rem;
     height: 10rem;
+  }
+
+  @include media-query($breakpoint--medium) {
+    width: auto;
+    height: auto;
   }
 }

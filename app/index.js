@@ -3,6 +3,8 @@ import Home from 'pages/Home'
 import Navigation from 'components/Navigation'
 import Preloader from 'components/Preloader'
 import SplitText from 'components/SplitText'
+import PlayButton from './components/PlayButton'
+import Overlay from './components/Overlay'
 
 class App {
   constructor() {
@@ -12,6 +14,16 @@ class App {
     this.createPages()
     this.addLinkListeners()
     this.createNavigation()
+    this.createPlayBtn()
+    this.createOverlay()
+  }
+
+  createPlayBtn(){
+    this.PlayBtn = new PlayButton()
+  }
+
+  createOverlay(){
+    this.Overlay = new Overlay()
   }
 
   addSplitText() {

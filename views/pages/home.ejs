@@ -23,8 +23,10 @@
         </h1>      
       </div>
 
-      <div class="play--button thumbnail h-hero__play" data-play data-misc>
-        <%- include('../partials/play-button') -%>
+      <div class="h-hero__play" data-misc>
+        <div class="play--button thumbnail" data-play="intro-video" data-open-video-overlay>
+          <%- include('../partials/play-button') -%>
+        </div>
       </div>
 
       <div class="h-hero__cta button--m-t" data-misc>
@@ -36,3 +38,14 @@
   
 </section>
 
+<div class="video__overlay fixed overlay bg--black" data-overlay data-video-overlay="intro-video">
+  <div class="close flex flex--middle" data-close>
+    <div class="inline-block">
+      <%- include('../partials/svg/icons/24/close', { cssClass: 'bg-svg--white' }) -%>
+    </div>
+    <span class="type--xs type--white type--caps type--bold">Close</span>
+  </div>
+  <video class="video--bg" controls data-video="intro-video">
+    <source src="<%- document.data.hero_background_video.url %>" type="video/mp4">
+  </video>
+</div>

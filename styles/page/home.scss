@@ -105,6 +105,12 @@ $hero--tweakpoint: 1080px;
   @include media-query($breakpoint--x-large) {
     grid-column: 3 / 4;
   }
+  
+  .play--button {
+    @include media-query($breakpoint--medium) {
+      display: inline-block;
+    }
+  }
 
   svg {
     @include media-query($breakpoint--large - 1, max-width) {

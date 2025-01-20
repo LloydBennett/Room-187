@@ -2,6 +2,14 @@
   background-color: $colour--white;
 }
 
+.bg-svg--white {
+  fill: $colour--white;
+}
+
 .bg--black {
   background-color: $colour--black;
+}
+
+.bg-svg--black {
+  fill: $colour--black;
 }

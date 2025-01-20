@@ -38,8 +38,10 @@ export default class Preloader extends Components {
     this.elements.images.forEach((img, i) => {
       this.tl.to(img, { opacity: 1, duration: 0.04, ease: "linear" }, "+=0.15")
     })
-
-    this.tl.to(this.elements.imageHero, { scale: 1, width: "100%", height: "100%", duration: 0.6, ease: "zoom" }, "+=0.4")
+    
+    if(this.elements.imageHero) {
+      this.tl.to(this.elements.imageHero, { scale: 1, width: "100%", height: "100%", duration: 0.6, ease: "zoom" }, "+=0.4")
+    }
 
     this.tl.to(this.elements.loader, { display: "none", duration: 0.01 })
 
