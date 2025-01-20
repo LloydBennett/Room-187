@@ -9,7 +9,6 @@
   <main id="main" data-page="<%- page %>" data-scroll-speed="-14" class="main <%- page %> relative">
     <% if (page !== "error") { %><%- include('./partials/navigation-menu') -%><% } %>
     <div>
-      <% if (page !== "error") { %><%- include('./partials/navigation-bar') -%><% } %>
       <div <% if (page !== "home" && page !== "error") { %>class="hero--p-t"<% } %> data-scroll-container>
         <% switch(page) {
           case 'contact' : %>
