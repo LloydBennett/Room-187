@@ -13,7 +13,7 @@ class App {
     this.createContent()
     this.createPages()
     this.addLinkListeners()
-    this.createNavigation()
+    //this.createNavigation()
     this.createPlayBtn()
     this.createOverlay()
   }
