@@ -12,16 +12,8 @@
     <div>
       <div <% if (page !== "home" && page !== "error") { %>class="hero--p-t"<% } %> data-scroll-container>
         <% switch(page) {
-          case 'contact' : %>
-            <%- include('./pages/contact') %>
-            <%  break; %>
-          <% case 'about' : %>
-            <%- include('./pages/about') -%>
-            <% break; %>
-          <% case 'team_members' : %>
-            <%- include('./pages/team-member') -%>
-            <% break; %>
-          <% case 'error' : %>
+          
+          case 'error' : %>
             <%- include('./pages/error') -%>
             <% break; %>
           <% default : %>

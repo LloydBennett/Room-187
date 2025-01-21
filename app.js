@@ -73,30 +73,30 @@ app.get('/', async (req, res) => {
   res.render('base', { ...defaults, document, pageType })
 })
 
-app.get('/our-story', async (req, res) => {
-  const pageType = 'about'
-  const document = await client.getSingle('about')
-  const defaults = await handleRequest(req)
+// app.get('/our-story', async (req, res) => {
+//   const pageType = 'about'
+//   const document = await client.getSingle('about')
+//   const defaults = await handleRequest(req)
 
-  res.render('base', { ...defaults, document, pageType })
-})
+//   res.render('base', { ...defaults, document, pageType })
+// })
 
-app.get('/team/:uid', async (req, res) => {
-  const uid = req.params.uid
-  const pageType = 'team_members'
-  const document = await client.getByUID('team_members', uid)
-  const defaults = await handleRequest(req)
+// app.get('/team/:uid', async (req, res) => {
+//   const uid = req.params.uid
+//   const pageType = 'team_members'
+//   const document = await client.getByUID('team_members', uid)
+//   const defaults = await handleRequest(req)
 
-  res.render('base', { ...defaults, document, pageType })
-})
+//   res.render('base', { ...defaults, document, pageType })
+// })
 
-app.get('/contact', async (req, res) => {
-  const pageType = 'contact'
-  const document = await client.getSingle('contact_us')
-  const defaults = await handleRequest(req)
+// app.get('/contact', async (req, res) => {
+//   const pageType = 'contact'
+//   const document = await client.getSingle('contact_us')
+//   const defaults = await handleRequest(req)
 
-  res.render('base', { ...defaults, document, pageType })
-})
+//   res.render('base', { ...defaults, document, pageType })
+// })
 
 app.get('*', async (req, res) => {
   let pageType = "error"
