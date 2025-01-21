@@ -22,14 +22,10 @@
 .loader--page {
   transform: scale(0.5);
   width: 100%;
-  height: 70%;
-
-  @include media-query($breakpoint--medium) {
-    height: 100%;
-  }
-
-  @include media-query($breakpoint--large) {
-    width: 70%;
-    height: 90%;
+  height: 100%;
+  clip-path: polygon(10% 20%, 90% 20%, 90% 70%, 10% 70%);
+  
+  @include media-query($breakpoint--medium) {  
+    clip-path: polygon(20% 10%, 80% 10%, 80% 90%, 20% 90%);
   }
 }

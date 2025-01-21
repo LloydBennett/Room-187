@@ -40,7 +40,7 @@ export default class Preloader extends Components {
     })
     
     if(this.elements.imageHero) {
-      this.tl.to(this.elements.imageHero, { scale: 1, width: "100%", height: "100%", duration: 0.6, ease: "zoom" }, "+=0.4")
+      this.tl.to(this.elements.imageHero, { scale: 1, clipPath:"polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", duration: 0.6, ease: "zoom" }, "+=0.4")
     }
 
     this.tl.to(this.elements.loader, { display: "none", duration: 0.01 })
@@ -51,7 +51,6 @@ export default class Preloader extends Components {
       }
     }, '-=0.1')
 
-    
     this.tl.fromTo(this.elements.misc, { opacity: 0 }, { opacity: 1, duration: 0.6, ease: 'power2.out'}, "-=0.1")
     
   }
