@@ -11,14 +11,16 @@
   <% } %>
   
   <meta name="description" content="<%- meta.data.description %>">
-  <meta property="og:url" content="https://www.lloydjamiebennett.co.uk" />
+  <meta name="keywords" content="<% meta.data.meta_keywords.forEach((item, i) => {%><%if(i === meta.data.meta_keywords.length - 1) { %><%- item.keyword %><% } else {%><%- item.keyword %>, <%}})%>">
+
+  <meta property="og:url" content="<%- meta.data.website_url %>" />
   <meta property="og:title" content="<%- meta.data.title %>" />
   <meta property="og:description" content="<%- meta.data.description %>" />
   <meta property="og:type" content="website">
   <meta property="og:image" content="<%- meta.data.image.url %>"/>
 
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:site" content="@LloydBennett_" />
+  <meta name="twitter:site" content="@<%- meta.data.x_handle %>" />
   <meta name="twitter:title" content="<%- meta.data.title %>"/>
   <meta name="twitter:description" content="<%- meta.data.description %>" />
   <meta name="twitter:image" content="<%- meta.data.image.twitter.url %>" />

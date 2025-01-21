@@ -18,6 +18,8 @@ $colour--grey-200: #B5B5B5;
 $colour--grey-100: #E8E8E8;
 $colour--grey-50: #F5F5F8;
 
+$colour--error: #900505;
+
 $colour--white: white;
 $colour--black: black;
 
@@ -37,6 +39,7 @@ $spacing-rule-half: calc($spacing-rule / 2);
 $spacing-rule-quarter: calc($spacing-rule-half / 2);
 
 /* Breakpoints */
+$breakpoint--x-small: 400px;
 $breakpoint--small: 550px;
 $breakpoint--medium: 768px;
 $breakpoint--large: 960px;

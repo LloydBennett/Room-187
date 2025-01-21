@@ -1,0 +1,35 @@
+<% let sections = slice.items %>
+<section class="section--l-m-b">
+  <div class="container grid relative">
+    <div class="column--centered step">
+      <h3 class="type--l type--white type--display type--x-bold type--caps">
+        <span class="block">
+          Got your
+        </span>
+        <span class="block">
+          <span class="type--outline-white">Room</span> key?
+        </span>
+      </h3>
+    </div>
+    <% if(sections != null) { %>
+    <div class="step__wrapper">
+      <% sections.forEach((s) => { %>
+        <div class="step__outline" data-card-is-front-facing="<%- s.direction_of_card %>">
+          <p class="type--xs type--white"><%- s.outline %></p>
+        </div>
+     <% }) %>
+    </div>
+    <% } %>
+    <%- include('../partials/room-key.ejs') %>
+    <div class="step__controls">
+      <div class="dot__highlight"></div>
+      <% for(let i = 0; i < sections.length; i++) { %>
+        <div class="dot__wrapper">
+          <span class="dot"></span>
+        </div>
+      <% } %>
+    </div>
+    
+  </div>
+
+</section>

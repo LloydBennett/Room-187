@@ -3,3 +3,23 @@
 		text-align: center;
   }
 }
+
+.contact__icon {
+  width: 4rem;
+  height: 4rem;
+  
+  @include media-query($breakpoint--small) {
+    width: auto;
+    height: auto;
+  }
+
+  @include media-query($breakpoint--xx-large) {
+    padding-top: 1.2rem;
+  }
+  
+  svg {
+    @include media-query($breakpoint--small - 1, max-width) {
+      height: 100%;
+    }
+  }
+}

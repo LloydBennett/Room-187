@@ -8,7 +8,7 @@
   padding: spacing(2) spacing(3);
 
   @include media-query($breakpoint--x-large) {
-    padding: 2rem 4rem;
+    padding: spacing(3) 4rem;
   }
 }
 
@@ -21,17 +21,29 @@
 }
 
 .button--primary {
-  background-color: $colour--gold-400;
   color: $colour--black;
+  background-color: $colour--gold-400;
 
   &:visited {
-    background-color: $colour--gold-400;
     color: $colour--black;
+  }
+
+  &::after {
+    background-color: $colour--gold-400;
   }
 }
 
 .button--m-t {
   margin-top: spacing(6);
+}
+
+.button__wrapper {
+  transform: translateY(0);
+  transition: 300ms ease;
+  display: flex;
+  flex-direction: column;
+  height: 1.8rem;
+  z-index: 2;
 }
 
 .play--button {
@@ -42,5 +54,10 @@
   @include media-query($breakpoint--small) {
     width: 10rem;
     height: 10rem;
+  }
+
+  @include media-query($breakpoint--medium) {
+    width: auto;
+    height: auto;
   }
 }

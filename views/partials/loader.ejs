@@ -1,0 +1,13 @@
+<div class="loader bg--black fixed" data-loader>
+  <% preloader.data.gallery.forEach((el) => { %>
+    <div class="loader__item thumbnail__inline" data-loader-image>
+      <img src="<%- el.image.url %>">
+    </div>
+  <% }) %>
+  <% if (zoomIn) { %>
+    <div class="loader__item loader--page" data-loader-image data-loader-hero>
+      <div class="hero__bg overlay" data-bg style="background-image: url('<%- document.data.hero_image.url %>')"></div>
+      <div class="hero__g-overlay overlay"></div>
+    </div>
+  <% } %>
+</div>

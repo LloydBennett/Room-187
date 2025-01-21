@@ -1,41 +1,51 @@
-<section class="hero">
-  <div class="relative flex section--m-p-b">
-    <div class="hero__bg overlay" style="background-image: url('<%- document.data.hero_image.url %>')"></div>
+<% 
+  let title = document.data.hero_title
+  let titleArr = title.split(" ")
+%>
+<section class="hero flex">
+  <div class="relative flex section--s-p-b">
+    <div class="hero__bg overlay" data-bg style="background-image: url('<%- document.data.hero_image.url %>')"></div>
     <div class="hero__g-overlay overlay"></div>
     <div class="container grid--all h-hero__grid">
       <div class="h-hero__intro">
-        <span class="type--xs type--caps type--bold type--white type--display">
+        <span class="type--xs type--caps type--bold type--white type--display" data-split-text="line-break">
           <%- siteDetails.data.brand_description %>
         </span>
       </div>
       <div class="h-hero__alt">
-        <span class="inline-block type--display type--m type--white">
+        <span class="inline-block type--display type--m type--white" data-split-text="line-break">
           <%- document.data.alt_text %>
         </span>
       </div>
       <div class="h-hero__title text-right">
-        <h1 class="type--xl type--display type--caps type--x-bold type--outline-white">
+        <h1 class="type--xl type--display type--caps type--x-bold type--outline-white" data-main-title data-split-text="line-break">
           <%- document.data.hero_title %>
         </h1>      
       </div>
 
-      <div class="play--button thumbnail h-hero__play" data-play>
-        <%- include('../partials/play-button') -%>
+      <div class="h-hero__play" data-misc>
+        <div class="play--button thumbnail" data-play="intro-video" data-open-video-overlay>
+          <%- include('../partials/play-button') -%>
+        </div>
       </div>
 
-      <div class="h-hero__cta button--m-t">
-        <a href="<%- siteDetails.data.main_cta_link.url %>" class="button button--l button--primary block--full-width">
-          <%- siteDetails.data.main_cta_text %>
-        </a>
+      <div class="h-hero__cta button--m-t" data-misc>
+        <%- include('../partials/button', { buttonText: siteDetails.data.main_cta_text, link: siteDetails.data.main_cta_link.url, link_target: true, large: true, primaryBtn: true, fullWidth: true } ) -%>
       </div>
       
     </div>
   </div>
   
 </section>
-<div class="scroll-over section--l-p-t bg--black">
-  <%- include('../SliceZone.ejs', { SliceZone: document.data.body, testimonials: testimonials }) %>
-  <%- include('../partials/stats') -%>
-  <%- include('../partials/cta-block') -%>
-  <%- include('../partials/footer') -%>
+
+<div class="video__overlay fixed overlay bg--black" data-overlay data-video-overlay="intro-video">
+  <div class="close flex flex--middle" data-close>
+    <div class="inline-block">
+      <%- include('../partials/svg/icons/24/close', { cssClass: 'bg-svg--white' }) -%>
+    </div>
+    <span class="type--xs type--white type--caps type--bold">Close</span>
+  </div>
+  <video class="video--bg" controls data-video="intro-video">
+    <source src="<%- document.data.hero_background_video.url %>" type="video/mp4">
+  </video>
 </div>

@@ -23,6 +23,10 @@ const routes = [
   {
     type: 'contact_us',
     path: '/contact',
+  },
+  {
+    type: 'team_members',
+    path: '/team/:uid'
   }
 ]
 
@@ -49,13 +53,15 @@ const handleRequest = async api => {
   const siteDetails = await client.getSingle('site_det')
   const members = await client.getAllByType('team_members')
   const testimonials = await client.getAllByType('testimonials')
-
+  const preloader = await client.getSingle('preloader')
+  
   return {
     meta,
     navigation,
     siteDetails,
     members,
-    testimonials
+    testimonials,
+    preloader
   }
 }
 
@@ -67,22 +73,40 @@ app.get('/', async (req, res) => {
   res.render('base', { ...defaults, document, pageType })
 })
 
-app.get('/our-story', async (req, res) => {
-  const pageType = 'about'
-  const document = await client.getSingle('about')
+// app.get('/our-story', async (req, res) => {
+//   const pageType = 'about'
+//   const document = await client.getSingle('about')
+//   const defaults = await handleRequest(req)
+
+//   res.render('base', { ...defaults, document, pageType })
+// })
+
+// app.get('/team/:uid', async (req, res) => {
+//   const uid = req.params.uid
+//   const pageType = 'team_members'
+//   const document = await client.getByUID('team_members', uid)
+//   const defaults = await handleRequest(req)
+
+//   res.render('base', { ...defaults, document, pageType })
+// })
+
+// app.get('/contact', async (req, res) => {
+//   const pageType = 'contact'
+//   const document = await client.getSingle('contact_us')
+//   const defaults = await handleRequest(req)
+
+//   res.render('base', { ...defaults, document, pageType })
+// })
+
+app.get('*', async (req, res) => {
+  let pageType = "error"
+  
+  let document = {
+    data: { title: '404 Error' }
+  }
   const defaults = await handleRequest(req)
-
   res.render('base', { ...defaults, document, pageType })
-})
-
-app.get('/contact', async (req, res) => {
-  const pageType = 'contact'
-  const document = await client.getSingle('contact_us')
-  const defaults = await handleRequest(req)
-
-  res.render('base', { ...defaults, document, pageType })
-})
-
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port http://localhost:${port}`)

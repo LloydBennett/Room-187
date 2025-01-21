@@ -8,6 +8,11 @@
   }
 }
 
+.thumbnail__inline {
+  @extend .thumbnail;
+  display: inline-block;
+}
+
 .thumbnail--poster {
   @include media-query($breakpoint--medium) {
 		padding-left: 5%;

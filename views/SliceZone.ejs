@@ -10,6 +10,9 @@
       case 'artists':
         return prevSlices + include('./slices/Artists.ejs', { slice: slice })
         break;
+      case 'room_key':
+        return prevSlices + include('./slices/RoomKey.ejs', { slice: slice })
+        break;
       default :
         return '<h1>No Slices found</h1>'
     }

@@ -1,18 +1,37 @@
 import About from 'pages/About'
 import Home from 'pages/Home'
-import Project from 'pages/Project'
 import Navigation from 'components/Navigation'
+import Preloader from 'components/Preloader'
+import SplitText from 'components/SplitText'
+import PlayButton from './components/PlayButton'
+import Overlay from './components/Overlay'
 
 class App {
   constructor() {
+    this.addSplitText()
+    this.createPreloader()
     this.createContent()
-    //this.createPages()
+    this.createPages()
     this.addLinkListeners()
-    this.createNavigation()
-    // const scroll = new LocomotiveScroll({
-    //   el: document.querySelector('[data-page]'),
-    //   smooth: true
-    // });
+    //this.createNavigation()
+    this.createPlayBtn()
+    this.createOverlay()
+  }
+
+  createPlayBtn(){
+    this.PlayBtn = new PlayButton()
+  }
+
+  createOverlay(){
+    this.Overlay = new Overlay()
+  }
+
+  addSplitText() {
+    this.SplitText = new SplitText()
+  }
+
+  createPreloader() {
+    this.preloader = new Preloader()
   }
 
   createNavigation() {
@@ -69,7 +88,7 @@ class App {
       
       this.page = this.pages[this.template]
       this.page.create()
-      this.page.show()
+      //this.page.show()
     }
     else {
       console.log('Error loading page!')

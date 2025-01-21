@@ -24,12 +24,21 @@
     <% content.forEach((block) => { %>
 
     <div class="two--columns">
-      <h3 class="type--m type--x-bold type--white type--caps type--display type--l-margin">
-        <%- block.content_title %>
-      </h3>
-      <p class="type--xs type--white">
-        <%- block.content_paragraph %>
-      </p>
+      <div class="flex gap--m">
+        <div class="thumbnail no-flex-shrink contact__icon">
+          <% let icon = block.icon.replace(/\s+/g, '-').toLowerCase() %>
+
+          <%- include(`../partials/svg/icons/64/${icon}`, { iconPathClass: "icon--purple" }) -%>
+        </div>
+        <div>
+          <h3 class="type--m type--x-bold type--white type--caps type--display type--l-margin">
+            <%- block.content_title %>
+          </h3>
+          <p class="type--xs type--white">
+            <%- block.content_paragraph %>
+          </p>
+        </div>
+      </div>
     </div>
     <% }) %>
     
@@ -40,7 +49,7 @@
 <section class="section--l-m-b">
   <div class="container grid">
     <div class="column--full-width">
-      <a href="mailto:" target="_blank" class="type--m type--white">
+      <a href="mailto:<%- siteDetails.data.email_address %>" target="_blank" class="link link--cta type--m type--white">
         <%- siteDetails.data.email_address %>
       </a>
     </div>

@@ -7,7 +7,12 @@ let sideImage = document.data.side_image
 <div class="container grid about__content">
   <div class="column--header section--m-m-b">
     <h1 class="type--xl type--white type--x-bold type--display type--caps">
-      <%- document.data.title %>
+      <span class="relative">
+        <%- document.data.title %>
+        <span class="thumbnail underline">
+          <%- include('../partials/svg/underline') -%>
+        </span>
+      </span>
     </h1>
   </div>
   <% if(section !== null ) { %>

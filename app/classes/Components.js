@@ -1,33 +1,9 @@
+import Create from "../utils/create";
+
 export default class Components {
-  constructor({ elements, element }) {
-    this.selector = element
-    this.selectorChildren = { ...elements }
+  constructor({ elements }) {
+    this.selectors = { ...elements }
+    Components.prototype.create = Create
     this.create()
-  }
-  create() {
-    //check to see if the selector is HTML element
-    if (this.selector instanceof window.HTMLElement) {
-      this.element = this.selector;
-    } else {
-      this.element = document.querySelector(this.selector);
-    }
-
-    this.elements = {}
-    for(const obj in this.selectorChildren) {
-      let el = this.selectorChildren[obj]
-      if(el instanceof window.HTMLElement || 
-        el instanceof window.NodeList || Array.isArray(el)) {
-        this.elements[obj] = el
-      }
-      else {
-        this.elements[obj] = document.querySelectorAll(el)
-
-        if(this.elements[obj].length == 0) {
-          this.elements[obj] = null
-        } else if (this.elements[obj].length == 1) {
-          this.elements[obj] = document.querySelector(el)
-        }
-      }
-    }
   }
 }

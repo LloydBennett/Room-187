@@ -35,3 +35,13 @@
     grid-row: 2;
   }
 }
+
+.underline {
+  left: 0;
+  position: absolute;
+  width: 100%;
+
+  svg {
+    height: auto;
+  }
+}
