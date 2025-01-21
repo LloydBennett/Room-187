@@ -1,9 +1,9 @@
 <div class="nav-bar" data-nav-bar data-misc>
-  <div class="container flex flex--space-btwn">
+  <div class="container flex <% if (pageType !== "error") { %>flex--space-btwn<%} else {%>flex--space-around<%}%>">
     <a href="/" class="nav-bar__logo thumbnail" data-page-trigger>
       <%- include('../partials/svg/logo') -%>
     </a>
-    
+    <% if (pageType !== "error") { %>
     <div class="nav-bar__trigger" data-nav-trigger>
       <div class="hamburger">
         <span class="hamburger__line"></span>
@@ -11,7 +11,7 @@
         <span class="hamburger__line"></span>
       </div>
     </div>
-
+    <% } %>
   </div>
 </div>
 
