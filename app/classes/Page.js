@@ -17,11 +17,11 @@ export default class Page {
     return new Promise(resolve => {
       this.animationIn = GSAP.timeline()
 
-      this.animationIn.fromTo(this.element, {
-        autoAlpha: 0
-      }, {
-        autoAlpha: 1
-      })
+      // this.animationIn.fromTo(this.element, {
+      //   autoAlpha: 0
+      // }, {
+      //   autoAlpha: 1
+      // })
 
       this.animationIn.call(_ => {
         this.scroll = new LocomotiveScroll({
@@ -32,15 +32,15 @@ export default class Page {
       })
     })
   }
-  hide() {
-    return new Promise(resolve => {
+  // hide() {
+  //   return new Promise(resolve => {
 
-      this.animationOut = GSAP.timeline()
+  //     this.animationOut = GSAP.timeline()
 
-      this.animationOut.to(this.element, {
-        autoAlpha: 0,
-        onComplete: resolve
-      })
-    })
-  }
+  //     this.animationOut.to(this.element, {
+  //       autoAlpha: 0,
+  //       onComplete: resolve
+  //     })
+  //   })
+  // }
 }
