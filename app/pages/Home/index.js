@@ -9,7 +9,8 @@ export default class Home extends Page {
       elements: {
         heroContent: '[data-hero-content]',
         homeBody: '[data-home-body]',
-        videoScroll: '[data-video-scroll]'
+        videoBlock: '[data-video-scroll]',
+        video: '[data-video-scroll] [data-video]'
       }
     })
     gsap.registerPlugin(ScrollTrigger)
@@ -26,23 +27,37 @@ export default class Home extends Page {
         opacity: 0.1,
         scrollTrigger: {
           trigger: this.elements.heroContent,
-          start: '60% 10%', // Start the animation when the top of the heroContent hits 90% of the viewport
+          start: '70% center', // Start the animation when the top of the heroContent hits 90% of the viewport
           scrub: true,
           markers: true
         },
         ease: "power2.out",
       }
     )
-
-    gsap.fromTo(this.elements.videoScroll, 
-      { scale: 0.8 },
+    gsap.fromTo(this.elements.videoBlock, 
+      { clipPath: "polygon(5% 5%, 95% 5%, 95% 95%, 5% 95%)"},
+      {
+        clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+        scrollTrigger: {
+          trigger: this.elements.videoBlock,
+          start: '5% bottom', // Start the animation when the top of the heroContent hits 90% of the viewport
+          scrub: true,
+          markers: false
+        },
+        ease: "power2.out",
+      }
+    )
+    gsap.fromTo(this.elements.video, 
+      {
+        scale: 1.5
+      },
       {
         scale: 1,
         scrollTrigger: {
-          trigger: this.elements.videoScroll,
-          start: 'top top', // Start the animation when the top of the heroContent hits 90% of the viewport
+          trigger: this.elements.videoBlock,
+          start: '5% bottom', // Start the animation when the top of the heroContent hits 90% of the viewport
           scrub: true,
-          markers: true
+          markers: false
         },
         ease: "power2.out",
       }
