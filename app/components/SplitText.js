@@ -168,17 +168,20 @@ export default class SplitText extends Components {
       return
     }
 
-    gsap.from(spans, {
-      scrollTrigger: {
-        trigger: text,
-        start: 'top 50%',
-        scrub: false,
-        markers: true
-      },
-      y: "100%", 
-      duration: 0.8, 
-      ease: "zoom", 
-      stagger: (i, target) => { return 0.05 * target.dataset.textScroll }
-    })
+    gsap.fromTo(spans,
+      { y: "100%" },
+      {
+        y: 0,
+        scrollTrigger: {
+          trigger: text,
+          start: '20% 90%',
+          scrub: false,
+          markers: true
+        },
+        duration: 0.8, 
+        ease: "zoom", 
+        stagger: (i, target) => { return 0.05 * target.dataset.textScroll }
+      }
+    )
   }
 }

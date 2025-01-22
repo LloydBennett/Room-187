@@ -131,10 +131,6 @@ $hero--tweakpoint: 1080px;
   grid-column: 1 / 6;
   grid-row: 2;
 
-  @include media-query($breakpoint--small) {
-    grid-column: 1 / 8;
-  }
-
   @include media-query($breakpoint--medium) {
     grid-column: 5 / 9;
   }
