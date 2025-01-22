@@ -1,6 +1,7 @@
 import Components from 'classes/Components'
 import gsap from 'gsap'
-import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { CustomEase } from 'gsap/CustomEase'
 
 export default class SplitText extends Components {
   constructor() {
@@ -9,7 +10,11 @@ export default class SplitText extends Components {
         text: '[data-split-text]'
       }
     })
+    
     gsap.registerPlugin(ScrollTrigger)
+    gsap.registerPlugin(CustomEase)
+    CustomEase.create("zoom", "0.71, 0, 0.06, 1")
+
     this.splitTextCache = []
     this.init()
   }
@@ -63,28 +68,30 @@ export default class SplitText extends Components {
       }
 
       t.htmlElem.innerHTML = t.text.split(/\s+/).map((word) => `<span>${word}</span>`).join(' ')
-      this.checkTextType(t.htmlElem, t)
+      
+      this.checkCache(t.htmlElem, t)
+      this.displayLines(t.htmlElem)
+      //this.checkTextType(t.htmlElem, t)
     })
   }
+  checkCache(text, obj) {
+    if(this.splitTextCache.indexOf(text) === -1) {
+      this.splitTextCache.push(text)
+      this.addEventListeners([obj])
+    } else {
+      return
+    }
+  }
 
-  checkTextType(text, obj) {
-    if (!text || !obj) {
+  isTypeScroll(text) {
+    if (!text) {
       console.warn('Invalid text or object passed to checkTextType.');
       return
     }
 
     let attr = text.getAttribute('data-split-text')
 
-    if(attr === "line-break") {
-      this.displayLines(text)
-
-      if(this.splitTextCache.indexOf(text) === -1) {
-        this.splitTextCache.push(text)
-        this.addEventListeners([obj])
-      }
-    } else {
-      this.scrollAnimateText(text)
-    }
+    return attr === "scroll" ? true : false
   }
 
   getLines(text) {
@@ -113,6 +120,8 @@ export default class SplitText extends Components {
 
   displayLines(text) {
     let lines = this.getLines(text);
+    let isScrollDependant = this.isTypeScroll(text)
+    let dataAttr = isScrollDependant? "data-text-scroll" : "data-text-reveal"
 
     if (!lines || lines.length === 0) {
       console.warn('No lines generated from text.');
@@ -131,7 +140,7 @@ export default class SplitText extends Components {
         let wordIndex = index + 1
         
         word.classList.add('inline-block')
-        word.setAttribute('data-text-reveal', i)
+        word.setAttribute(dataAttr, i)
 
         if(wordIndex !== lineWords.length) {
           word.innerHTML += "&nbsp;"
@@ -143,6 +152,7 @@ export default class SplitText extends Components {
     })
 
     text.appendChild(fragment)
+    if(isScrollDependant) this.scrollAnimateText(text)
   }
 
   scrollAnimateText(text) {
@@ -151,7 +161,7 @@ export default class SplitText extends Components {
       return
     }
 
-    let spans = text.querySelectorAll('span')
+    let spans = text.querySelectorAll('[data-text-scroll]')
     
     if (!spans || spans.length === 0) {
       console.warn('No spans found in the text for animation.')
@@ -161,13 +171,14 @@ export default class SplitText extends Components {
     gsap.from(spans, {
       scrollTrigger: {
         trigger: text,
-        start: 'top 80%',
-        scrub: true,
-        markers: false
+        start: 'top 50%',
+        scrub: false,
+        markers: true
       },
-      opacity: 0.2,
-      stagger: { amount: 1.2 },
-      ease: 'power2.out'
+      y: "100%", 
+      duration: 0.8, 
+      ease: "zoom", 
+      stagger: (i, target) => { return 0.05 * target.dataset.textScroll }
     })
   }
 }

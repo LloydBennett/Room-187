@@ -142,6 +142,12 @@ $hero--tweakpoint: 1080px;
   @include media-query($breakpoint--large) {
     grid-column: 5 / 7;
   }
+
+  p {
+    @include media-query($breakpoint--large) {
+      max-width: 30rem;
+    }
+  }
 }
 
 .intro__media-1 {
@@ -162,6 +168,14 @@ $hero--tweakpoint: 1080px;
     grid-row: 2;
     margin-top: 0;
   }
+
+  .thumbnail {
+    transform: $rotate--minus-small;
+
+    @include media-query($breakpoint--large) {
+      transform: $rotate--minus-large;
+    }
+  }
 }
 
 .intro__media-2 {
@@ -177,6 +191,10 @@ $hero--tweakpoint: 1080px;
     grid-column: 1 / 4;
     margin-top: spacing(11);
     margin-bottom: spacing(8);
+  }
+
+  .thumbnail {
+    transform: $rotate--small;
   }
 }
 
@@ -217,6 +235,14 @@ $hero--tweakpoint: 1080px;
 
   @include media-query($breakpoint--x-large) {
     margin-top: -#{spacing(25)}
+  }
+
+  .thumbnail {
+    transform: $rotate--minus-small;
+
+    @include media-query($breakpoint--large) {
+      transform: $rotate--large;
+    }
   }
 }
 

@@ -2,23 +2,23 @@
   let title = document.data.hero_title
   let titleArr = title.split(" ")
 %>
-<section class="hero flex">
+<section class="hero flex" data-hero-content>
   <div class="relative flex section--s-p-b">
     <div class="hero__bg overlay" data-bg style="background-image: url('<%- document.data.hero_image.url %>')"></div>
     <div class="hero__g-overlay overlay"></div>
-    <div class="container grid--all h-hero__grid">
+    <div class="container grid--all h-hero__grid" >
       <div class="h-hero__intro">
-        <span class="type--xs type--caps type--bold type--white type--display" data-split-text="line-break">
+        <span class="type--xs type--caps type--bold type--white type--display" data-split-text>
           <%- siteDetails.data.brand_description %>
         </span>
       </div>
       <div class="h-hero__alt">
-        <span class="inline-block type--display type--m type--white" data-split-text="line-break">
+        <span class="inline-block type--display type--m type--white" data-split-text>
           <%- document.data.alt_text %>
         </span>
       </div>
       <div class="h-hero__title text-right">
-        <h1 class="type--xl type--display type--caps type--x-bold type--outline-white" data-main-title data-split-text="line-break">
+        <h1 class="type--xl type--display type--caps type--x-bold type--outline-white" data-main-title data-split-text>
           <%- document.data.hero_title %>
         </h1>      
       </div>
@@ -49,3 +49,6 @@
     <source src="<%- document.data.hero_background_video.url %>" type="video/mp4">
   </video>
 </div>
+<%- include('../partials/home-body') -%>
+
+

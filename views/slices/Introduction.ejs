@@ -2,24 +2,24 @@
   let blocks = slice.items
 %>
 
-<section class="section--l-m-b" data-scroll-speed="-8">
+<section class="section--l-m-b">
   <div class="container grid grid--all intro__grid">
-    <div class="column--centered intro__heading" data-scroll data-scroll-speed="2">
-      <h3 class="type--l type--white type--display type--x-bold type--caps">
+    <div class="column--centered intro__heading" data-scroll>
+      <h3 class="type--l type--white type--display type--x-bold type--caps" data-split-text="scroll">
         <%- slice.primary.introduction_title %>
       </h3>
     </div>
     <% if(blocks !== null ) { %> 
       <% blocks.forEach((b, i) => { %>
-        <div class="intro__media-<%- (i + 1) %>" data-scroll data-scroll-speed="1">
+        <div class="intro__media-<%- (i + 1) %>">
           <% if(b.media.kind === 'image') { %> 
-            <div class="thumbnail">
+            <div class="thumbnail thumbnail--polaroid">
               <img src="<%-b.media.url %>">
             </div>
           <% } %>
         </div>
         <% if (b.paragraph) { %>
-          <div class="intro__text-<%- (i + 1) %>" data-scroll data-scroll-speed="3">
+          <div class="intro__text-<%- (i + 1) %>">
             <p class="type--xs type--white">
               <%- b.paragraph %>
             </p>
