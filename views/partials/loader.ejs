@@ -2,7 +2,6 @@
   <% preloader.data.gallery.forEach((el) => { %>
     <div class="loader__item thumbnail__inline" style="max-width: <%- el.image.dimensions.width / 1.2 %>px" data-loader-image>
       <img src="<%- el.image.url %>">
-      <% console.log(el.image) %>
     </div>
   <% }) %>
   <% if (zoomIn) { %>
