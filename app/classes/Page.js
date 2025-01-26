@@ -1,7 +1,5 @@
 import GSAP from 'gsap'
-import Create from "../utils/create";
-
-//import LocomotiveScroll from 'locomotive-scroll'
+import Create from "../utils/create"
 
 export default class Page {
   constructor({ elements, id }) {

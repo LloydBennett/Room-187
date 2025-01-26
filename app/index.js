@@ -1,3 +1,6 @@
+import { scroll } from 'utils/LenisScroll'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import About from 'pages/About'
 import Home from 'pages/Home'
 import Navigation from 'components/Navigation'
@@ -8,6 +11,8 @@ import Overlay from './components/Overlay'
 
 class App {
   constructor() {
+    this.lenisScroll = scroll
+
     this.addSplitText()
     this.createPreloader()
     this.createContent()
@@ -16,6 +21,18 @@ class App {
     //this.createNavigation()
     this.createPlayBtn()
     this.createOverlay()
+  }
+  setUpScrollTrigger() {
+    gsap.registerPlugin(ScrollTrigger)
+    
+    // Synchronize Lenis scrolling with GSAP's ScrollTrigger plugin
+    this.lenisScroll.on('scroll', ScrollTrigger.update);
+
+    gsap.ticker.add((time) => {
+      this.lenisScroll.raf(time * 1000);
+    });
+
+    gsap.ticker.lagSmoothing(0);
   }
 
   createPlayBtn(){
