@@ -11,11 +11,11 @@
       </div>
       
     <% }) %>
-    <div class="artist__video column--full-width relative" data-scroll data-scroll-speed="2">
-      <video class="video" poster="<%- slice.primary.video_poster.url %>" data-video>
+    <div class="artist__video column--full-width relative no-overflow" data-scroll data-scroll-speed="2" data-video-scroll>
+      <video class="video" poster="<%- slice.primary.video_poster.url %>" data-video="artist">
         <source src="<%- slice.primary.video.url %>" type="video/mp4">
       </video>
-      <div class="play--button thumbnail artist__play-btn" data-play>
+      <div class="play--button thumbnail artist__play-btn" data-play="artist">
         <%- include('../partials/play-button') -%>
       </div>
     </div>

@@ -4,8 +4,8 @@ import gsap from 'gsap'
 export default class Navigation extends Components {
   constructor() {
     super({
-      element: '[data-nav-menu]',
       elements: {
+        menu: '[data-nav-menu]',
         trigger: '[data-nav-trigger]',
         body: 'body',
         bg: '[data-nav-menu-bg]',

@@ -7,10 +7,10 @@
   <% useZoomTransition = (page === "home") ? true : false %>
   <%- include('./partials/loader', { zoomIn: useZoomTransition } ) -%>
   <% if (page === "error") { %><%- include('./partials/navigation-bar') -%><% } %>
-  <main id="main" data-page="<%- page %>" data-scroll-speed="-14" class="main <% if (page !== "error") { %><%- page %><% } %> relative">
+  <main id="main" data-page="<%- page %>" class="main <% if (page !== "error") { %><%- page %><% } %> relative">
     <% if (page !== "error") { %><%- include('./partials/navigation-menu') -%><% } %>
     <div>
-      <div <% if (page !== "home" && page !== "error") { %>class="hero--p-t"<% } %> data-scroll-container>
+      <div <% if (page !== "home" && page !== "error") { %>class="hero--p-t"<% } %>>
         <% switch(page) {
           
           case 'error' : %>

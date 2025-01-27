@@ -1,5 +1,6 @@
 @import './base/reset.scss';
-//@import 'node_modules/locomotive-scroll/src/locomotive-scroll.scss';
+@import 'lenis/dist/lenis.css';
+
 // ------------------------------------ // ------------------------------------------
 // -------------------------------- S E T T I N G S ---------------------------------
 // ------------------------------------ // ------------------------------------------
@@ -41,6 +42,7 @@
 @import './helpers/text-alignment.scss';
 @import './helpers/no-overflow.scss';
 @import './helpers/position.scss';
+@import './helpers/full-height.scss';
 
 
 // ------------------------------------ // ------------------------------------------
@@ -50,6 +52,7 @@
 @import './layout/container.scss';
 @import './layout/grid.scss';
 @import './layout/columns.scss';
+@import './layout/gap.scss';
 
 // ------------------------------------ // ------------------------------------------
 // -------------------------------- C O M P O N E N T S -----------------------------
@@ -70,7 +73,6 @@
 @import './components/avatar.scss';
 @import './components/cta-block.scss';
 @import './components/input.scss';
-@import './components/gap.scss';
 @import './components/carousel.scss';
 @import './components/scroll-over.scss';
 @import './components/artist-list.scss';
@@ -81,7 +83,6 @@
 @import './components/room-key.scss';
 @import './components/error.scss';
 @import './components/close.scss';
-@import './components/full-height.scss';
 
 // ------------------------------------ // ------------------------------------------
 // -------------------------------- P A G E S ---------------------------------------

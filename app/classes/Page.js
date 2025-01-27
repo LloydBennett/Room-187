@@ -1,17 +1,14 @@
 import GSAP from 'gsap'
-import LocomotiveScroll from 'locomotive-scroll'
+import Create from "../utils/create"
 
 export default class Page {
-  constructor({ elements, element, id }) {
+  constructor({ elements, id }) {
     this.id = id
-    this.selector = element
-    this.selectorChildren = { ...elements }
-  }
-  create() {
-    this.element = document.querySelector(this.selector)
-    this.elements = {}
-    
-    console.log('Create', this.id, this.element)
+    this.selectors = { 
+      ...elements,
+    }
+    Page.prototype.create = Create
+    this.create()
   }
   show() {
     return new Promise(resolve => {
@@ -24,10 +21,10 @@ export default class Page {
       // })
 
       this.animationIn.call(_ => {
-        this.scroll = new LocomotiveScroll({
-          el: document.querySelector('[data-scroll-container]'),
-          smooth: true
-        })
+        // this.scroll = new LocomotiveScroll({
+        //   el: document.querySelector('[data-scroll-container]'),
+        //   smooth: true
+        // })
         resolve()
       })
     })
