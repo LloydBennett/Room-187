@@ -174,9 +174,9 @@ export default class SplitText extends Components {
         y: 0,
         scrollTrigger: {
           trigger: text,
-          start: '20% 90%',
+          start: '50% bottom',
           scrub: false,
-          markers: true
+          markers: false
         },
         duration: 0.8, 
         ease: "zoom", 

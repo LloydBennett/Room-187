@@ -10,7 +10,8 @@ export default class Home extends Page {
         heroContent: '[data-hero-content]',
         homeBody: '[data-home-body]',
         videoBlock: '[data-video-scroll]',
-        video: '[data-video-scroll] [data-video]'
+        video: '[data-video-scroll] [data-video]',
+        polaroid: '[data-polaroid]'
       }
     })
     gsap.registerPlugin(ScrollTrigger)
@@ -29,7 +30,7 @@ export default class Home extends Page {
           trigger: this.elements.heroContent,
           start: '70% center', // Start the animation when the top of the heroContent hits 90% of the viewport
           scrub: true,
-          markers: true
+          markers: false
         },
         ease: "power2.out",
       }
@@ -62,5 +63,41 @@ export default class Home extends Page {
         ease: "power2.out",
       }
     )
+
+    this.elements.polaroid.forEach((element, i) => {
+      gsap.fromTo(element, 
+        {
+          opacity: 0
+        },
+        {
+          opacity: 1,
+          scrollTrigger: {
+            trigger: element,
+            start: '50% bottom', // Start the animation when the top of the heroContent hits 90% of the viewport
+            scrub: false,
+            markers: false
+          },
+          ease: "power2.out",
+          duration: 0.6
+        }
+      )
+
+      gsap.fromTo(element, 
+        {
+          y: 0
+        },
+        {
+          y: "-20%",
+          scrollTrigger: {
+            trigger: element,
+            start: '5% bottom',
+            scrub: true,
+            markers: false,
+          },
+          ease: "power2.out",
+        }
+      )
+  
+    })
   }
 }

@@ -12,15 +12,18 @@
     <% if(blocks !== null ) { %> 
       <% blocks.forEach((b, i) => { %>
         <div class="intro__media-<%- (i + 1) %>">
-          <% if(b.media.kind === 'image') { %> 
-            <div class="thumbnail thumbnail--polaroid">
-              <img src="<%-b.media.url %>">
-            </div>
+          <% if(b.media.kind === 'image') { %>
+            <div data-polaroid>
+              <div class="thumbnail thumbnail--polaroid">
+                <img src="<%-b.media.url %>">
+              </div>
+            </div> 
+            
           <% } %>
         </div>
         <% if (b.paragraph) { %>
           <div class="intro__text-<%- (i + 1) %>">
-            <p class="type--xs type--white">
+            <p class="type--xs type--white" data-split-text="scroll">
               <%- b.paragraph %>
             </p>
           </div>
