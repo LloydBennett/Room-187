@@ -16,10 +16,10 @@
   transform: translateX(-50%);
   position: absolute;
 
-  &:hover .room-key {
-    transform: rotateY(-180deg);
-    transition: 800ms ease;
-  }
+  // &:hover .room-key {
+  //   transform: rotateY(-180deg);
+  //   transition: 800ms ease;
+  // }
 }
 
 .room-key__face {

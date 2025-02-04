@@ -242,9 +242,9 @@ $hero--tweakpoint: 1080px;
   }
 }
 
-.step {
-  height: 100vh;
-}
+// .step {
+//   height: 100vh;
+// }
 
 .step__wrapper {
   grid-column: 1 / 9;
@@ -266,6 +266,6 @@ $hero--tweakpoint: 1080px;
 .step__controls {
   position: absolute;
   right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 0;
+  height: 100vh;
 }
