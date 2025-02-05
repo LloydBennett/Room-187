@@ -6,10 +6,17 @@
 <section class="section--l-m-b">
   <div class="container artist__grid">
     <% artists.forEach((artist, i) => { %>
-      <div class="artist__item relative">
-        <span class="artist__title type--display type--caps type--x-bold <% if((i + 1) % 2 == 0) { %> type--outline-white <% } else { %> type--white <% } %>"><%- artist.artist_name %></span>
-      </div>
-      
+      <% if((i + 1) % 2 == 0) { %>
+        <div class="artist__item relative" data-artist-name-animation="right">
+          <span class="artist__title type--display type--caps type--x-bold type--outline-white"><%- artist.artist_name %></span>
+        </div>
+
+      <% } else { %>
+        <div class="artist__item relative" data-artist-name-animation="left">
+          <span class="artist__title type--display type--caps type--x-bold type--white"><%- artist.artist_name %></span>
+        </div>
+
+      <% } %>
     <% }) %>
     <div class="artist__video column--full-width relative no-overflow" data-scroll data-scroll-speed="2" data-video-scroll>
       <video class="video" poster="<%- slice.primary.video_poster.url %>" data-video="artist">
