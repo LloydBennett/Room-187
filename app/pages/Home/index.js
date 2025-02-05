@@ -26,8 +26,10 @@ export default class Home extends Page {
     this.pinnedHeight = this.elements.roomKeySection.offsetHeight
     this.isProgressBarVisible = false
     this.currentActiveIndex = -1
+
     this.init()
   }
+
   init() {
     this.setUpScrollAnimations()
     console.log(this.elements.heroContent)
@@ -51,7 +53,7 @@ export default class Home extends Page {
     })
 
     this.isProgressBarVisible = false
-    this.animateIndexHighlighter(-1)
+    //this.animateIndexHighlighter(-1)
   }
 
   showProgressBar() {
@@ -62,7 +64,6 @@ export default class Home extends Page {
     })
 
     this.isProgressBarVisible = true
-    this.animateIndexHighlighter(0)
   }
 
 
@@ -129,7 +130,7 @@ export default class Home extends Page {
 
       gsap.fromTo(element, 
         {
-          y: 0
+          y: "10%"
         },
         {
           y: "-20%",
@@ -145,8 +146,18 @@ export default class Home extends Page {
   
     })
 
-    
-    // Pin roomKeyHeader until roomKey scrolls over it
+    this.roomKeyAnimations()
+  }
+
+  roomKeyAnimations() {
+    let roomKeyWidth = this.elements.roomKey.offsetWidth; // Get room-key width
+    let totalStepsHeight = Array.from(this.elements.steps).reduce((total, step) => total + step.offsetHeight, 0);
+    // Reduce pin duration slightly to ensure last step scrolls smoothly
+    let adjustedPinDuration = totalStepsHeight - this.elements.steps[0].offsetHeight * 0.5; 
+
+    gsap.set(this.elements.steps, { opacity: 0, y: 50 })
+    gsap.set(this.elements.progressBar, { opacity: 0 })
+
     ScrollTrigger.create({
       trigger: this.elements.roomKeyHeader,
       start: "top top",
@@ -161,58 +172,87 @@ export default class Home extends Page {
       opacity: 0,
       scrollTrigger: {
         trigger: this.elements.roomKey,
-        start: "top 85%", // Begin fade when roomKey starts overlapping
-        end: "top 50%", // Fully faded when roomKey is in the middle
+        start: "top 55%", // Begin fade when roomKey starts overlapping
+        end: "top 30%", // Fully faded when roomKey is in the middle
         scrub: true
       }
-    });
+    })
 
-    // Move roomKey up to overlap roomKeyHeader
-    gsap.to(this.elements.roomKey, {
-      y: "-100%", // Moves it upwards to visually overlap the header
-      scrollTrigger: {
-        trigger: this.elements.roomKey,
-        start: "top bottom",
-        end: "top top",
-        scrub: true
-      }
-    });
+    // **Corrected pin duration for room-key to stay pinned for all steps**
 
-    // **NEW**: Pin roomKey when it reaches the middle of roomKeyHeader text
     ScrollTrigger.create({
       trigger: this.elements.roomKey,
       start: "center center",
-      end: () => `+=${this.elements.steps.length * 300}`, // Ends when all step__outline elements are revealed
+      end: `+=${adjustedPinDuration}`,
       pin: true,
       scrub: true
     });
 
-    // **NEW**: Move roomKey to the right while pinned
+    // Move roomKey to the right once pinned
     gsap.to(this.elements.roomKey, {
-      x: "50%",
+      x: "85%",
+      rotate: "5deg",
       scrollTrigger: {
         trigger: this.elements.roomKey,
         start: "center center",
-        end: () => `+=${this.elements.steps.length * 300}`,
-        scrub: true
+        end: `+=${this.elements.steps[0].offsetHeight}`, // Moves right over a short scroll distance
+        scrub: true,
+        onEnter: () => gsap.set(this.elements.steps, { opacity: 0 }) // Ensure steps remain hidden until move completes
       }
-    });
+    })
 
-    // **NEW**: Step outlines scroll into view one by one
-    this.elements.steps.forEach((step, index) => {
-      gsap.fromTo(step,
-        { opacity: 0, y: 50 },
-        {
-          opacity: 1,
-          y: 0,
-          scrollTrigger: {
-            trigger: step,
-            start: "top bottom",
-            end: "top center",
-            scrub: true
+    // Step opacity should be scroll-based (fade in/out based on scroll)
+    this.elements.steps.forEach((step, index) => { 
+      ScrollTrigger.create({
+        trigger: step,
+        start: "top 70%",
+        end: "top 50%",
+        scrub: true,
+        toggleActions: "play none none reverse",
+        onEnter: () => gsap.to(step, { opacity: 1, y: 0, duration: 0.3 }),
+        onLeaveBack: () => gsap.to(step, { opacity: 0, y: 50, duration: 0.3 })
+      });
+  
+      // **Keep room-key pinned for the last step**
+      if (index === this.elements.steps.length - 1) {
+        ScrollTrigger.create({
+          trigger: step,
+          start: "top 50%",
+          end: "bottom top",
+          scrub: true,
+          pin: true
+        });
+      }
+
+      // **Flip room-key when the second step appears**
+      if (index === 2) {
+        ScrollTrigger.create({
+          trigger: step,
+          start: "top center",
+          onEnter: () => this.elements.roomKey.classList.add("flip"),
+          onLeaveBack: () => this.elements.roomKey.classList.remove("flip")
+        });
+      }
+
+      ScrollTrigger.create({
+        trigger: step,
+        start: "top 50%", // When the step reaches 50% of the viewport
+        end: "top 30%", // When the step is almost fully in view
+        onEnter: () => {
+          if(index === 0) {
+            this.animateIndexHighlighter(index); // Highlight the corresponding dot for the current step
+          } else {
+            this.animateIndexHighlighter(index - 1); // Highlight the corresponding dot for the current step
+          }
+        },
+        onLeaveBack: () => {
+          if(index === 1) {
+            this.animateIndexHighlighter(index - 1);
+          } else {
+            this.animateIndexHighlighter(index - 2);
           }
         }
-      );
+      });
     });
 
     // Pin progress bar at all times (only show/hide)
@@ -221,61 +261,17 @@ export default class Home extends Page {
       start: "top top",
       end: "bottom bottom",
       pin: this.elements.progressBar
-    });
-
-
-
-
-
-
-
+    })
 
     // Show progress bar when roomKey is fully in view
+
     ScrollTrigger.create({
-      trigger: this.elements.roomKey,
-      start: "top center",
+      trigger: this.elements.steps[1],
+      start: "top center", // When the first step reaches the center of the viewport
       onEnter: () => this.showProgressBar(),
       onLeaveBack: () => this.hideProgressBar(),
       markers: false
-    });  
+    });
 
-
-
-
-
-
-
-
-
-    // gsap.to(this.elements.roomKeyHeader, {
-    //   scrollTrigger: {
-    //     trigger: this.elements.roomKeyHeader,
-    //     start: "top top",
-    //     end: `+=${this.pinnedHeight}`,
-    //     pin: true,
-    //     scrub: true,
-    //     markers: true,
-    //     onLeave: () => {
-    //       gsap.to(this.elements.roomKeyTitle, {opacity: 0, duration: 0.6, ease: 'power2.out'})
-    //       this.showProgressBar()
-    //     },
-    //     onEnterBack: () => {
-    //       this.hideProgressBar()
-    //     }
-        
-    //   }
-    // })
-
-    // gsap.to(this.elements.roomKey, {
-    //   scrollTrigger: {
-    //     trigger: this.elements.roomKeySection,
-    //     start: "top center",
-    //     scrub: true,
-    //     pin: true,
-    //     markers: true
-    //   }
-      
-    // });
-  
   }
 }

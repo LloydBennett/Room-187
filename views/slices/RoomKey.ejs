@@ -27,12 +27,15 @@
     <%- include('../partials/room-key.ejs') %>
 
     <% if(sections != null) { %>
-      <div class="step__wrapper">
-        <% sections.forEach((s) => { %>
-          <div class="step__outline" data-card-is-front-facing="<%- s.direction_of_card %>" data-progress-steps>
-            <p class="type--xs type--white"><%- s.outline %></p>
-          </div>
-       <% }) %>
+      <div class="grid">
+        <div class="step__wrapper">
+          <div class="step__outline" data-progress-steps></div>
+          <% sections.forEach((s) => { %>
+            <div class="step__outline" data-progress-steps>
+              <p class="type--xs type--white"><%- s.outline %></p>
+            </div>
+        <% }) %>
+        </div>
       </div>
       <% } %>
   </div>
