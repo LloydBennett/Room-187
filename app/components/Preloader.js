@@ -51,7 +51,7 @@ export default class Preloader extends Components {
       }
     }, '-=0.1')
 
-    this.tl.fromTo(this.elements.misc, { opacity: 0 }, { opacity: 1, duration: 0.6, ease: 'power2.out'}, "-=0.1")
+    this.tl.fromTo(this.elements.misc, { opacity: 0 }, { opacity: 1, duration: 0.8, ease: 'power2.out'}, "-=0.1")
     
   }
 }
