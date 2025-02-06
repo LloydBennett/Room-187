@@ -4,7 +4,9 @@
 %>
 <section class="hero flex" data-hero-content>
   <div class="relative flex section--s-p-b">
-    <div class="hero__bg overlay" data-bg style="background-image: url('<%- document.data.hero_image.url %>')"></div>
+    <div class="overlay no-overflow">
+      <div class="hero__bg overlay" data-bg data-home-bg style="background-image: url('<%- document.data.hero_image.url %>')"></div>
+    </div>
     <div class="hero__g-overlay overlay"></div>
     <div class="container grid--all h-hero__grid" data-hero-content>
       <div class="h-hero__intro">

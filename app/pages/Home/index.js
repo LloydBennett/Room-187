@@ -20,9 +20,11 @@ export default class Home extends Page {
         progressHighlight: '[data-progress-highlight]',
         progressIndices: '[data-progress-index]',
         steps: '[data-progress-steps]',
-        artistNames: '[data-artist-name-animation]'
+        artistNames: '[data-artist-name-animation]',
+        homeBg: '[data-home-bg]'
       }
     })
+    
     gsap.registerPlugin(ScrollTrigger)
     this.pinnedHeight = this.elements.roomKeySection.offsetHeight
     this.isProgressBarVisible = false
@@ -67,20 +69,8 @@ export default class Home extends Page {
   }
 
   setUpScrollAnimations() {
-    gsap.fromTo(this.elements.heroContent, 
-      { opacity: 1 },
-      {
-        opacity: 0.1,
-        scrollTrigger: {
-          trigger: this.elements.heroContent,
-          start: '70% center', // Start the animation when the top of the heroContent hits 90% of the viewport
-          scrub: true,
-          markers: false
-        },
-        ease: "power2.out",
-      }
-    )
-    
+    this.heroAnimations()
+
     this.elements.polaroid.forEach((element, i) => {
       gsap.fromTo(element, 
         {
@@ -116,19 +106,46 @@ export default class Home extends Page {
       )
   
     })
-
+    
     this.roomKeyAnimations()
     this.artistSectionAnimations()
   }
 
+  heroAnimations() {
+    gsap.fromTo(this.elements.heroContent, 
+      { opacity: 1 },
+      {
+        opacity: 0.1,
+        scrollTrigger: {
+          trigger: this.elements.heroContent,
+          start: '50% center',
+          scrub: true,
+          markers: false
+        },
+        ease: "power2.out",
+      }
+    )
+
+    gsap.fromTo(this.elements.homeBg, 
+      { scale: 1 },
+      {
+        scale: 1.5,
+        duration: 0.6,
+        scrollTrigger: {
+          trigger: this.elements.heroContent,
+          start: '50% center',
+          scrub: true,
+          markers: false
+        },
+        ease: "power2.out",
+      }
+    )
+  }
+
   roomKeyAnimations() {
     let totalStepsHeight = Array.from(this.elements.steps).reduce((total, step) => total + step.offsetHeight, 0);
-    // Reduce pin duration slightly to ensure last step scrolls smoothly
     let lastStepHeight = this.elements.steps[this.elements.steps.length - 1].offsetHeight;
     let adjustedPinDuration = totalStepsHeight - lastStepHeight / 2; 
-
-    
-    //let adjustedPinDuration = totalStepsHeight - this.elements.steps[0].offsetHeight * 0.5; 
 
     gsap.set(this.elements.steps, { opacity: 0, y: 50 })
     gsap.set(this.elements.progressBar, { opacity: 0 })
