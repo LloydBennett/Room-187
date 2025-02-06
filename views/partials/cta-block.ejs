@@ -1,13 +1,11 @@
 <section class="section--l-p-b">
   <div class="container grid">
-    <div class="column--full-width text-center">
-      <h3 class="type--l type--white type--display type--caps type--x-bold">
-        <span>Come to the&nbsp;</span><span class="cta-block-span">next event</span> 
+    <div class="cta-block__column text-center">
+      <h3 class="type--l type--white type--display type--caps type--x-bold" data-split-text="scroll">
+        Come to the next event
       </h3>
       <div class="button--m-t">
-        <a href="<%- siteDetails.data.main_cta_link.url %>" class="button button--l button--primary">
-          <%- siteDetails.data.main_cta_text %>
-        </a>
+        <%- include('../partials/button', { buttonText: siteDetails.data.main_cta_text, link: siteDetails.data.main_cta_link.url, link_target: true, large: true, primaryBtn: true, fullWidth: false } ) -%>
       </div>
     </div>
   </div>
