@@ -1,14 +1,24 @@
 .dot {
-  width: 1rem;
-  height: 1rem;
+  width: 0.8rem;
+  height: 0.8rem;
   background-color: $colour--white;
   border-radius: 100%;
+
+  @include media-query($breakpoint--medium) {
+    width: 1rem;
+    height: 1rem;
+  }
 }
 
 .dot__highlight,
 .dot__wrapper {
-  width: 4rem;
-  height: 4rem;
+  width: 3rem;
+  height: 3rem;
+
+  @include media-query($breakpoint--medium) {
+    width: 4rem;
+    height: 4rem;
+  }
 }
 
 .dot__wrapper {

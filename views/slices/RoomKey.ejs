@@ -27,7 +27,7 @@
     <%- include('../partials/room-key.ejs') %>
 
     <% if(sections != null) { %>
-      <div class="grid">
+      <div class="grid" data-step-container>
         <div class="step__wrapper">
           <div class="step__outline" data-progress-steps></div>
           <% sections.forEach((s) => { %>

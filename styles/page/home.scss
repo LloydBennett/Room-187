@@ -151,7 +151,7 @@ $hero--tweakpoint: 1080px;
   grid-column: 2 / 7;
 
   @include media-query($breakpoint--small) {
-    grid-column: 2 / 9;
+    grid-column: 4 / 9;
   }
 
   @include media-query($breakpoint--medium) {
@@ -178,9 +178,9 @@ $hero--tweakpoint: 1080px;
   grid-row: 4;
   grid-column: 1 / 7;
 
-  @include media-query($breakpoint--small) {
-    grid-column: 1 / 9;
-  }
+  // @include media-query($breakpoint--small) {
+  //   grid-column: 1 / 9;
+  // }
 
   @include media-query($breakpoint--medium) {
     grid-row: 2;
@@ -214,9 +214,9 @@ $hero--tweakpoint: 1080px;
 .intro__media-3 {
   grid-column: 1 / 7;
 
-  @include media-query($breakpoint--small) {
-    grid-column: 1 / 9;
-  }
+  // @include media-query($breakpoint--small) {
+  //   grid-column: 1 / 9;
+  // }
 
   @include media-query($breakpoint--medium) {
     grid-column: 1 / 7;
