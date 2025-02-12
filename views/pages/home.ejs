@@ -8,7 +8,7 @@
       <div class="hero__bg overlay" data-bg data-home-bg style="background-image: url('<%- document.data.hero_image.url %>')"></div>
     </div>
     <div class="hero__g-overlay overlay"></div>
-    <div class="container grid--all h-hero__grid" data-hero-content>
+    <div class="container grid--all h-hero__grid relative" data-hero-content>
       <div class="h-hero__intro">
         <span class="type--xs type--caps type--bold type--white type--display" data-split-text>
           <%- siteDetails.data.brand_description %>
@@ -40,16 +40,21 @@
   
 </section>
 
-<div class="video__overlay fixed overlay bg--black" data-overlay data-video-overlay="intro-video">
+<div class="video__overlay fixed overlay" data-video-overlay="intro-video" data-lenis-prevent>
+  <div class="overlay bg--black z-index--1" data-overlay></div>
   <div class="close flex flex--middle" data-close>
     <div class="inline-block">
       <%- include('../partials/svg/icons/24/close', { cssClass: 'bg-svg--white' }) -%>
     </div>
     <span class="type--xs type--white type--caps type--bold">Close</span>
   </div>
-  <video class="video--bg" controls data-video="intro-video">
-    <source src="<%- document.data.hero_background_video.url %>" type="video/mp4">
-  </video>
+  
+  <div class="video__wrapper z-index--2">
+    <video class="video--bg" controls data-video="intro-video">
+      <source src="<%- document.data.hero_background_video.url %>" type="video/mp4">
+    </video>
+  </div>
+  
 </div>
 <%- include('../partials/home-body') -%>
 

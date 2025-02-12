@@ -6,8 +6,7 @@ import Home from 'pages/Home'
 import Navigation from 'components/Navigation'
 import Preloader from 'components/Preloader'
 import SplitText from 'components/SplitText'
-import PlayButton from './components/PlayButton'
-import Overlay from './components/Overlay'
+import VideoPlayer from './components/VideoPlayer'
 
 class App {
   constructor() {
@@ -19,9 +18,10 @@ class App {
     this.createPages()
     this.addLinkListeners()
     //this.createNavigation()
-    this.createPlayBtn()
-    this.createOverlay()
+    this.createVideoPlayer()
+    //this.createOverlay()
   }
+
   setUpScrollTrigger() {
     gsap.registerPlugin(ScrollTrigger)
     
@@ -35,13 +35,13 @@ class App {
     gsap.ticker.lagSmoothing(0);
   }
 
-  createPlayBtn(){
-    this.PlayBtn = new PlayButton()
+  createVideoPlayer() {
+    this.videoPlayer = new VideoPlayer()
   }
 
-  createOverlay(){
-    this.Overlay = new Overlay()
-  }
+  // createOverlay(){
+  //   this.Overlay = new Overlay()
+  // }
 
   addSplitText() {
     this.SplitText = new SplitText()
