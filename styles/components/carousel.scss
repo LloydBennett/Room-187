@@ -1,5 +1,6 @@
 .carousel {
-  overflow-x: hidden;
+  overflow-x: scroll;
+  padding-bottom: spacing(7);
 }
 
 .carousel__container {

@@ -8,7 +8,10 @@
   position: absolute;
   top: 0;
   left: 0;
-  object-fit: cover;
+  
+  @include media-query($breakpoint--x-large) {
+    object-fit: cover;
+  }
 }
 
 .video__overlay {
@@ -29,7 +32,6 @@
     opacity: 0;
   }
 }
-
 
 .video__wrapper {
   position: relative;
