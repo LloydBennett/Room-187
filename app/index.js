@@ -7,6 +7,7 @@ import Navigation from 'components/Navigation'
 import Preloader from 'components/Preloader'
 import SplitText from 'components/SplitText'
 import VideoPlayer from './components/VideoPlayer'
+import Stats from './components/Stats'
 
 class App {
   constructor() {
@@ -19,6 +20,7 @@ class App {
     this.addLinkListeners()
     //this.createNavigation()
     this.createVideoPlayer()
+    this.createStats()
     //this.createOverlay()
   }
 
@@ -39,12 +41,12 @@ class App {
     this.videoPlayer = new VideoPlayer()
   }
 
-  // createOverlay(){
-  //   this.Overlay = new Overlay()
-  // }
+  createStats(){
+    this.stats = new Stats()
+  }
 
   addSplitText() {
-    this.SplitText = new SplitText()
+    this.splitText = new SplitText()
   }
 
   createPreloader() {
