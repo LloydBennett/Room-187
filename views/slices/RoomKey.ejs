@@ -27,12 +27,12 @@
     <%- include('../partials/room-key.ejs') %>
 
     <% if(sections != null) { %>
-      <div class="grid" data-step-container>
-        <div class="step__wrapper">
-          <div class="step__outline" data-progress-steps></div>
+      <div class="grid relative" data-step-container>
+        <div class="step__wrapper relative">
+          <div class="step-outline--first" data-progress-steps></div>
           <% sections.forEach((s) => { %>
             <div class="step__outline" data-progress-steps>
-              <p class="type--xs type--white"><%- s.outline %></p>
+              <p class="step__text type--white"><%- s.outline %></p>
             </div>
         <% }) %>
         </div>
