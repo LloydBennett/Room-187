@@ -22,6 +22,7 @@ export default class Navigation extends Components {
 
     this.isAnimating = false
     this.isOpen = false
+    this.scroll = scroll
     this.addEventListeners()
   }
 
@@ -40,8 +41,9 @@ export default class Navigation extends Components {
 
   openMenu() {
     this.isOpen = true
+    this.scroll.stop()
     this.elements.menu.classList.add('show')
-
+    
     this.tl.to(this.elements.menu, {
       clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
       duration: 0.6,
@@ -67,6 +69,7 @@ export default class Navigation extends Components {
         this.isAnimating = false
         this.isOpen = false
         this.elements.menu.classList.remove('show')
+        this.scroll.start()
       }
     })
   }
