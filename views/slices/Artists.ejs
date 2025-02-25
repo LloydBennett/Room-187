@@ -8,12 +8,11 @@
   <div class="container artist__grid no-overflow">
     <% artists.forEach((artist, i) => { %>
       <% if((i + 1) % 2 == 0) { %>
-        <div class="artist__item relative" data-artist-name-animation="right">
+        <div class="artist__item relative <% if(i == (artists.length - 1)) { %>text-center<%}%>" data-artist-name-animation="right">
           <span class="artist__title type--display type--caps type--x-bold type--outline-white"><%- artist.artist_name %></span>
         </div>
-
       <% } else { %>
-        <div class="artist__item relative" data-artist-name-animation="left">
+        <div class="artist__item relative <%if(i == (artists.length - 1)) { %>text-center<%}%>" data-artist-name-animation="left">
           <span class="artist__title type--display type--caps type--x-bold type--white"><%- artist.artist_name %></span>
         </div>
 
