@@ -303,6 +303,6 @@ $hero--tweakpoint: 1080px;
   @extend .type--xs;
 
   @include media-query($breakpoint--large) {
-    font-size: 2.4rem;
+    font-size: 2.1rem;
   }
 }
