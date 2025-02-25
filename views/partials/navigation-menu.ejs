@@ -1,3 +1,17 @@
+<svg class="hidden">
+  <defs>
+    <filter id="filter-3">
+      <feTurbulence type="fractalNoise" baseFrequency="0.15 0.02" numOctaves="3" result="warp" />
+      <feDisplacementMap xChannelSelector="R" yChannelSelector="G" scale="0" in="SourceGraphic" in2="warp" />
+    </filter>
+    <filter id="filter-4">
+      <feTurbulence type="fractalNoise" baseFrequency="0" numOctaves="5" result="warp" />
+      <feOffset dx="-90" result="warpOffset" />
+      <feDisplacementMap xChannelSelector="R" yChannelSelector="G" scale="35" in="SourceGraphic" in2="warpOffset" />
+    </filter>
+  </defs>
+</svg>
+
 <div class="nav-menu flex--middle z-index--4" data-nav-menu data-lenis-prevent>
   <%- include('../partials/menu-links', { container_class: "nav-menu__list relative text-center", list_class: "nav-menu-list__item", list_text_class: "type--l type--x-bold type--outline-white type--caps type--display nav-menu__type", dataAttr: "data-menu-links" }) -%>
 </div>

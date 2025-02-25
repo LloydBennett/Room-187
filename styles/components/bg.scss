@@ -8,10 +8,16 @@
 
 .bg--black {
   background-color: $colour--black;
+  transition: background-color 300ms ease;
 }
 
 .bg-svg--black {
   fill: $colour--black;
+}
+
+.bg--error {
+  background-color: $colour--error;
+  transition: background-color 300ms ease;
 }
 
 .bg--purple-300 {

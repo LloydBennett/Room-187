@@ -59,16 +59,14 @@ export default class VideoPlayer extends Components {
     
     if(trigger.hasAttribute('data-open-video-overlay')) {
       let videoOverlay = document.querySelector(`[data-video-overlay=${videoID}]`)
-      let overlay = videoOverlay.querySelector('.overlay')
       
       this.isOverlayOpen = true
       this.videoOverlay = videoOverlay
-      this.videoBg = overlay
       
       videoOverlay.classList.add('open')
       this.scroll.stop()
 
-      this.tl.to(overlay, {
+      this.tl.to(videoOverlay, {
         clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
         duration: 0.6,
         ease: "zoom",
@@ -99,15 +97,13 @@ export default class VideoPlayer extends Components {
     
     if(this.isOverlayOpen) {
       this.tl.to(this.videoOverlay, {
-        opacity: 0,
+        clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",  
         duration: 0.4,
         ease: "power2.out",
   
         onComplete: () => {
           this.videoOverlay.classList.remove('open')
-          this.videoOverlay.style = ""
           this.video.currentTime = 0
-          this.tl.to(this.videoBg, { clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)", duration: 0.001 })
           this.tl.to(this.elements.closeBtn, { opacity: 0, duration: 0.001 })
           this.tl.to(this.video, { opacity: 0, duration: 0.001, ease: "power2.out" })
           this.scroll.start()

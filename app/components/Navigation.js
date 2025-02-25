@@ -11,8 +11,9 @@ export default class Navigation extends Components {
         trigger: '[data-nav-trigger]',
         body: 'body',
         navBar: '[data-nav-bar]',
-        navLinks: '.nav-menu__list-item [data-page-trigger]',
-        navLinkText: '.nav-menu [data-text-reveal]'
+        navLinks: '[data-menu-links]',
+        navLinkText: '.nav-menu [data-text-reveal]',
+        navLinkHover: '[data-nav-hover]'
       }
     })
 
@@ -23,7 +24,11 @@ export default class Navigation extends Components {
     this.isAnimating = false
     this.isOpen = false
     this.scroll = scroll
+    this.filterId = '#filter-3'
+    this.createLinkTimeLine()
     this.addEventListeners()
+    
+    console.log(this.elements.navLinkHover)
   }
 
   create() {
@@ -34,9 +39,31 @@ export default class Navigation extends Components {
     this.elements.trigger.addEventListener('click', () => {
       if(!this.isAnimating) {
         this.isAnimating = true
+        this.elements.trigger.classList.toggle('open')
         this.isOpen ? this.closeMenu() : this.openMenu()
       }
     })
+
+    this.elements.navLinks.forEach(link => {
+      let linkHover = link.nextElementSibling
+      
+      let linkTl = gsap.timeline({
+        paused: true,
+        onStart: () => {
+          linkHover.style.filter = `url(${this.filterId}`
+        },
+        onComplete: () => {
+          linkHover.style.filter = 'none';
+        }
+      });
+
+      let onMouseEnterFn = () => linkTl.restart();
+      let onMouseLeaveFn = () => linkTl.progress(1).kill();
+
+      link.addEventListener('mouseenter', onMouseEnterFn);
+      link.addEventListener('mouseleave', onMouseLeaveFn);
+    });
+    
   }
 
   openMenu() {
@@ -72,5 +99,18 @@ export default class Navigation extends Components {
         this.scroll.start()
       }
     })
+  }
+
+  createLinkTimeLine() {
+    // init timeline
+    this.linkTl = gsap.timeline({
+      paused: true,
+      onStart: () => {
+        this.elements.navLinkHover.style.filter = `url(${this.filterId}`
+      },
+      onComplete: () => {
+        this.elements.navLinkHover.style.filter = 'none';
+      }
+    });
   }
 }

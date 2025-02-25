@@ -11,6 +11,7 @@ export default class Preloader extends Components {
         imageHero: '[data-loader-hero]',
         mainTitles: '[data-hero] [data-text-reveal]',
         misc: '[data-misc]',
+        page: '[data-page]',
         body: 'body',
         bg: '[data-bg]',
         navBar: '[data-nav-bar]'
@@ -37,6 +38,10 @@ export default class Preloader extends Components {
     this.elements.images.forEach((img, i) => {
       this.tl.to(img, { opacity: 1, duration: 0.04, ease: "linear" }, "+=0.15")
     })
+
+    if(this.elements.page.getAttribute == "error") {
+      this.elements.loader.classList.add('bg--error')
+    }
     
     if(this.elements.imageHero) {
       this.tl.to(this.elements.imageHero, { scale: 1, clipPath:"polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", duration: 0.6, ease: "zoom" }, "+=0.4")

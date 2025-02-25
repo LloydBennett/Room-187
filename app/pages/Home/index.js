@@ -29,7 +29,7 @@ export default class Home extends Page {
     gsap.registerPlugin(ScrollTrigger)
     
     this.mm = gsap.matchMedia()
-    this.pinnedHeight = this.elements.roomKeySection.offsetHeight
+    this.pinnedHeight = this.elements.roomKeySection? this.elements.roomKeySection.offsetHeight : 100
     this.isProgressBarVisible = false
     this.currentActiveIndex = -1
 
@@ -38,7 +38,6 @@ export default class Home extends Page {
 
   init() {
     this.setUpScrollAnimations()
-    console.log(this.elements.heroContent)
   }
 
   animateIndexHighlighter(newIndex) {
@@ -74,41 +73,42 @@ export default class Home extends Page {
   setUpScrollAnimations() {
     this.heroAnimations()
 
-    this.elements.polaroid.forEach((element, i) => {
-      gsap.fromTo(element, 
-        {
-          opacity: 0
-        },
-        {
-          opacity: 1,
-          scrollTrigger: {
-            trigger: element,
-            start: '50% bottom', // Start the animation when the top of the heroContent hits 90% of the viewport
-            scrub: false,
-            markers: false
+    if(this.elements.polaroid) {
+      this.elements.polaroid.forEach((element, i) => {
+        gsap.fromTo(element, 
+          {
+            opacity: 0
           },
-          ease: "power2.out",
-          duration: 0.6
-        }
-      )
-
-      gsap.fromTo(element, 
-        {
-          y: "10%"
-        },
-        {
-          y: "-20%",
-          scrollTrigger: {
-            trigger: element,
-            start: '5% bottom',
-            scrub: true,
-            markers: false,
-          },
-          ease: "power2.out",
-        }
-      )
+          {
+            opacity: 1,
+            scrollTrigger: {
+              trigger: element,
+              start: '50% bottom', // Start the animation when the top of the heroContent hits 90% of the viewport
+              scrub: false,
+              markers: false
+            },
+            ease: "power2.out",
+            duration: 0.6
+          }
+        )
   
-    })
+        gsap.fromTo(element, 
+          {
+            y: "10%"
+          },
+          {
+            y: "-20%",
+            scrollTrigger: {
+              trigger: element,
+              start: '5% bottom',
+              scrub: true,
+              markers: false,
+            },
+            ease: "power2.out",
+          }
+        )
+      })
+    }
     
     this.roomKeyAnimations()
     this.artistSectionAnimations()
@@ -146,7 +146,7 @@ export default class Home extends Page {
   }
 
   roomKeyAnimations() {
-    let totalStepsHeight = Array.from(this.elements.steps).reduce((total, step) => total + step.offsetHeight, 0);
+    let totalStepsHeight = this.elements.steps? Array.from(this.elements.steps).reduce((total, step) => total + step.offsetHeight, 0) : null;
     let adjustedPinDuration = totalStepsHeight - (this.elements.roomKey.offsetHeight + (this.elements.roomKey.offsetHeight / 4));
     let scrollOptions = {
       trigger: this.elements.roomKey,

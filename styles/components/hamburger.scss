@@ -2,6 +2,33 @@
   display: inline-block;
   cursor: pointer;
   width: 3.5rem;
+
+  &.open {
+    .hamburger__line {
+      &:first-child {
+        transform: translateY(0.8rem) rotate(-45deg);
+        transition: transform 300ms ease 300ms;
+
+        @include media-query($breakpoint--x-large) {
+          transform: translateY(1rem) rotate(-45deg);
+        }
+      }
+
+      &:nth-child(2) {
+        opacity: 0;
+        transition: opacity 300ms ease 300ms;
+      }
+
+      &:last-child {
+        transform: translateY(-0.8rem);
+        transition: transform 300ms ease 300ms;
+
+        @include media-query($breakpoint--x-large) {
+          transform: translateY(-1rem) rotate(45deg);
+        }
+      }
+    }
+  }
 }
 
 .hamburger__line {
@@ -15,5 +42,16 @@
     @include media-query($breakpoint--x-large) {
       margin-top: $spacing-rule;
     }
+  }
+  
+  &:first-child,
+  &:last-child {
+    transform: translateY(0);
+    transition: transform 300ms ease;
+  }
+
+  &:nth-child(2) {
+    opacity: 1;
+    transition: 300ms ease 100ms;
   }
 }
