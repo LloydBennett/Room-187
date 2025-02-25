@@ -45,13 +45,13 @@ export default class Preloader extends Components {
 
     this.tl.to(this.elements.loader, { display: "none", duration: 0.01 })
 
-    this.tl.fromTo(this.elements.titles, { y: "100%" }, { y: 0, duration: 0.8, ease: "zoom", stagger: (i, target) => { return 0.05 * target.dataset.textReveal }, 
+    this.tl.fromTo(this.elements.titles, { y: "100%" }, { y: 0, duration: 0.8, ease: "zoom", stagger: (i, target) => target.dataset.textReveal ? 0.05 * Number(target.dataset.textReveal): 0.05, 
       onComplete: () => {
         this.elements.body.classList.remove('no--scrolling')
       }
     }, '-=0.1')
 
-    this.tl.fromTo(this.elements.misc, { opacity: 0 }, { opacity: 1, duration: 0.6, ease: 'power2.out'}, "-=0.1")
+    this.tl.fromTo(this.elements.misc, { opacity: 0 }, { opacity: 1, duration: 0.8, ease: 'power2.out'}, "-=0.1")
     
   }
 }

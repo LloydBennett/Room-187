@@ -1,0 +1,23 @@
+.marquee {
+  flex: 0 0 auto;
+  gap: 5vw;
+}
+
+.marquee__item {
+  display: flex;
+  align-items: center; 
+  flex: 0 0 auto; 
+  min-width: max-content;
+  gap: 5vw;
+}
+
+.marquee-item__icon {
+  align-self: center;
+  height: 50%;
+
+  svg {
+    display: block;
+    height: 100%;
+    width: auto;
+  }
+}

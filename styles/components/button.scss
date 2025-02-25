@@ -48,15 +48,20 @@
 
 .play--button {
   cursor: pointer;
-  width: 7.2rem;
-  height: 7.2rem;
+  width: 5.4rem;
+  height: 5.4rem;
 
   @include media-query($breakpoint--small) {
+    width: 7.2rem;
+    height: 7.2rem;
+  }
+
+  @include media-query($breakpoint--medium) {
     width: 10rem;
     height: 10rem;
   }
 
-  @include media-query($breakpoint--medium) {
+  @include media-query($breakpoint--large) {
     width: auto;
     height: auto;
   }

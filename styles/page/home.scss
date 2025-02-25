@@ -70,6 +70,10 @@ $hero--tweakpoint: 1080px;
   display: flex;
   align-items: flex-end;
 
+  @include media-query($breakpoint--small - 1, max-width) {
+    grid-row: 6;
+  }
+
   @include media-query($breakpoint--small) {
     grid-column: 5 / 9;
   }
@@ -85,21 +89,23 @@ $hero--tweakpoint: 1080px;
 }
 
 .h-hero__play {
-  width: 5.6rem;
-  height: 5.6rem;
   grid-column: 1 / 2;
-  grid-row: 3;
+  
+  @include media-query($breakpoint--small - 1, max-width) {
+    align-content: flex-end;
+    grid-row: 6;
+  }
 
   @include media-query($breakpoint--small) {
-    width: 10rem;
-    height: 10rem;
+    grid-row: 2 / 5;
+    display: flex;
+    align-items: center;
   }
 
   @include media-query($breakpoint--large) {
     grid-column: 1 / 2;
     grid-row: 2;
-    width: auto;
-    height: auto;
+    display: block;
   }
 
   @include media-query($breakpoint--x-large) {
@@ -151,7 +157,7 @@ $hero--tweakpoint: 1080px;
   grid-column: 2 / 7;
 
   @include media-query($breakpoint--small) {
-    grid-column: 2 / 9;
+    grid-column: 4 / 9;
   }
 
   @include media-query($breakpoint--medium) {
@@ -177,10 +183,6 @@ $hero--tweakpoint: 1080px;
 .intro__media-2 {
   grid-row: 4;
   grid-column: 1 / 7;
-
-  @include media-query($breakpoint--small) {
-    grid-column: 1 / 9;
-  }
 
   @include media-query($breakpoint--medium) {
     grid-row: 2;
@@ -214,10 +216,6 @@ $hero--tweakpoint: 1080px;
 .intro__media-3 {
   grid-column: 1 / 7;
 
-  @include media-query($breakpoint--small) {
-    grid-column: 1 / 9;
-  }
-
   @include media-query($breakpoint--medium) {
     grid-column: 1 / 7;
     grid-row: 4;
@@ -242,30 +240,69 @@ $hero--tweakpoint: 1080px;
   }
 }
 
-.step {
-  height: 100vh;
-}
-
 .step__wrapper {
   grid-column: 1 / 9;
+  @include media-query($breakpoint--medium - 1, max-width) {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; 
+  }
 
   @include media-query($breakpoint--medium) {
+    grid-column: 1 / 4;
+  }
+
+  @include media-query($breakpoint--xx-large) {
     grid-column: 2 / 4;
+  }
+
+  &::after {
+    content: "";
+    display: block;
+    clear: both;
+    height: 100%;
   }
 }
 
+.step-outline--first,
 .step__outline {
   @include media-query($breakpoint--medium) {
-    grid-column: 2 / 4;
+    grid-column: 2 / 5;
     height: 100vh;
     display: flex;
     align-items: center;
   }
 }
 
+.step__outline {
+  @include media-query($breakpoint--medium - 1, max-width) {
+    // position: absolute;
+    // left: 0;
+    // bottom: 0;
+    // width: 100%;
+    // min-height: fit-content;
+    // height: 50vh;
+    padding: spacing(2) 0;
+  }
+}
+
+.step-outline--first {
+  @include media-query($breakpoint--medium - 1, max-width) {
+    height: 50vh;
+  }
+}
+
 .step__controls {
   position: absolute;
   right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 0;
+  height: 100vh;
+}
+
+.step__text {
+  @extend .type--xs;
+
+  @include media-query($breakpoint--large) {
+    font-size: 2.1rem;
+  }
 }

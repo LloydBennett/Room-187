@@ -2,8 +2,10 @@
   let date = new Date() 
   let year = date.getFullYear()
 %>
+
 <footer class="footer">
   <div class="container grid grid--all grid--gap-xl">
+    <% if (showFull) { %>
     <div class="footer__col-one">
       <h4 class="type--caps type--bold type--white type--display type--xs type--s-margin">
         Company
@@ -30,6 +32,7 @@
         </div>
       </form>
     </div>
+    <% } %>
     <div class="footer__socials flex gap--s flex--middle">
       <%- include('../partials/display-socials') -%>
     </div>
@@ -37,6 +40,12 @@
       <span class="type--xs type--white">
         &copy;<%- year %>&nbsp;<%- siteDetails.data.brand_name %>
       </span>
+    </div>
+
+    <div class="footer__credits">
+      <a href="https://lloydjamiebennett.co.uk/" target="_blank" class="type--xs type--white">
+        Site by L.J.B
+      </a>
     </div>
   </div>
 </footer>

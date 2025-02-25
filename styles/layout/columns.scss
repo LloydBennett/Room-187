@@ -16,7 +16,7 @@
 }
 
 .column--header {
-	grid-column: 1 / 9;
+	grid-column: 1 / 7;
 
 	@include media-query($breakpoint--x-large) {
 		grid-column: 1 / 5;

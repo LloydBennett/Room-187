@@ -43,7 +43,8 @@
 @import './helpers/no-overflow.scss';
 @import './helpers/position.scss';
 @import './helpers/full-height.scss';
-
+@import './helpers/z-index.scss';
+@import './helpers/flex.scss';
 
 // ------------------------------------ // ------------------------------------------
 // -------------------------------- L A Y O U T -------------------------------------
@@ -83,6 +84,8 @@
 @import './components/room-key.scss';
 @import './components/error.scss';
 @import './components/close.scss';
+@import './components/marquee.scss';
+@import './components/rotation.scss';
 
 // ------------------------------------ // ------------------------------------------
 // -------------------------------- P A G E S ---------------------------------------

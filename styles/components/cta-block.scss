@@ -1,5 +1,12 @@
-.cta-block-span {
-  @include media-query(524px) {
-    display: block;
+.cta-block__column {
+  grid-column: 2 / 8;
+  max-width: 76rem;
+
+  @include media-query($breakpoint--x-large) {
+    max-width: none;
   }
+
+  @include media-query($breakpoint--xx-large) {
+    grid-column: 3 / 7;
+  }   
 }

@@ -7,9 +7,8 @@ let stats = siteDetails.data.stats
   <div class="container grid grid--all grid--staggered">
     <% stats.forEach((stat) => { %>
       <div class="column--staggered">
-        <span class="type--l block type--white type--bold type--display type--xs-margin">
-          <% let number = new Intl.NumberFormat().format(stat.numerical_value) %>
-          <%- number %>
+        <span class="type--l block type--white type--bold type--display type--xs-margin" data-stats="<%- stat.numerical_value %>">
+         0
         </span>
         <span class="type--xs type--grey-200">
           <%- stat.platform_name %>&nbsp;<%- stat.unit %>
