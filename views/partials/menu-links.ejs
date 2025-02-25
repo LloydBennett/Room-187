@@ -8,7 +8,9 @@
   
     <li class="<%- list_class %>" <% if(dataAttr) {%><%- dataAttr %><%}%>>
       <a href="<%- l.link.url %>" class="<%- list_text_class %>">
-        <%- name %>
+        <span data-split-text>
+          <%- name %>
+        </span>
       </a>
     </li>
   <% }) %>

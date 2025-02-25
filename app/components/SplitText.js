@@ -11,8 +11,7 @@ export default class SplitText extends Components {
       }
     })
     
-    gsap.registerPlugin(ScrollTrigger)
-    gsap.registerPlugin(CustomEase)
+    gsap.registerPlugin(ScrollTrigger, CustomEase)
     CustomEase.create("zoom", "0.71, 0, 0.06, 1")
 
     this.splitTextCache = []
