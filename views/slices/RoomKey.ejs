@@ -32,7 +32,10 @@
           <div class="step-outline--first" data-progress-steps></div>
           <% sections.forEach((s) => { %>
             <div class="step__outline" data-progress-steps>
-              <p class="step__text type--white"><%- s.outline %></p>
+              <div>
+                <h4 class="type--white type--s type--x-bold type--caps type--xs-margin"><%- s.outline_title %></h4>
+                <p class="type--xs type--white"><%- s.outline %></p>
+              </div>
             </div>
         <% }) %>
         </div>
