@@ -15,17 +15,10 @@
 }
 
 .video__overlay {
-  opacity: 0;
-  pointer-events: none;
-  z-index: 6;
+  display: none;
 
   &.open {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .overlay {
-    clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%);
+    display: block;
   }
 
   .video--bg {

@@ -6,10 +6,21 @@
        let name = uid.replace(/\b\w/g, a => a.toUpperCase());
     %>
   
-    <li class="<%- list_class %>" <% if(dataAttr) {%><%- dataAttr %><%}%>>
-      <a href="<%- l.link.url %>" class="<%- list_text_class %>">
-        <%- name %>
+    <li class="<%- list_class %>">
+      <a href="<%- l.link.url %>" class="<%- list_text_class %> relative" <% if(dataAttr) {%><%- dataAttr %><%}%>>
+        <span data-split-text>
+          <%- name %>
+        </span>
       </a>
+      <div class="nav-menu__hover" data-nav-hover></div>
     </li>
   <% }) %>
+  <li class="<%- list_class %>">
+    <a href="<%- siteDetails.data.main_cta_text %>" target="_blank" class="<%- list_text_class %> relative" <% if(dataAttr) {%><%- dataAttr %><%}%>>
+      <span data-split-text>
+        Tickets
+      </span>
+    </a>
+    <div class="nav-menu__hover" data-nav-hover></div>
+  </li>
 </ul>

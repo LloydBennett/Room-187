@@ -18,7 +18,7 @@ class App {
     this.createContent()
     this.createPages()
     this.addLinkListeners()
-    //this.createNavigation()
+    this.createNavigation()
     this.createVideoPlayer()
     this.createStats()
     //this.createOverlay()
@@ -27,7 +27,6 @@ class App {
   setUpScrollTrigger() {
     gsap.registerPlugin(ScrollTrigger)
     
-    // Synchronize Lenis scrolling with GSAP's ScrollTrigger plugin
     this.lenisScroll.on('scroll', ScrollTrigger.update);
 
     gsap.ticker.add((time) => {

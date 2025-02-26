@@ -6,7 +6,7 @@
 <body <% if (page === "error") { %>class="error"<% } %>>
   <% useZoomTransition = (page === "home") ? true : false %>
   <%- include('./partials/loader', { zoomIn: useZoomTransition } ) -%>
-  <% if (page === "error") { %><%- include('./partials/navigation-bar') -%><% } %>
+  <%- include('./partials/navigation-bar') -%>
   <main id="main" data-page="<%- page %>" class="main <% if (page !== "error") { %><%- page %><% } %> relative">
     <% if (page !== "error") { %><%- include('./partials/navigation-menu') -%><% } %>
     <div>
