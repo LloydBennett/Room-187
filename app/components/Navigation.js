@@ -24,11 +24,12 @@ export default class Navigation extends Components {
     this.isAnimating = false
     this.isOpen = false
     this.scroll = scroll
-    this.filterId = '#filter-3'
+    this.filterId = '#filter-4'
+    this.feTurbulence = document.querySelector(`${this.filterId} > feTurbulence`);
+    this.primitiveValues = { turbulence: 0 };
+
     this.createLinkTimeLine()
     this.addEventListeners()
-    
-    console.log(this.elements.navLinkHover)
   }
 
   create() {
@@ -45,23 +46,36 @@ export default class Navigation extends Components {
     })
 
     this.elements.navLinks.forEach(link => {
-      let linkHover = link.nextElementSibling
-      
+      let linkHover = link.nextElementSibling;
+
+      if (!linkHover) return;
+  
       let linkTl = gsap.timeline({
         paused: true,
         onStart: () => {
-          linkHover.style.filter = `url(${this.filterId}`
+          linkHover.style.filter = `url(${this.filterId})`;
         },
         onComplete: () => {
           linkHover.style.filter = 'none';
+        },
+        onUpdate: () => {
+          this.feTurbulence.setAttribute('baseFrequency', this.primitiveValues.turbulence)
         }
       });
-
+  
       let onMouseEnterFn = () => linkTl.restart();
       let onMouseLeaveFn = () => linkTl.progress(1).kill();
-
+  
       link.addEventListener('mouseenter', onMouseEnterFn);
       link.addEventListener('mouseleave', onMouseLeaveFn);
+  
+      linkTl.to(this.primitiveValues, { 
+        duration: 0.6,
+        ease: "steps(12)",
+        startAt: {turbulence: 0.02},
+        turbulence: 0
+      });
+
     });
     
   }
@@ -102,14 +116,19 @@ export default class Navigation extends Components {
   }
 
   createLinkTimeLine() {
-    // init timeline
     this.linkTl = gsap.timeline({
       paused: true,
       onStart: () => {
-        this.elements.navLinkHover.style.filter = `url(${this.filterId}`
+        this.elements.navLinks.forEach(link => {
+          let linkHover = link.querySelector('[data-nav-hover]');
+          if (linkHover) linkHover.style.filter = `url(${this.filterId})`;
+        });
       },
       onComplete: () => {
-        this.elements.navLinkHover.style.filter = 'none';
+        this.elements.navLinks.forEach(link => {
+          let linkHover = link.querySelector('[data-nav-hover]');
+          if (linkHover) linkHover.style.filter = 'none';
+        });
       }
     });
   }
