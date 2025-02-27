@@ -1,4 +1,7 @@
-<% let page = pageType %>
+<% 
+  let page = pageType 
+  let showFullFooter = page !== "error"? true : false
+%>
 
 
 <%- include('./partials/head', { page: page } ) -%>
@@ -22,7 +25,8 @@
           <%- include('./pages/home') -%>
         <% } %>
       </div>
-      <%- include('./partials/footer', { showFull: false } ) -%>
+      
+      <%- include('./partials/footer', { showFull: showFullFooter } ) -%>
     </div>
     
     

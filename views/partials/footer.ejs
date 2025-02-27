@@ -4,7 +4,7 @@
 %>
 
 <footer class="footer">
-  <div class="container grid grid--all grid--gap-xl">
+  <div class="container grid grid--all <% if (showFull) { %>grid--gap-xl<% } else { %>footer-s__gap<%}%>">
     <% if (showFull) { %>
     <div class="footer__col-one">
       <h4 class="type--caps type--bold type--white type--display type--xs type--s-margin">
