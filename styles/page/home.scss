@@ -253,7 +253,7 @@ $hero--tweakpoint: 1080px;
   }
 
   @include media-query($breakpoint--xx-large) {
-    grid-column: 2 / 4;
+    grid-column: 2 / 5;
   }
 
   &::after {
