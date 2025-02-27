@@ -97,3 +97,13 @@
     grid-column: 6 / 9;
   }
 }
+
+.footer-row--3 {
+  grid-row: 3;
+}
+
+.footer-row--3-xl {
+  @include media-query($breakpoint--x-large) {
+    grid-row: 3;
+  }
+}

@@ -33,16 +33,16 @@
       </form>
     </div>
     <% } %>
-    <div class="footer__socials flex gap--s flex--middle">
+    <div class="footer__socials flex gap--s flex--middle <% if (showFull) { %>footer-row--3-xl<%} %>">
       <%- include('../partials/display-socials') -%>
     </div>
-    <div class="footer__signage">
+    <div class="footer__signage <% if (showFull) { %>footer-row--3<%} %>">
       <span class="type--xs type--white">
         &copy;<%- year %>&nbsp;<%- siteDetails.data.brand_name %>
       </span>
     </div>
 
-    <div class="footer__credits">
+    <div class="footer__credits <% if (showFull) { %>footer-row--3<%} %>">
       <a href="https://lloydjamiebennett.co.uk/" target="_blank" class="type--xs type--white">
         Site by L.J.B
       </a>
