@@ -50,22 +50,13 @@
 
 .artist__play-btn {
   position: absolute;
-  
-  @include media-query($breakpoint--medium - 1, max-width) {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  @include media-query($breakpoint--medium) {
-    right: spacing(5);
-    bottom: spacing(5);
-  }
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   
   @include media-query($breakpoint--xx-large) {
     width: auto;
     height: auto;
-    bottom: spacing(6);
   }
 
   svg {
