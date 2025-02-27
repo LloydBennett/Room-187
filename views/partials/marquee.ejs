@@ -1,14 +1,14 @@
 <% count = count == null | undefined? 6 : count %>
 <%- count %>
 
-<div class="rotate--small section--l-m-b bg--purple-300 no-overflow">
-  <div class="marquee flex flex--no-wrap">
+<div class="marquee rotate--small section--l-m-b bg--purple-300 no-overflow">
+  <div class="marquee__wrapper flex flex--no-wrap">
     <% for(let i = 0; i < count; i++) { %>
       <div class="marquee__item">
         <span class="marquee-item__icon no-flex-shrink">
           <%- include('../partials/svg/asterisk') -%>
         </span>
-        <span class="type--s type--white type--caps type--bold no-wrap">Past Performers</span>
+        <span class="type--s type--white type--display type--caps type--bold no-wrap">Past Performers</span>
       </div>
     <% } %>
   </div>
