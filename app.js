@@ -90,13 +90,13 @@ app.get('/', async (req, res) => {
 //   res.render('base', { ...defaults, document, pageType })
 // })
 
-// app.get('/contact', async (req, res) => {
-//   const pageType = 'contact'
-//   const document = await client.getSingle('contact_us')
-//   const defaults = await handleRequest(req)
+app.get('/contact', async (req, res) => {
+  const pageType = 'contact'
+  const document = await client.getSingle('contact_us')
+  const defaults = await handleRequest(req)
 
-//   res.render('base', { ...defaults, document, pageType })
-// })
+  res.render('base', { ...defaults, document, pageType })
+})
 
 app.get('*', async (req, res) => {
   let pageType = "error"

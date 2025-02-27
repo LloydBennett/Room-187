@@ -12,8 +12,10 @@
     <div>
       <div <% if (page !== "home" && page !== "error") { %>class="hero--p-t"<% } %>>
         <% switch(page) {
-          
-          case 'error' : %>
+          case 'contact' : %>
+            <%- include('./pages/contact') %>
+            <%  break; %>
+          <% case 'error' : %>
             <%- include('./pages/error') -%>
             <% break; %>
           <% default : %>
