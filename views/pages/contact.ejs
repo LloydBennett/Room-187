@@ -2,7 +2,7 @@
   let content = document.data.content 
   let thumbnail = document.data.image
 %>
-<section class="section--l-m-b" data-hero>
+<section class="section--m-m-b" data-hero>
   <div class="container grid">
     <div class="column--full-width contact__heading">
       <h1 class="type--special type--white type--display type--x-bold type--s-margin type--caps" data-split-text>
@@ -10,37 +10,34 @@
       </h1>
     </div>
   </div>
-  <picture class="block--full-width thumbnail thumbnail--poster">
-    <source media="(max-width: 767px)" srcset="<%- thumbnail.small.url %>">
-    <source media="(max-width: 1199px)" srcset="<%- thumbnail.url %>">
-    <source media="(min-width: 1200px)" srcset="<%- thumbnail.large.url %>">
-    <img src="<%- thumbnail.url %>" alt="<%- thumbnail.alt %>">
-  </picture>
+  
 </section>
 
 <% if(content !== null) { %>
-<section class="section--l-m-b">
+<section>
   <div class="container grid">
-    <% content.forEach((block) => { %>
-
+    <div class="two--columns">hhh</div>
     <div class="two--columns">
-      <div class="flex gap--m">
-        <div class="thumbnail no-flex-shrink contact__icon">
-          <% let icon = block.icon.replace(/\s+/g, '-').toLowerCase() %>
-
-          <%- include(`../partials/svg/icons/64/${icon}`, { iconPathClass: "icon--purple" }) -%>
-        </div>
-        <div>
+      <% content.forEach((block, i) => { %>
+        <div class="section--m-m-b">
+          
           <h3 class="type--m type--x-bold type--white type--caps type--display type--l-margin">
             <%- block.content_title %>
           </h3>
           <p class="type--xs type--white">
             <%- block.content_paragraph %>
           </p>
+          
         </div>
+      
+      <% }) %>
+      <div>
+        <a href="mailto:<%- siteDetails.data.email_address %>" target="_blank" class="link link--cta type--s type--white">
+          <%- siteDetails.data.email_address %>
+        </a>
       </div>
     </div>
-    <% }) %>
+    
     
   </div>
 
@@ -48,10 +45,6 @@
 <% } %>
 <section class="section--l-m-b">
   <div class="container grid">
-    <div class="column--full-width">
-      <a href="mailto:<%- siteDetails.data.email_address %>" target="_blank" class="link link--cta type--m type--white">
-        <%- siteDetails.data.email_address %>
-      </a>
-    </div>
+    
   </div>
 </section>
