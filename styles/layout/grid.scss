@@ -34,10 +34,6 @@
   @include media-query($breakpoint--large) {
     grid-row-gap: spacing(11);
   }
-
-  @include media-query($breakpoint--x-large) {
-    grid-row-gap: spacing(24);
-  }
 }
 
 .grid--staggered {
