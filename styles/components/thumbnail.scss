@@ -25,3 +25,11 @@
   border-color: $colour--white;
   border-style: solid;
 }
+
+.thumbnail-polaroid--sm {
+  @extend .thumbnail--polaroid;
+
+  @include media-query($breakpoint--small - 1, max-width) {
+    border-width: 0.5rem 0.5rem 2rem 0.5rem;
+  }
+}

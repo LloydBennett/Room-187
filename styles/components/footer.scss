@@ -99,7 +99,11 @@
 }
 
 .footer-row--3 {
-  grid-row: 3;
+  grid-row: 4;
+
+  @include media-query($breakpoint--x-large) {
+    grid-row: 3;
+  }
 }
 
 .footer-row--3-xl {

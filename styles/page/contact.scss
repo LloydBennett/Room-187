@@ -1,3 +1,10 @@
+.contact__content {
+  @include media-query($breakpoint--medium - 1, max-width) {
+    overflow: hidden;
+    transform: translateY(-10%);
+  }
+}
+
 .contact__heading {
   @include media-query($breakpoint--large) {
 		text-align: center;
@@ -20,6 +27,71 @@
   svg {
     @include media-query($breakpoint--small - 1, max-width) {
       height: 100%;
+    }
+  }
+}
+
+.collage {
+  @include media-query($breakpoint--medium - 1, max-width) {
+    display: flex;
+    transform: translateX(-15%) rotate(-7deg);
+    padding-top: 20%;
+    margin-bottom: spacing(11);
+  }
+
+  .thumbnail {
+    position: relative;
+
+    @include media-query($breakpoint--medium - 1, max-width) {
+      flex-shrink: 0;
+      align-self: flex-end;
+    }
+
+    @include media-query($breakpoint--medium) {
+      max-width: 25rem;
+      width: 80%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    @include media-query($breakpoint--large) {
+      max-width: 40rem;
+    }
+
+    @include media-query($breakpoint--x-large) {
+      max-width: 50rem;
+    }
+
+    &:first-child {
+      @include media-query($breakpoint--medium - 1, max-width) {
+        width: 40%;
+        transform: translateX(0.5rem);
+      }
+
+      @include media-query($breakpoint--medium) {
+        transform: translate(-10%, 0) rotate(-5deg);
+      }
+    }
+
+    &:nth-child(2) {
+      @include media-query($breakpoint--medium - 1, max-width) {
+        width: 60%;
+      }
+
+      @include media-query($breakpoint--medium) {
+        transform: translate(0, -30%) rotate(-25deg);
+      }
+    }
+
+    &:nth-child(3) {
+      @include media-query($breakpoint--medium - 1, max-width) {
+        width: 30%;
+        transform: translateX(-0.5rem);
+      }
+
+      @include media-query($breakpoint--medium) {
+        transform: translate(0, -50%) rotate(25deg);
+      }
     }
   }
 }
