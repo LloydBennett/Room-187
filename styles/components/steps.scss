@@ -12,7 +12,7 @@
     //min-height: 100vh;
     //max-height: 100vh; /* Prevents infinite height */
   
-    overflow-y: auto;
+    //overflow-y: auto;
     scroll-snap-type: y mandatory;
     scrollbar-width: none; /* Hide scrollbar in Firefox */
     -ms-overflow-style: none; /* Hide scrollbar in IE/Edge */
@@ -40,7 +40,6 @@
     align-items: center;
     //min-height: 100vh;
     flex-shrink: 0;
-    border-bottom: 2px solid white;
   }
 }
 
