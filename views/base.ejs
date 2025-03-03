@@ -1,4 +1,7 @@
-<% let page = pageType %>
+<% 
+  let page = pageType 
+  let showFullFooter = page !== "error"? true : false
+%>
 
 
 <%- include('./partials/head', { page: page } ) -%>
@@ -12,15 +15,18 @@
     <div>
       <div <% if (page !== "home" && page !== "error") { %>class="hero--p-t"<% } %>>
         <% switch(page) {
-          
-          case 'error' : %>
+          case 'contact' : %>
+            <%- include('./pages/contact') %>
+            <%  break; %>
+          <% case 'error' : %>
             <%- include('./pages/error') -%>
             <% break; %>
           <% default : %>
           <%- include('./pages/home') -%>
         <% } %>
       </div>
-      <%- include('./partials/footer', { showFull: false } ) -%>
+      
+      <%- include('./partials/footer', { showFull: showFullFooter } ) -%>
     </div>
     
     

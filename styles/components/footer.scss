@@ -24,6 +24,14 @@
   }
 }
 
+.footer-s__gap {
+  grid-row-gap: spacing(4);
+
+  @include media-query($breakpoint--x-large) {
+    grid-row-gap: 0;
+  }
+}
+
 .footer__col-two {
   grid-column: 4 / 7;
   grid-row: 2;
@@ -87,5 +95,19 @@
 
   @include media-query($breakpoint--large) {
     grid-column: 6 / 9;
+  }
+}
+
+.footer-row--3 {
+  grid-row: 4;
+
+  @include media-query($breakpoint--x-large) {
+    grid-row: 3;
+  }
+}
+
+.footer-row--3-xl {
+  @include media-query($breakpoint--x-large) {
+    grid-row: 3;
   }
 }
