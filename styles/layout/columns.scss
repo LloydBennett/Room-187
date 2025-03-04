@@ -8,10 +8,17 @@
 
 .column--centered {
 	@extend .column--full-width;
-	text-align: center;
 
 	@include media-query($breakpoint--large) {
 		grid-column: 2 / 8;
+	}
+}
+
+.column--centered-xl {
+	@extend .column--centered;
+
+	@include media-query($breakpoint--x-large) {
+		grid-column: 3 / 7;
 	}
 }
 
@@ -70,9 +77,22 @@
 }
 
 .three--columns-slim {
+
+	.thumbnail {
+		@include media-query($breakpoint--large - 1, max-width) {
+			transform: rotate(-2deg);
+		}
+	}
+
 	&:nth-child(odd) {
 		@include media-query($breakpoint--large - 1, max-width) {
 			grid-column: 1 / 5;
+		}
+
+		.avatar__stack {
+			@include media-query($breakpoint--large) {
+				transform: rotate(2deg);
+			}
 		}
 	}
 
@@ -80,6 +100,12 @@
 		@include media-query($breakpoint--large - 1, max-width) {
 			grid-column: 5 / 9;
 			margin-bottom: spacing(8);
+		}
+
+		.avatar__stack {
+			@include media-query($breakpoint--large) {
+				transform: rotate(-2deg);
+			}
 		}
 	}
 
