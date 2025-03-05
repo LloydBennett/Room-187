@@ -56,26 +56,75 @@
 }
 
 .avatar__stack {
-  transition: 400ms ease outline,
-                400ms ease box-shadow;
-  outline: $spacing-rule solid transparent;
-  box-shadow: 0 0 20px 0 transparent;
-  box-shadow: 0 10px 0 5px transparent;
-
+  display: block;
+  transition: 300ms ease;
+  
+  @include media-query($breakpoint--large) {
+    background-color: $colour--white;
+    border-width: 1rem;
+    box-shadow: 0 1rem 2rem 0.5rem transparent;
+    border-color: $colour--white;
+    border-style: solid;
+  }
 
   &:hover {
-    outline: $spacing-rule solid $colour--gold-400;
-    transition: 400ms ease outline,
-                400ms ease box-shadow;
-    box-shadow: 0 10px 80px 5px rgba(234, 186, 15, 0.25);
-
-
+    @include media-query($breakpoint--large) {
+      transition: 300ms ease;
+      background-color: $colour--gold-400;
+      border-color: $colour--gold-400;
+      box-shadow: 0 1rem 2rem 0.5rem rgba($colour--gold-400, 0.5);
+    }
+    
     .avatar--highlighted {
       opacity: 1;
       transition: 300ms ease;
     }
+
+    .thumbnail {
+      transition: 300ms ease;
+
+      @include media-query($breakpoint--large - 1, max-width) {
+        border-color: $colour--gold-400;
+        box-shadow: 0 1rem 2rem 0.5rem rgba($colour--gold-400, 0.5);
+      }
+    }
+  }
+
+  .thumbnail {
+    @include media-query($breakpoint--large - 1, max-width) {
+      @include polaroid;
+      transition: 300ms ease;
+      box-shadow: 0 1rem 2rem 0.5rem transparent;
+    }
   }
 }
+
+.avatar-stack__info {
+  @include media-query($breakpoint--large - 1, max-width) {
+    margin-top: spacing(4);
+  }
+
+  @include media-query($breakpoint--large) {
+    padding-top: spacing(2);
+  }
+}
+
+.avatar-stack__bio {
+  color: $colour--grey-200;
+
+  @include media-query($breakpoint--large) {
+    color: $colour--grey-400;
+  }
+}
+
+.avatar-stack__name {
+  color: $colour--white;
+
+  @include media-query($breakpoint--large) {
+    color: $colour--black;
+  }
+}
+
 
 .avatar--highlighted {
   opacity: 0;

@@ -29,3 +29,11 @@
 .flex--no-wrap {
   flex-wrap: nowrap;
 }
+
+.flex--end {
+  align-items: flex-end;
+}
+
+.flex--grow {
+  flex-grow: 1;
+}

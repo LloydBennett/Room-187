@@ -4,44 +4,38 @@ let heroImage = document.data.hero_image
 let sideImage = document.data.side_image 
 %>
 
-<div class="container grid about__content">
-  <div class="column--header section--m-m-b">
-    <h1 class="type--xl type--white type--x-bold type--display type--caps">
-      <span class="relative">
-        <%- document.data.title %>
-        <span class="thumbnail underline">
-          <%- include('../partials/svg/underline') -%>
-        </span>
-      </span>
-    </h1>
+<section class="hero hero--sm" data-hero data-hero-content>
+  <div class="relative flex section--s-p-b height">
+    <div class="overlay no-overflow">
+      <div class="hero__bg overlay" data-bg data-home-bg style="background-image: url('<%- document.data.hero_image.url %>')"></div>
+    </div>
+    <div class="hero__g-overlay overlay"></div>
+    <div class="container grid--all hero__grid relative" data-hero-content>
+      
+      <div class="hero__title flex flex--end text-right">
+        <h1 class="type--xl type--display type--caps type--x-bold type--outline-white" data-main-title data-split-text>
+          <%- document.data.title %>
+        </h1>      
+      </div>
+    </div>
   </div>
-  <% if(section !== null ) { %>
-  <div class="column--content">
-    <% section.forEach((s) => { %>
-    <p class="type--xs type--white">
-      <%- s.paragraph %>
-    </p>
-    <% }) %>
-  </div>
-  <% } %>
-  <div class="about__hero">
-    <picture class="thumbnail">
-      <source media="(max-width: 1199px)" srcset="<%- heroImage.url %>">
-      <source media="(min-width: 1200px)" srcset="<%- heroImage.large.url %>">
-      <img src="<%- heroImage.url %>" alt="<%- heroImage.alt %>">
-    </picture>
-  </div>
-
-  <div class="about__side">
-    <picture class="thumbnail">
-      <source media="(max-width: 1199px)" srcset="<%- sideImage.url %>">
-      <source media="(min-width: 1200px)" srcset="<%- sideImage.large.url %>">
-      <img src="<%- heroImage.url %>" alt="<%- sideImage.alt %>">
-    </picture>
-  </div>
+</section>
+<div class="scroll-over section--l-p-t bg--black">
+  <section class="section--l-m-b">
+    <div class="container grid">
+      <% if(section !== null ) { %>
+        <div class="column--centered-xl">
+          <% section.forEach((s) => { %>
+          <p class="type--xs type--white">
+            <%- s.paragraph %>
+          </p>
+          <% }) %>
+        </div>
+      <% } %>
+    </div>
+  </section>
   
+  <%- include('../partials/team-members') -%>
+  <%- include('../partials/stats') -%>
+  <%- include('../partials/cta-block') -%>
 </div>
-
-<%- include('../partials/team-members') -%>
-<%- include('../partials/stats') -%>
-<%- include('../partials/cta-block') -%>

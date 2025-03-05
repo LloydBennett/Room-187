@@ -20,7 +20,7 @@
       }
 
       &:last-child {
-        transform: translateY(-0.8rem);
+        transform: translateY(-0.8rem) rotate(45deg);
         transition: transform 300ms ease 300ms;
 
         @include media-query($breakpoint--x-large) {
