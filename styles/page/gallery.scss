@@ -1,0 +1,26 @@
+.gallery-grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 3.3%;
+
+  @include media-query($breakpoint--medium) {
+    gap: 5%;
+  }
+}
+
+.gallery-grid__item {
+  width: 30%;
+
+  @include media-query($breakpoint--medium) {
+    width: 20%;
+  }
+
+  @include media-query($breakpoint--xx-large) {
+    width: 15%;
+  }
+
+  .thumbnail {
+    cursor: pointer;
+  }
+}

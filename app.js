@@ -90,6 +90,14 @@ app.get('/team/:uid', async (req, res) => {
   res.render('base', { ...defaults, document, pageType })
 })
 
+app.get('/gallery', async (req, res) => {
+  const pageType = 'gallery'
+  const document = await client.getSingle('gallery')
+  const defaults = await handleRequest(req)
+
+  res.render('base', { ...defaults, document, pageType })
+})
+
 app.get('/contact', async (req, res) => {
   const pageType = 'contact'
   const document = await client.getSingle('contact_us')

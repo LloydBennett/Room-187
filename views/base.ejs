@@ -13,10 +13,13 @@
   <main id="main" data-page="<%- page %>" class="main <% if (page !== "error") { %><%- page %><% } %> relative">
     <% if (page !== "error") { %><%- include('./partials/navigation-menu') -%><% } %>
     <div>
-      <div <% if (page === "contact" || page === "team_members") { %>class="hero--p-t"<% } %>>
+      <div <% if (page !== "home" && page !== "about" && page !== "error") { %>class="hero--p-t"<% } %>>
         <% switch(page) {
           case 'about' : %>
             <%- include('./pages/about') %>
+            <%  break; %>
+          <% case 'gallery' : %>
+            <%- include('./pages/gallery') %>
             <%  break; %>
           <% case 'contact' : %>
             <%- include('./pages/contact') %>

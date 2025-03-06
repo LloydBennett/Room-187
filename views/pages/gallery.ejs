@@ -1,0 +1,68 @@
+<% 
+
+let gallery = document.data.gallery
+const checkEmptyItem = (item) =>
+(!item.media || Object.keys(item.media).length === 1 && item.media.link_type === 'Media')
+    
+const isGalleryEmpty = gallery.length > 0 && gallery.every(checkEmptyItem)
+
+console.log(gallery)
+
+%>
+
+<div class="container <% if(!isGalleryEmpty){%>gallery-grid<%} else {%>grid<%}%>">
+  <% if(gallery.length !== 0 && !isGalleryEmpty) { %>
+    <% gallery.forEach((item, i) => { %>
+      <% 
+        let isItemEmpty = checkEmptyItem(item) 
+        let isSlideShowEmpty = Object.keys(item.slideshow_image).length === 0
+
+        console.log(item.slideshow_image.length)
+      %>
+      <% if(!isItemEmpty) { %>
+        <% if(item.media.kind === "file") { %>
+          <div class="gallery-grid__item">
+            <div class="thumbnail">
+              <video src="<%- item.media.url %>" data-gallery-item="video" data-gallery-id="<%- item.media.id %>" autoplay muted loop></video>
+            </div>
+          </div>
+        <% } else { %>
+          <% if(!isSlideShowEmpty) { %>
+            <div class="gallery-grid__item">
+              <div class="thumbnail">
+                <img src="<%- item.media.url %>" alt="<%- item.media.alt %>" class="thumbnail" data-gallery-item="image" data-gallery-src="<%- item.slideshow_image.url %>" data-gallery-id="<%- item.media.id %>">
+              </div>
+            </div>
+          <% } %>
+        <% } %>
+        
+      <% } %>
+
+    <% }) %>
+
+    <div class="overlay overlay--reveal flex--middle z-index--4" data-slideshow data-lenis-prevent>
+      <%- include('../partials/close-button') -%>
+      <img src="" alt="" class="thumbnail slideshow__img" data-slideshow-image>
+      <button class="absolute thumbnail slideshow__prev" data-slideshow-prev>
+        <%- include('../partials/svg/carousel-button') -%>
+      </button>
+      <button class="thumbnail slideshow__prev" data-slideshow-next>
+        <%- include('../partials/svg/carousel-button') -%>
+      </button>
+    </div>
+
+  <%} else { %>
+    <div class="column--centered text-center section--l-m-b" data-hero>
+      <h1 class="type--white type--caps type--display type--xl type--x-bold type--l-margin" data-split-text>
+        Nothing Here&hellip;&nbsp;Yet!</span>
+      </h1>
+      <p class="type--xs type--white" data-split-text>New drops, dope visuals, and all the good stuff you love are on the way. Check back soon, it&apos;s gonna be worth the wait!</p>
+      <div class="button--m-t" data-misc>
+        <%- include('../partials/button', { buttonText: "Back to the room", link: "/", link_target: false, large: true, primaryBtn: true, fullWidth: false }) -%>
+      </div>
+    </div>
+    
+  <% } %>
+  
+</div>
+
