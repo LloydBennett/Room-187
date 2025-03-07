@@ -10,7 +10,7 @@ console.log(gallery)
 
 %>
 
-<div class="container <% if(!isGalleryEmpty){%>gallery-grid<%} else {%>grid<%}%>">
+<div class="container <% if(!isGalleryEmpty){%>gallery-grid<%} else {%>grid<%}%>" data-gallery>
   <% if(gallery.length !== 0 && !isGalleryEmpty) { %>
     <% gallery.forEach((item, i) => { %>
       <% 
@@ -23,7 +23,9 @@ console.log(gallery)
         <% if(item.media.kind === "file") { %>
           <div class="gallery-grid__item">
             <div class="thumbnail">
-              <video src="<%- item.media.url %>" data-gallery-item="video" data-gallery-id="<%- item.media.id %>" autoplay muted loop></video>
+              <video data-gallery-item="video" data-gallery-id="<%- item.media.id %>" autoplay muted loop>
+                <source src="<%- item.media.url %>" type="video/mp4" />
+              </video>
             </div>
           </div>
         <% } else { %>
@@ -40,15 +42,16 @@ console.log(gallery)
 
     <% }) %>
 
-    <div class="overlay overlay--reveal flex--middle z-index--4" data-slideshow data-lenis-prevent>
+    <div class="fixed cannot-interact bg--black overlay overlay--reveal flex--middle z-index--5" data-slideshow data-lenis-prevent>
       <%- include('../partials/close-button') -%>
-      <img src="" alt="" class="thumbnail slideshow__img" data-slideshow-image>
-      <button class="absolute thumbnail slideshow__prev" data-slideshow-prev>
+      <div class="slideshow__media thumbnail" data-slideshow-container></div>
+
+      <div class="slideshow__controls slideshow__prev thumbnail__inline" data-slideshow-prev>
         <%- include('../partials/svg/carousel-button') -%>
-      </button>
-      <button class="thumbnail slideshow__prev" data-slideshow-next>
+      </div>
+      <div class="slideshow__controls slideshow__next thumbnail__inline" data-slideshow-next>
         <%- include('../partials/svg/carousel-button') -%>
-      </button>
+      </div>
     </div>
 
   <%} else { %>
