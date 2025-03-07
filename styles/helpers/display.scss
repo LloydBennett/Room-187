@@ -14,3 +14,7 @@
 .hidden {
   display: none;
 }
+
+.cannot-interact {
+  pointer-events: none;
+}
