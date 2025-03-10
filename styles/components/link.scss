@@ -1,9 +1,13 @@
 .link {
   display: inline-block;
-  position: relative;
+  text-decoration: underline;
+  text-decoration-color: $colour--gold-400;
 }
 
 .link--cta {
+  display: inline-block;
+  position: relative;
+
   &::after {
     content: "";
     width: 100%;

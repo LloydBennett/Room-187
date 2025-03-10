@@ -25,6 +25,14 @@ const routes = [
     path: '/contact',
   },
   {
+    type: 'gallery',
+    path: '/gallery',
+  },
+  {
+    type: 'documents',
+    path: '/:uid'
+  },
+  {
     type: 'team_members',
     path: '/team/:uid'
   }
@@ -54,6 +62,7 @@ const handleRequest = async api => {
   const members = await client.getAllByType('team_members')
   const testimonials = await client.getAllByType('testimonials')
   const preloader = await client.getSingle('preloader')
+  const infoDocs = await client.getAllByType('documents')
   
   return {
     meta,
@@ -61,7 +70,10 @@ const handleRequest = async api => {
     siteDetails,
     members,
     testimonials,
-    preloader
+    preloader,
+    infoDocs,
+    prismicH: PrismicH,
+    prismic: Prismic
   }
 }
 
@@ -101,6 +113,15 @@ app.get('/gallery', async (req, res) => {
 app.get('/contact', async (req, res) => {
   const pageType = 'contact'
   const document = await client.getSingle('contact_us')
+  const defaults = await handleRequest(req)
+
+  res.render('base', { ...defaults, document, pageType })
+})
+
+app.get('/:uid', async (req, res) => {
+  const uid = req.params.uid
+  const pageType = 'documents'
+  const document = await client.getByUID('documents', uid)
   const defaults = await handleRequest(req)
 
   res.render('base', { ...defaults, document, pageType })

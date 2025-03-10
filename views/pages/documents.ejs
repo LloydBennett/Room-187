@@ -1,0 +1,78 @@
+<% 
+  let title = document.data.title 
+  let body = document.data.body
+  
+
+  // Serializer function
+  const serializer = (type, element, text, children) => {
+    switch (type) {
+      case "paragraph":
+        const paragraphText = processSpans(element.spans, element.text);
+        return `<p class="type--xs type--white">${paragraphText}</p>`;
+      case 'hyperlink': // Handling anchor tags (<a> tag)
+        const href = element.data.url;
+        return `<a href="${href}" target="_blank">${children}</a>`
+      case 'strong': // Handling bold text (<strong> tag)
+        return `<strong class="type--bold">${children}</strong>`;
+      case "heading3":
+        return `<h3 class="type--s type--xs-margin section--s-m-t type--white">${text}</h3>`;
+      case "heading4":
+        return `<h4 class="type--xs type--xxs-margin type--bold type--white">${text}</h3>`;
+      case "list-item":
+        return `<li class="bullet-list__item"><p class="type--xs type--white">${text}</p></li>`;
+      case "o-list-item": // Ordered list items
+        return `<li class="ordered-list__item"><p class="type--xs type--white">${text}</p></li>`;
+      case "group-list-item": // Wrap list items in a custom-styled <ul>
+        return `<ul class="bullet-list">${children}</ul>`
+      case "group-o-list-item": // Wrap ordered list items in a custom-styled <ol>
+        return `<ol class="ordered-list">${children}</ol>`;
+      default:
+        return children; // Fallback to default Prismic rendering
+    }
+  }
+
+
+  // Process spans (hyperlink and strong tags) inside paragraph text
+  const processSpans = (spans, text) => {
+    let result = '';
+    let lastIndex = 0;
+    
+    spans.forEach(span => {
+      // Append the text before the current span
+      result += text.slice(lastIndex, span.start);
+      
+      // Check the type of span (e.g., hyperlink or strong)
+      if (span.type === 'hyperlink') {
+        result += `<a href="${span.data.url}" target="_blank" class="link">${text.slice(span.start, span.end)}</a>`;
+      } else if (span.type === 'strong') {
+        result += `<strong class="type--bold">${text.slice(span.start, span.end)}</strong>`;
+      }
+      
+      lastIndex = span.end; // Update the last index processed
+    });
+
+    // Append the remaining text after the last span
+    result += text.slice(lastIndex);
+    return result;
+  }
+%>
+<section class="section--m-m-b" data-hero>
+  <div class="container grid">
+    <div class="column--full-width">
+      <h1 class="type--l type--white type--display type--x-bold type--s-margin type--caps" data-split-text>
+        <%- title %>
+      </h1>
+    </div>
+  </div>
+</section>
+<section class="section--l-m-b">
+  <div class="container grid">
+    <div class="column--main">
+      <% console.log(body) %>
+
+      
+          <%- prismicH.asHTML(body, null, serializer) %>
+    
+    </div>
+  </div>
+</section>
