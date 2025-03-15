@@ -7,11 +7,11 @@
 <%- include('./partials/head', { page: page } ) -%>
 
 <body <% if (page === "error") { %>class="error"<% } %>>
-  <% useZoomTransition = (page === "home") ? true : false %>
+  <% useZoomTransition = (page === "home" || page === "about") ? true : false %>
   <%- include('./partials/loader', { zoomIn: useZoomTransition } ) -%>
   <%- include('./partials/navigation-bar') -%>
+  <% if (page !== "error") { %><%- include('./partials/navigation-menu') -%><% } %>
   <main id="main" data-page="<%- page %>" class="main <% if (page !== "error") { %><%- page %><% } %> relative">
-    <% if (page !== "error") { %><%- include('./partials/navigation-menu') -%><% } %>
     <div>
       <div <% if (page !== "home" && page !== "about" && page !== "error") { %>class="hero--p-t"<% } %>>
         <% switch(page) {
@@ -40,10 +40,9 @@
       
       <%- include('./partials/footer', { showFull: showFullFooter } ) -%>
     </div>
-    
-    
   </main>
-  
+
+  <%- include('./partials/page-transition') -%>
   <script src="/main.js"></script>
 </body>
 

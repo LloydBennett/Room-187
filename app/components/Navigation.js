@@ -40,7 +40,6 @@ export default class Navigation extends Components {
     this.elements.trigger.addEventListener('click', () => {
       if(!this.isAnimating) {
         this.isAnimating = true
-        this.elements.trigger.classList.toggle('open')
         this.isOpen ? this.closeMenu() : this.openMenu()
       }
     })
@@ -83,8 +82,11 @@ export default class Navigation extends Components {
   openMenu() {
     this.isOpen = true
     this.scroll.stop()
+    this.elements.trigger.classList.add('open')
     this.elements.menu.classList.add('show')
-    
+
+    this.tl.clear(); // 🚀 Clear previous animations
+
     this.tl.to(this.elements.menu, {
       clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
       duration: 0.6,
@@ -96,15 +98,18 @@ export default class Navigation extends Components {
         this.isAnimating = false
       }
     }, '-=0.1')
+
+    this.tl.restart()
   }
 
   closeMenu() {
+    this.elements.trigger.classList.remove('open')
     this.tl.to(this.elements.menu, {
       clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
       duration: 0.6,
       ease: "zoom",
     })
-
+    console.log(this.elements.navLinkText)
     this.tl.fromTo(this.elements.navLinkText, { y: 0 }, { y: "100%", duration: 0.01, 
       onComplete: () => {
         this.isAnimating = false
