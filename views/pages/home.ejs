@@ -2,10 +2,10 @@
   let title = document.data.hero_title
   let titleArr = title.split(" ")
 %>
-<section class="hero flex" data-hero data-hero-content>
+<section class="hero flex" data-hero data-image-hero="large" data-hero-content>
   <div class="relative flex section--s-p-b">
     <div class="overlay no-overflow">
-      <div class="hero__bg overlay" data-bg data-home-bg style="background-image: url('<%- document.data.hero_image.url %>')"></div>
+      <div class="hero__bg overlay" data-bg style="background-image: url('<%- document.data.hero_image.url %>')"></div>
     </div>
     <div class="hero__g-overlay overlay"></div>
     <div class="container grid--all hero__grid relative" data-hero-content>

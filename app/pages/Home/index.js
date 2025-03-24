@@ -21,7 +21,6 @@ export default class Home extends Page {
         progressIndices: '[data-progress-index]',
         steps: '[data-progress-steps]',
         artistNames: '[data-artist-name-animation]',
-        homeBg: '[data-home-bg]',
         stepContainer: '[data-step-container]'
       }
     })
@@ -71,7 +70,6 @@ export default class Home extends Page {
   }
 
   setUpScrollAnimations() {
-    this.heroAnimations()
     this.polaroidParallax()
     this.roomKeyAnimations()
     this.artistSectionAnimations()
@@ -115,39 +113,7 @@ export default class Home extends Page {
       )
     })
   }
-  heroAnimations() {
-    if (!this.elements.heroContent) return;
-
-    gsap.fromTo(this.elements.heroContent, 
-      { opacity: 1 },
-      {
-        opacity: 0.1,
-        scrollTrigger: {
-          trigger: this.elements.heroContent,
-          start: '50% center',
-          scrub: true,
-          markers: false
-        },
-        ease: "power2.out",
-      }
-    )
-
-    gsap.fromTo(this.elements.homeBg, 
-      { scale: 1 },
-      {
-        scale: 1.5,
-        duration: 0.6,
-        scrollTrigger: {
-          trigger: this.elements.heroContent,
-          start: '50% center',
-          scrub: true,
-          markers: false
-        },
-        ease: "power2.out",
-      }
-    )
-  }
-
+  
   roomKeyAnimations() {
     if (!this.elements.roomKey || !this.elements.steps || !this.elements.roomKeyHeader || !this.elements.stepContainer || !this.elements.progressBar) return;
 

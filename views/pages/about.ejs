@@ -4,10 +4,10 @@ let heroImage = document.data.hero_image
 let sideImage = document.data.side_image 
 %>
 
-<section class="hero hero--sm" data-hero data-hero-content>
+<section class="hero hero--sm" data-hero data-image-hero="small" data-hero-content>
   <div class="relative flex section--s-p-b height">
     <div class="overlay no-overflow">
-      <div class="hero__bg overlay" data-bg data-home-bg style="background-image: url('<%- document.data.hero_image.url %>')"></div>
+      <div class="hero__bg overlay" data-bg style="background-image: url('<%- document.data.hero_image.url %>')"></div>
     </div>
     <div class="hero__g-overlay overlay"></div>
     <div class="container grid--all hero__grid relative" data-hero-content>
@@ -38,4 +38,11 @@ let sideImage = document.data.side_image
   <%- include('../partials/team-members') -%>
   <%- include('../partials/stats') -%>
   <%- include('../partials/cta-block') -%>
+
+  <div class="fixed cannot-interact bg--black overlay overlay--reveal flex--middle z-index--5" data-bio-overlay-content data-lenis-prevent>
+    <%- include('../partials/close-button') -%>
+    <div data-bio-overlay-content></div>
+
+    
+  </div>
 </div>
