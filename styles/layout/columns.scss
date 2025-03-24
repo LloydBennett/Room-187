@@ -77,7 +77,6 @@
 }
 
 .three--columns-slim {
-
 	.thumbnail {
 		@include media-query($breakpoint--large - 1, max-width) {
 			transform: rotate(-2deg);
@@ -175,5 +174,19 @@
 			grid-row: 2;
 			grid-column: 3 / 7;
 		}
+	}
+}
+
+.column--main {
+	@include media-query($breakpoint--small) {
+		grid-column: 3 / 9;
+	}
+
+	@include media-query($breakpoint--medium) {
+		grid-column: 4 / 9;
+	}
+
+	@include media-query($breakpoint--xx-large) {
+		grid-column: 3 / 7;
 	}
 }
