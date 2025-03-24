@@ -3,24 +3,21 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import About from 'pages/About'
 import Home from 'pages/Home'
+import Gallery from 'pages/Gallery'
 import Navigation from 'components/Navigation'
 import Preloader from 'components/Preloader'
 import SplitText from 'components/SplitText'
 import VideoPlayer from './components/VideoPlayer'
 import Stats from './components/Stats'
+import Hero from './components/Hero'
 
 class App {
   constructor() {
     this.lenisScroll = scroll
 
-    this.addSplitText()
-    this.createPreloader()
-    this.createContent()
-    this.createPages()
-    this.addLinkListeners()
+    this.init()
     this.createNavigation()
-    this.createVideoPlayer()
-    this.createStats()
+    
     //this.createOverlay()
   }
 
@@ -40,8 +37,12 @@ class App {
     this.videoPlayer = new VideoPlayer()
   }
 
-  createStats(){
+  createStats() {
     this.stats = new Stats()
+  }
+
+  createHero() {
+    this.hero = new Hero()
   }
 
   addSplitText() {
@@ -64,12 +65,15 @@ class App {
   createPages(){
     this.pages = {
       home: new Home(),
-      about: new About()
+      about: new About(),
+      //gallery: new Gallery()
     }
-    
-    this.page = this.pages[this.template]
-    this.page.create()
-    this.page.show()
+
+    if(this.pages[this.template] !== undefined || null) {
+      this.page = this.pages[this.template]
+      //this.page.create()
+      this.page.show()
+    }
   }
 
   onPopState () {
@@ -79,21 +83,29 @@ class App {
     })
   }
 
-  async onChange({ url, push = true }) {
+  async onChange({ url, push = true }, transitionType) {
     await this.page.hide()
     const req = await window.fetch(url)
-    
+
     if(req.status === 200) {
       const html = await req.text()
       const div = document.createElement('div')
+
+      if (this.navigation.isOpen) {    
+        this.navigation.closeMenu()
+      }
 
       if(push) {
         window.history.pushState({}, "", url)
       }
       
       div.innerHTML = html
-
+      
+      const title = document.querySelector('title')
+      const newTitleText = div.querySelector('title').innerText
+      title.innerHTML = newTitleText
       const divContent = div.querySelector('.main')
+      const loaderImg = document.querySelector('[data-loader-image] [data-bg]')
       const newList = divContent.classList
 
       this.content.classList.remove(this.template)
@@ -101,11 +113,21 @@ class App {
       
       this.template = divContent.getAttribute('data-page')
       this.content.setAttribute('data-page', this.template)
-
+      
       this.content.innerHTML = divContent.innerHTML
+      let newImg = this.content.querySelector('[data-image-hero] [data-bg]')
+
+      if(newImg) {
+        let style = window.getComputedStyle(newImg);
+        let backgroundImage = style.backgroundImage;
+        let url = backgroundImage.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
+        loaderImg.style.backgroundImage = `url("${url}")`
+      }
       
       this.page = this.pages[this.template]
-      this.page.create()
+
+      this.init()
+      // this.page.create()
       //this.page.show()
     }
     else {
@@ -118,17 +140,29 @@ class App {
 
   addLinkListeners() {
     const links = document.querySelectorAll('[data-page-trigger]')
-
+    
     links.forEach((l) => {
       
       l.onclick = event => {
         event.preventDefault()
         const href = l.href
+        const transitionType = l.dataset.pageTrigger
+
 
         this.onChange({ url: href })
       }
-    });
-    
+    }); 
+  }
+  init() {
+    this.addSplitText()
+    //this.createPreloader()
+    this.createContent()
+    this.createPages()
+    this.addLinkListeners()
+    //this.createNavigation()
+    this.createVideoPlayer()
+    this.createStats()
+    this.createHero()
   }
 }
 
