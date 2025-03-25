@@ -82,6 +82,7 @@ export default class Page {
     //tl.to(this.elements.images, { opacity: 1, duration: 0.04, ease: "linear", stagger: 0.4 }, "+=0.15")
 
     if(this.elements.imageHero) {
+    if(!this.elements.imageHero.classList.contains('hidden')) {
       tl.to(this.elements.imageHero, { scale: 1, clipPath:"polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", duration: 0.6, ease: "zoom" }, "+=0.4")
     }
 
