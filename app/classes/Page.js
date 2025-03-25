@@ -36,6 +36,11 @@ export default class Page {
   show() {
     return new Promise(resolve => {
       let tl = gsap.timeline()
+
+      window.scrollTo(0, 0);
+      if(!this.elements.body.classList.contains('no--scrolling')) {
+        this.preventScrolling()
+      }
       
       // if(transitionStyle === "zoom") {
       this.zoomAnimation(tl)
@@ -101,13 +106,16 @@ export default class Page {
     tl.fromTo(this.elements.mainTitles, { y: "100%" }, { y: 0, duration: 0.8, ease: "zoom", stagger: (i, target) => target.dataset.textReveal ? 0.05 * Number(target.dataset.textReveal): 0.05, 
       onComplete: () => {
         this.elements.body.classList.remove('no--scrolling')
+        document.documentElement.style.overflow = '';
+        this.lScroll.start()
       }
-    }, '-=0.1')
+    }, '-=0.1').add(resolve)
 
-    tl.fromTo(this.elements.misc, { opacity: 0 }, { opacity: 1, duration: 0.8, ease: 'power2.out', onComplete: () => {
-      resolve()
-      this.lScroll.start()
-
-    }}, "-=0.1")
+    tl.fromTo(this.elements.misc, { opacity: 0 }, { opacity: 1, duration: 0.8, ease: 'power2.out' }, "-=0.1")
+  }
+  preventScrolling() {
+    this.lScroll.stop()
+    document.documentElement.style.overflow = 'hidden';
+    this.elements.body.classList.add('no--scrolling')
   }
 }
