@@ -10,18 +10,20 @@
       <% memberNameArr.forEach((title) => { %><span class="no-wrap--and-break no-overflow"><span class="inline-block" data-text-reveal><%- title %></span></span><% }) %>
     </h1>
   </div>
-  <div class="bio__image">
+  <div class="bio__image" data-bio-image>
     <div class="avatar--bio avatar--bio--l thumbnail--polaroid rotate--small" style="background-image: url('<%- document.data.avatar.url %>')"></div>
   </div>
 
   <div class="bio__role">
-    <span class="inline-block type--xs type--bold type--white type--caps">
-      <%- document.data.role %>
-    </span>
+    <div class="inline-block no-overflow">
+      <span class="inline-block type--xs type--bold type--white type--caps" data-text-reveal>
+        <%- document.data.role %>
+      </span>
+    </div>
   </div>
 
   <div class="bio__content column--content flex flex--column flex--space-btwn">
-    <p class="type--white type--xs">
+    <p class="type--white type--xs" data-split-text="scroll">
       <%- document.data.bio %>
     </p>
     <div class="flex">

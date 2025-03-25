@@ -39,10 +39,9 @@ let sideImage = document.data.side_image
   <%- include('../partials/stats') -%>
   <%- include('../partials/cta-block') -%>
 
-  <div class="fixed cannot-interact bg--black overlay overlay--reveal flex--middle z-index--5" data-bio-overlay-content data-lenis-prevent>
-    <%- include('../partials/close-button') -%>
-    <div data-bio-overlay-content></div>
-
-    
-  </div>
+  
+</div>
+<div class="fixed no-scrolling bg--black overlay overlay--reveal flex--middle z-index--5" data-bio-overlay-modal>
+  <%- include('../partials/close-button') -%>
+  <div class="hero--p-t overflow-scroll" data-bio-overlay-content></div>
 </div>

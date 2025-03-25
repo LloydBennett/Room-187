@@ -4,8 +4,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import About from 'pages/About'
 import Home from 'pages/Home'
 import Gallery from 'pages/Gallery'
+import Contact from './pages/Contact'
 import Navigation from 'components/Navigation'
-import Preloader from 'components/Preloader'
 import SplitText from 'components/SplitText'
 import VideoPlayer from './components/VideoPlayer'
 import Stats from './components/Stats'
@@ -62,10 +62,11 @@ class App {
     this.template = this.content.getAttribute('data-page')
   }
 
-  createPages(){
+  initPages(){
     this.pages = {
       home: new Home(),
       about: new About(),
+      contact: new Contact()
       //gallery: new Gallery()
     }
 
@@ -83,8 +84,8 @@ class App {
     })
   }
 
-  async onChange({ url, push = true }, transitionType) {
-    await this.page.hide()
+  async onChange({ url, push = true }) {
+    await this.page.hide(this.transitionType)
     const req = await window.fetch(url)
 
     if(req.status === 200) {
@@ -104,34 +105,36 @@ class App {
       const title = document.querySelector('title')
       const newTitleText = div.querySelector('title').innerText
       title.innerHTML = newTitleText
-      const divContent = div.querySelector('.main')
-      const loaderImg = document.querySelector('[data-loader-image] [data-bg]')
-      const newList = divContent.classList
 
-      this.content.classList.remove(this.template)
-      this.content.classList.add(...newList)
-      
-      this.template = divContent.getAttribute('data-page')
-      this.content.setAttribute('data-page', this.template)
-      
-      this.content.innerHTML = divContent.innerHTML
-      let newImg = this.content.querySelector('[data-image-hero] [data-bg]')
-
-      if(newImg) {
-        let style = window.getComputedStyle(newImg);
-        let backgroundImage = style.backgroundImage;
-        let url = backgroundImage.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
-        loaderImg.style.backgroundImage = `url("${url}")`
-      }
-      
+      this.createNewPage(div)
       this.page = this.pages[this.template]
-
       this.init()
-      // this.page.create()
-      //this.page.show()
     }
     else {
       console.log('Error loading page!')
+    }
+  }
+
+  createNewPage(div) {
+    const divContent = div.querySelector('.main')
+    const loaderImg = document.querySelector('[data-loader-image] [data-bg]')
+    const newList = divContent.classList
+
+    this.content.classList.remove(this.template)
+    this.content.classList.add(...newList)
+    
+    this.template = divContent.getAttribute('data-page')
+    this.content.setAttribute('data-page', this.template)
+    
+    this.content.innerHTML = divContent.innerHTML
+
+    let newImg = this.content.querySelector('[data-image-hero] [data-bg]')
+
+    if(newImg) {
+      let style = window.getComputedStyle(newImg);
+      let backgroundImage = style.backgroundImage;
+      let url = backgroundImage.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
+      loaderImg.style.backgroundImage = `url("${url}")`
     }
   }
   addEventListeners () {
@@ -146,8 +149,7 @@ class App {
       l.onclick = event => {
         event.preventDefault()
         const href = l.href
-        const transitionType = l.dataset.pageTrigger
-
+        this.transitionType = l.dataset.pageTrigger
 
         this.onChange({ url: href })
       }
@@ -155,11 +157,9 @@ class App {
   }
   init() {
     this.addSplitText()
-    //this.createPreloader()
     this.createContent()
-    this.createPages()
+    this.initPages()
     this.addLinkListeners()
-    //this.createNavigation()
     this.createVideoPlayer()
     this.createStats()
     this.createHero()
