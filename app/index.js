@@ -67,6 +67,7 @@ class App {
       home: new Home(),
       about: new About(),
       contact: new Contact()
+      contact: new Contact(),
       //gallery: new Gallery()
     }
 
@@ -117,6 +118,7 @@ class App {
 
   createNewPage(div) {
     const divContent = div.querySelector('.main')
+    const loaderHero = document.querySelector('[data-loader-hero]');
     const loaderImg = document.querySelector('[data-loader-image] [data-bg]')
     const newList = divContent.classList
 
@@ -135,6 +137,15 @@ class App {
       let backgroundImage = style.backgroundImage;
       let url = backgroundImage.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
       loaderImg.style.backgroundImage = `url("${url}")`
+
+      if(loaderHero.classList.contains('hidden')) {
+        loaderHero.classList.remove('hidden')
+      }
+    } 
+    else {
+      if(!loaderImg.classList.contains('hidden')) {
+        loaderHero.classList.add('hidden')
+      }
     }
   }
   addEventListeners () {
