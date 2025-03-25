@@ -121,20 +121,39 @@ app.get('/contact', async (req, res) => {
 app.get('/:uid', async (req, res) => {
   const uid = req.params.uid
   const pageType = 'documents'
-  const document = await client.getByUID('documents', uid)
-  const defaults = await handleRequest(req)
 
-  res.render('base', { ...defaults, document, pageType })
+  try {
+    const document = await client.getByUID('documents', uid) // Try fetching the document
+
+    if (!document) { // If no document found, show 404
+      return res.status(404).render('base', { 
+        ...await handleRequest(req), 
+        document: { data: { title: '404 Error' } }, 
+        pageType: "error" 
+      })
+    }
+
+    // If document exists, render the page
+    const defaults = await handleRequest(req)
+    res.render('base', { ...defaults, document, pageType })
+    
+  } catch (error) {
+    // Handle Prismic errors (e.g., document not found)
+    return res.status(404).render('base', { 
+      ...await handleRequest(req), 
+      document: { data: { title: '404 Error' } }, 
+      pageType: "error" 
+    })
+  }
 })
 
+// FINAL CATCH-ALL ROUTE: If nothing matched before, show 404
 app.get('*', async (req, res) => {
-  let pageType = "error"
-  
-  let document = {
-    data: { title: '404 Error' }
-  }
-  const defaults = await handleRequest(req)
-  res.render('base', { ...defaults, document, pageType })
+  res.status(404).render('base', { 
+    ...await handleRequest(req), 
+    document: { data: { title: '404 Error' } }, 
+    pageType: "error" 
+  })
 });
 
 app.listen(port, () => {
