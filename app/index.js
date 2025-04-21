@@ -14,11 +14,9 @@ import Hero from './components/Hero'
 class App {
   constructor() {
     this.lenisScroll = scroll
-
-    this.init()
+    this.isFirstVisit
+    this.bootstrap()
     this.createNavigation()
-    
-    //this.createOverlay()
   }
 
   setUpScrollTrigger() {
@@ -62,20 +60,29 @@ class App {
     this.template = this.content.getAttribute('data-page')
   }
 
-  initPages(){
-    this.pages = {
-      home: new Home(),
-      about: new About(),
-      contact: new Contact()
-      contact: new Contact(),
-      //gallery: new Gallery()
+  async initPages() {
+    const pageClasses = {
+      home: Home,
+      about: About,
+      gallery: Gallery,
+      contact: Contact
     }
 
-    if(this.pages[this.template] !== undefined || null) {
-      this.page = this.pages[this.template]
-      //this.page.create()
-      this.page.show()
+    const id = this.template
+    const PageClass = pageClasses[id]
+
+    if (!PageClass) {
+      console.warn(`No PageClass found for: ${id}`)
+      return
     }
+
+    this.isFirstVisit = this.isFirstVisit === undefined
+
+    this.page = new PageClass()
+
+    await this.page.show(this.isFirstVisit)
+
+    this.isFirstVisit = false
   }
 
   onPopState () {
@@ -86,16 +93,26 @@ class App {
   }
 
   async onChange({ url, push = true }) {
-    await this.page.hide(this.transitionType)
+    const animations = this.page && this.page.hide
+  ? [this.page.hide(this.transitionType)]
+  : []
+
     const req = await window.fetch(url)
+
+    if (this.navigation.isOpen) {
+      new Promise(resolve => {
+        setTimeout(() => {
+          this.navigation.closeMenu()
+          resolve()
+        }, 300)
+      })    
+    }
+
+    await Promise.all(animations)
 
     if(req.status === 200) {
       const html = await req.text()
       const div = document.createElement('div')
-
-      if (this.navigation.isOpen) {    
-        this.navigation.closeMenu()
-      }
 
       if(push) {
         window.history.pushState({}, "", url)
@@ -108,8 +125,7 @@ class App {
       title.innerHTML = newTitleText
 
       this.createNewPage(div)
-      this.page = this.pages[this.template]
-      this.init()
+      await this.init()
     }
     else {
       console.log('Error loading page!')
@@ -152,6 +168,10 @@ class App {
     window.addEventListener('popstate', this.onPopState.bind(this))
   }
 
+  async bootstrap() {
+    await this.init()
+  }
+
   addLinkListeners() {
     const links = document.querySelectorAll('[data-page-trigger]')
     
@@ -166,10 +186,11 @@ class App {
       }
     }); 
   }
-  init() {
+
+  async init() {
     this.addSplitText()
     this.createContent()
-    this.initPages()
+    await this.initPages()
     this.addLinkListeners()
     this.createVideoPlayer()
     this.createStats()
