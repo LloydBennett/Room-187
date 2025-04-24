@@ -4,7 +4,7 @@ import { scroll } from 'utils/LenisScroll'
 import Create from "../utils/create"
 
 export default class Page {
-  constructor({ elements, id }) {
+  constructor({ id = 'default', elements = {} } = {}) {
     this.id = id
     this.selectors = { 
       ...elements,
@@ -25,45 +25,41 @@ export default class Page {
     Page.prototype.create = Create
     gsap.registerPlugin(CustomEase)
     CustomEase.create("zoom", "0.71, 0, 0.06, 1")
-
-    this.lScroll = scroll
-    //this.tl = gsap.timeline()
-    
     this.lScroll = scroll    
     this.create()
-
-    //console.log(this.elements.overlay)
   }
-  show() {
+
+  show(isFirstVisit) {
     return new Promise(resolve => {
       let tl = gsap.timeline()
+      const hasHeroImg = this.hasHeroImage
 
       window.scrollTo(0, 0);
       if(!this.elements.body.classList.contains('no--scrolling')) {
         this.preventScrolling()
       }
-      //console.log(this.hasBeenStaged)
-
+    
       if (isFirstVisit) {
+        this.zoomAnimation(tl, isFirstVisit)
+      } else if (hasHeroImg) {
+        this.zoomAnimation(tl, isFirstVisit)
+      }
 
-      //this.elements.overlay.classList.add('hidden')
       this.animateAssets(tl, resolve)
     })
   }
+
   hide() {
     return new Promise(resolve => {
       let animOut = gsap.timeline()
-      //let navTrigger = document.querySelector('[data-nav-trigger]')
-      
-      this.lScroll.stop()
-      this.elements.body.classList.add('no-scrolling')
-      
+      this.preventScrolling()
+
       animOut.to(this.elements.overlay, {
         clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
         duration: 0.6,
         ease: "zoom"
       })
-      ///navTrigger.classList.remove('open')
+
       animOut.to(this.elements.slideTwo, {
         clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
         duration: 0.6,
@@ -72,41 +68,71 @@ export default class Page {
 
     })
   }
-  zoomAnimation(tl) {
+  zoomAnimation(tl, showFullAnim) {
     if(!this.elements.images) return
 
-    tl.to(this.elements.loader, { display: "flex", duration: 0.01 })
-      tl.to(img, { opacity: 1, duration: 0.04, ease: "linear" }, "+=0.15")
+    const pageName = this.elements.page?.dataset?.page || '';
+    const isErrorPage = pageName === 'error';
+    const hasHeroImg = this.hasHeroImage
+    
+
+    if (isErrorPage) {
+      tl.to(this.elements.loader, { display: "flex", duration: 0.01 })
+      this.showImages(tl, false)
+
+      tl.to({}, {
+        onComplete: () => {
+          this.elements.loader.classList.add('bg--error')
+        }
+      }, "-=0.8");
+
+      tl.to(this.elements.loader, { display: "none", duration: 0.01, onComplete: ()=> {
+        this.elements.loader.classList.remove('bg--error')
+      }}, "+=0.6")
+    }
+    else {
+      tl.to(this.elements.loader, { display: "flex", duration: 0.01 })
+      this.showImages(tl, showFullAnim)
+
+      if(hasHeroImg) {
+        tl.to(this.elements.imageHero, { opacity: 1, duration: 0.04, ease: "linear" }, "+=0.15")
+        tl.to(this.elements.imageHero, { scale: 1, clipPath:"polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", duration: 0.6, ease: "zoom" }, "+=0.4")
+
+        tl.to(this.elements.loader, { display: "none", duration: 0.01, 
+          onComplete: () => {
+            tl.to(this.elements.imageHero, { scale: 0.5, clipPath:"polygon(20% 10%, 80% 10%, 80% 90%, 20% 90%)", duration: 0.01 })
+          }
+        })
+
+      } else {
+        tl.to(this.elements.loader, { display: "none", duration: 0.01}, "+=0.6")
+      }
+    }
+    
+    tl.to(this.elements.images, { opacity: 0, duration: 0.01, ease: "linear" })
+  }
+
+  showImages(tl, showFullAnim) {
     if(showFullAnim) {
       this.elements.images.forEach((img, i) => {
         tl.to(img, { opacity: 1, duration: 0.04, ease: "linear" }, "+=0.15")
       })
-    }
-    else {
-      for(let i = 0; i < this.elements.images.length; i++) {
-        if(i < 4) {
-          tl.to(this.elements.images[i], { opacity: 1, duration: 0.04, ease: "linear" }, "+=0.15")
-    if(!this.elements.imageHero.classList.contains('hidden')) {
-      tl.to(this.elements.imageHero, { scale: 1, clipPath:"polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", duration: 0.6, ease: "zoom" }, "+=0.4")
-    }
-
-    tl.to(this.elements.loader, { display: "none", duration: 0.01, onComplete: () => {
-      if(this.elements.imageHero) {
-        tl.to(this.elements.imageHero, { scale: 0.5, clipPath:"polygon(20% 10%, 80% 10%, 80% 90%, 20% 90%)", duration: 0.01 })
+    } else {
+      for (let i = 0; i < Math.min(4, this.elements.images.length); i++) {
+        tl.to(this.elements.images[i], {
+          opacity: 1,
+          duration: 0.04,
+          ease: "linear",
+        }, "+=0.15");
       }
-    } })
-
-    tl.to(this.elements.images, { opacity: 0, duration: 0.01, ease: "linear" })
-
-      // if(this.elements.page.getAttribute == "error") {
-      //   this.elements.loader.classList.add('bg--error')
-      // }    
+    }
   }
+
   animateAssets(tl, resolve) {
     gsap.set(this.elements.overlay, { clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)" })
     gsap.set(this.elements.slideTwo, { clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)" })
 
-    this.elements.overlay.classList.remove('hidden')
+    //this.elements.overlay.classList.remove('hidden')
 
     tl.fromTo(this.elements.mainTitles, { y: "100%" }, { y: 0, duration: 0.8, ease: "zoom", stagger: (i, target) => target.dataset.textReveal ? 0.05 * Number(target.dataset.textReveal): 0.05, 
       onComplete: () => {
@@ -118,9 +144,15 @@ export default class Page {
 
     tl.fromTo(this.elements.misc, { opacity: 0 }, { opacity: 1, duration: 0.8, ease: 'power2.out' }, "-=0.1")
   }
+
   preventScrolling() {
     this.lScroll.stop()
     document.documentElement.style.overflow = 'hidden';
     this.elements.body.classList.add('no--scrolling')
   }
+
+  get hasHeroImage() {
+    return this.elements.imageHero && !this.elements.imageHero.classList.contains('hidden');
+  } 
+
 }

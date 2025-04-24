@@ -1,6 +1,7 @@
 import { scroll } from 'utils/LenisScroll'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import Page from 'classes/Page'
 import About from 'pages/About'
 import Home from 'pages/Home'
 import Gallery from 'pages/Gallery'
@@ -69,12 +70,7 @@ class App {
     }
 
     const id = this.template
-    const PageClass = pageClasses[id]
-
-    if (!PageClass) {
-      console.warn(`No PageClass found for: ${id}`)
-      return
-    }
+    const PageClass = pageClasses[id] || Page
 
     this.isFirstVisit = this.isFirstVisit === undefined
 
@@ -133,6 +129,7 @@ class App {
   }
 
   createNewPage(div) {
+    const body = document.querySelector('body')
     const divContent = div.querySelector('.main')
     const loaderHero = document.querySelector('[data-loader-hero]');
     const loaderImg = document.querySelector('[data-loader-image] [data-bg]')
@@ -143,6 +140,14 @@ class App {
     
     this.template = divContent.getAttribute('data-page')
     this.content.setAttribute('data-page', this.template)
+
+    if(this.template !== "error") {
+      if(body.classList.contains('error')) {
+        body.classList.remove('error')
+      }
+    } else {
+      body.classList.add('error')
+    }
     
     this.content.innerHTML = divContent.innerHTML
 
@@ -181,7 +186,7 @@ class App {
         event.preventDefault()
         const href = l.href
         this.transitionType = l.dataset.pageTrigger
-
+        if(href === window.location.href) return
         this.onChange({ url: href })
       }
     }); 
