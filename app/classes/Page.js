@@ -74,7 +74,7 @@ export default class Page {
     const pageName = this.elements.page?.dataset?.page || '';
     const isErrorPage = pageName === 'error';
     const hasHeroImg = this.hasHeroImage
-    
+    let smallHeroImg = document.querySelector('[data-image-hero="small"]')
 
     if (isErrorPage) {
       tl.to(this.elements.loader, { display: "flex", duration: 0.01 })
@@ -95,12 +95,28 @@ export default class Page {
       this.showImages(tl, showFullAnim)
 
       if(hasHeroImg) {
+        if(smallHeroImg) {
+          this.elements.imageHero.style.top = 0
+        }
+
         tl.to(this.elements.imageHero, { opacity: 1, duration: 0.04, ease: "linear" }, "+=0.15")
         tl.to(this.elements.imageHero, { scale: 1, clipPath:"polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", duration: 0.6, ease: "zoom" }, "+=0.4")
+
+        if(smallHeroImg) {
+          let imgHeight = smallHeroImg.offsetHeight
+          let loaderImgs = document.querySelectorAll('[data-loader-image]:not([data-loader-hero])')
+
+          tl.to(loaderImgs, { opacity: 0, duration: 0.01, ease: "linear" })
+            .to(this.elements.imageHero, { height: imgHeight, duration: 0.6, ease: "zoom" })
+        }
 
         tl.to(this.elements.loader, { display: "none", duration: 0.01, 
           onComplete: () => {
             tl.to(this.elements.imageHero, { scale: 0.5, clipPath:"polygon(20% 10%, 80% 10%, 80% 90%, 20% 90%)", duration: 0.01 })
+            if(smallHeroImg) {
+              this.elements.imageHero.style.height = ''
+              this.elements.imageHero.style.top = ''
+            }
           }
         })
 
@@ -110,6 +126,7 @@ export default class Page {
     }
     
     tl.to(this.elements.images, { opacity: 0, duration: 0.01, ease: "linear" })
+    
   }
 
   showImages(tl, showFullAnim) {
