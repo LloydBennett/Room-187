@@ -2,8 +2,8 @@
   let title = document.data.hero_title
   let titleArr = title.split(" ")
 %>
-<section class="hero flex" data-hero data-image-hero="large" data-hero-content>
-  <div class="relative flex section--s-p-b">
+<section class="hero flex flex--column" data-hero data-image-hero="large" data-hero-content>
+  <div class="hero__wrapper relative flex section--s-p-b">
     <div class="overlay no-overflow">
       <div class="hero__bg overlay" data-bg style="background-image: url('<%- document.data.hero_image.url %>')"></div>
     </div>

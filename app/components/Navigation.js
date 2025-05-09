@@ -12,7 +12,7 @@ export default class Navigation extends Components {
         body: 'body',
         navBar: '[data-nav-bar]',
         navLinks: '[data-menu-links]',
-        navLinkText: '.nav-menu [data-text-reveal]',
+        navLinkText: '.nav-menu .nav-menu-list__item .word',
         navLinkHover: '[data-nav-hover]'
       }
     })
@@ -78,7 +78,6 @@ export default class Navigation extends Components {
       });
 
     });
-    
   }
 
   openMenu() {
@@ -86,8 +85,7 @@ export default class Navigation extends Components {
     this.scroll.stop()
     this.elements.trigger.classList.add('open')
     this.elements.menu.classList.add('show')
-
-    this.tl.clear(); // 🚀 Clear previous animations
+    console.log(this.elements.navLinkText)
 
     this.tl.to(this.elements.menu, {
       clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
@@ -100,8 +98,6 @@ export default class Navigation extends Components {
         this.isAnimating = false
       }
     }, '-=0.1')
-
-    this.tl.restart()
   }
 
   closeMenu() {

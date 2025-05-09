@@ -14,7 +14,7 @@ export default class Page {
       loader: '[data-loader]',
       images: '[data-loader-image]',
       imageHero: '[data-loader-hero]',
-      mainTitles: '[data-hero] [data-text-reveal]',
+      mainTitles: '[data-hero] .word',
       misc: '[data-misc]',
       page: '[data-page]',
       body: 'body',
@@ -34,7 +34,7 @@ export default class Page {
       let tl = gsap.timeline()
       const hasHeroImg = this.hasHeroImage
 
-      window.scrollTo(0, 0);
+      //window.scrollTo(0, 0)
       if(!this.elements.body.classList.contains('no--scrolling')) {
         this.preventScrolling()
       }
@@ -148,10 +148,14 @@ export default class Page {
   animateAssets(tl, resolve) {
     gsap.set(this.elements.overlay, { clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)" })
     gsap.set(this.elements.slideTwo, { clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)" })
+    
+    console.log(this.elements.mainTitles)
 
-    //this.elements.overlay.classList.remove('hidden')
+    if (!this.elements.mainTitles || this.elements.mainTitles.length === 0) {
+      console.warn('mainTitles not found or empty:', this.elements.mainTitles)
+    }
 
-    tl.fromTo(this.elements.mainTitles, { y: "100%" }, { y: 0, duration: 0.8, ease: "zoom", stagger: (i, target) => target.dataset.textReveal ? 0.05 * Number(target.dataset.textReveal): 0.05, 
+    tl.fromTo(this.elements.mainTitles, { y: "100%" }, { y: 0, duration: 0.8, ease: "zoom",
       onComplete: () => {
         this.elements.body.classList.remove('no--scrolling')
         document.documentElement.style.overflow = '';

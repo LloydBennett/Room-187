@@ -16,6 +16,10 @@
   }
 }
 
+.hero__wrapper {
+  flex: 1;
+}
+
 .hero__bg {
   z-index: -2;
   background-size: cover;

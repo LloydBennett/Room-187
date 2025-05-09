@@ -7,7 +7,7 @@ import Home from 'pages/Home'
 import Gallery from 'pages/Gallery'
 import Contact from './pages/Contact'
 import Navigation from 'components/Navigation'
-import SplitText from 'components/SplitText'
+import TextSplit from 'components/TextSplit'
 import VideoPlayer from './components/VideoPlayer'
 import Stats from './components/Stats'
 import Hero from './components/Hero'
@@ -45,7 +45,7 @@ class App {
   }
 
   addSplitText() {
-    this.splitText = new SplitText()
+    this.textSplit = new TextSplit()
   }
 
   createPreloader() {
@@ -90,9 +90,9 @@ class App {
 
   async onChange({ url, push = true }) {
     const animations = this.page && this.page.hide
-  ? [this.page.hide(this.transitionType)]
+  ? [this.page.hide()]
   : []
-
+    
     const req = await window.fetch(url)
 
     if (this.navigation.isOpen) {
