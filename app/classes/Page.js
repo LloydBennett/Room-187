@@ -1,6 +1,7 @@
 import gsap from 'gsap'
 import { CustomEase } from "gsap/CustomEase"
 import { scroll } from 'utils/LenisScroll'
+import { SplitText } from 'gsap/SplitText'
 import Create from "../utils/create"
 
 export default class Page {
@@ -14,7 +15,7 @@ export default class Page {
       loader: '[data-loader]',
       images: '[data-loader-image]',
       imageHero: '[data-loader-hero]',
-      mainTitles: '[data-hero] .word',
+      mainTitles: '[data-hero] [data-split-text]',
       misc: '[data-misc]',
       page: '[data-page]',
       body: 'body',
@@ -23,7 +24,7 @@ export default class Page {
     }
 
     Page.prototype.create = Create
-    gsap.registerPlugin(CustomEase)
+    gsap.registerPlugin(CustomEase, SplitText)
     CustomEase.create("zoom", "0.71, 0, 0.06, 1")
     this.lScroll = scroll    
     this.create()
@@ -155,15 +156,53 @@ export default class Page {
       console.warn('mainTitles not found or empty:', this.elements.mainTitles)
     }
 
-    tl.fromTo(this.elements.mainTitles, { y: "100%" }, { y: 0, duration: 0.8, ease: "zoom",
-      onComplete: () => {
-        this.elements.body.classList.remove('no--scrolling')
-        document.documentElement.style.overflow = '';
-        this.lScroll.start()
-      }
-    }, '-=0.1').add(resolve)
+    document.fonts.ready.then(() => {
 
-    tl.fromTo(this.elements.misc, { opacity: 0 }, { opacity: 1, duration: 0.8, ease: 'power2.out' }, "-=0.1")
+      const heroTitles = (this.elements.mainTitles instanceof NodeList || Array.isArray(this.elements.mainTitles))
+      ? Array.from(this.elements.mainTitles)
+      : this.elements.mainTitles
+        ? [this.elements.mainTitles]
+        : [];
+
+      const allLines = [];
+      const blockLineAnimations = []
+      
+      
+      heroTitles.forEach((el) => {
+        const split = SplitText.create(el, 
+          {
+            type: "lines",
+            lineClass: "line",
+            mask: "lines",
+            autoSplit: true
+          }
+        )
+
+        allLines.push(split.lines)
+      })
+
+      allLines.forEach((text, i) => {
+        tl.fromTo(text,
+          { y: "100%"},
+          {
+            y: "0", 
+            duration: 0.8, 
+            ease: "zoom",
+            stagger: 0.05
+          },
+          "titles -=0.2"
+        )
+      })
+
+      tl.fromTo(this.elements.misc, { opacity: 0 }, { opacity: 1, duration: 0.8, ease: 'power2.out' })
+      
+      tl.call(() => {
+        this.elements.body.classList.remove("no--scrolling");
+        document.documentElement.style.overflow = '';
+        this.lScroll.start();
+        resolve();
+      })
+    })
   }
 
   preventScrolling() {
