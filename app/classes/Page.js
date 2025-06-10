@@ -150,14 +150,11 @@ export default class Page {
     gsap.set(this.elements.overlay, { clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)" })
     gsap.set(this.elements.slideTwo, { clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)" })
     
-    console.log(this.elements.mainTitles)
-
     if (!this.elements.mainTitles || this.elements.mainTitles.length === 0) {
       console.warn('mainTitles not found or empty:', this.elements.mainTitles)
     }
 
     document.fonts.ready.then(() => {
-
       const heroTitles = (this.elements.mainTitles instanceof NodeList || Array.isArray(this.elements.mainTitles))
       ? Array.from(this.elements.mainTitles)
       : this.elements.mainTitles
@@ -166,7 +163,6 @@ export default class Page {
 
       const allLines = [];
       const blockLineAnimations = []
-      
       
       heroTitles.forEach((el) => {
         const split = SplitText.create(el, 

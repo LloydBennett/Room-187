@@ -8,7 +8,6 @@ export default class TextSplit extends Components {
   constructor() {
     super({
       elements: {
-        text: '[data-split-text]',
         textOnScroll: '[data-split-text="scroll"]'
       }
     })
@@ -20,49 +19,55 @@ export default class TextSplit extends Components {
   }
   
   init() { 
-    if (!this.elements.text) {
+    if (!this.elements.textOnScroll) {
       console.warn('No text elements found in the DOM.');
       return;
     }
 
-    const splitTextEmpty = Array.from(this.elements.text).filter(el => {
-      const val = el.getAttribute('data-split-text');
-      return val === null || val === '';
-    });
-
-    this.splitText(splitTextEmpty, false)
-    this.splitText(this.elements.textOnScroll, true)
+    this.splitText(this.elements.textOnScroll)
   }
 
-  splitText(text, showOnScroll) {
-    let split = SplitText.create(text, 
-      { 
-        type: "words",
-        wordsClass: "inline-block word",
-        mask: "words"
-      }
-    )
-
-    if(showOnScroll) {
-      this.scrollAnimateText(split)
+  splitText(text) {
+    if (!text || text.length === 0) {
+      console.warn('mainTitles not found or empty:', this.elements.textOnScroll)
+      return
     }
+
+    document.fonts.ready.then(() => {
+      const elements = Array.isArray(text) || text instanceof NodeList
+      ? Array.from(text)
+      : [text]
+
+      elements.forEach((el) => {
+        const split = SplitText.create(el, {
+          type: "lines",
+          lineClass: "line",
+          mask: "lines",
+          autoSplit: true
+        })
+
+        this.scrollAnimateText(el, split.lines)
+
+      })
+    })
   }
  
-  scrollAnimateText(text) {
-    gsap.fromTo(text.words,
+  scrollAnimateText(text, lines) {
+    gsap.fromTo(lines,
       { y: "100%" },
       {
         y: 0,
+        duration: 0.8,
+        ease: "zoom",
+        stagger: 0.05,
         scrollTrigger: {
-          trigger: text.words,
+          trigger: text,
           start: '50% bottom',
-          scrub: false,
-          markers: false
-        },
-        duration: 0.8, 
-        ease: "zoom", 
-        stagger: 0.02
+          markers: false,
+          scrub: false
+        }
       }
     )
   }
+  
 }
