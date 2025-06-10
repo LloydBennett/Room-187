@@ -43,11 +43,11 @@ export default class TextSplit extends Components {
           type: "lines",
           lineClass: "line",
           mask: "lines",
-          autoSplit: true
+          autoSplit: true,
+          onSplit: (self) => {
+            return this.scrollAnimateText(el, self.lines)
+          }
         })
-
-        this.scrollAnimateText(el, split.lines)
-
       })
     })
   }
@@ -69,5 +69,5 @@ export default class TextSplit extends Components {
       }
     )
   }
-  
+
 }
