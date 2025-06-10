@@ -29,11 +29,11 @@
     <% if(sections != null) { %>
       <div class="grid relative" data-step-container>
         <div class="step__wrapper relative">
-          <div class="step__scroll step-outline--first counter" data-progress-steps></div>
+          <div class="step__scroll step-outline--first section-counter" data-progress-steps></div>
           <% sections.forEach((s) => { %>
             <div class="step__scroll step__outline" data-progress-steps>
-              <div class="counter__inc">
-                <div class="counter__inc-content">
+              <div class="section-counter__inc">
+                <div class="section-counter__inc-content">
                   <h4 class="type--white type--s type--display type--x-bold type--caps type--s-margin"><%- s.outline_title %></h4>
                   <p class="type--xs type--white"><%- s.outline %></p>
                 </div>
