@@ -8,8 +8,8 @@
     %>
   
     <li class="<%- list_class %>">
-      <a href="<%- l.link.url %>" class="<%- list_text_class %> relative" <% if(dataAttr) {%><%- dataAttr %><%}%>>
-        <span data-split-text>
+      <a href="<%- l.link.url %>" class="<%- list_text_class %> relative" <% if(dataAttr) {%><%- dataAttr %><%}%> data-page-trigger>
+        <span class="block" data-nav-link-text>
           <%- name %>
         </span>
       </a>
@@ -20,7 +20,7 @@
   <% }) %>
   <li class="<%- list_class %>">
     <a href="<%- siteDetails.data.main_cta_link.url %>" target="_blank" class="<%- list_text_class %> relative" <% if(dataAttr) {%><%- dataAttr %><%}%>>
-      <span data-split-text>
+      <span class="block" data-nav-link-text>
         Tickets
       </span>
     </a>
