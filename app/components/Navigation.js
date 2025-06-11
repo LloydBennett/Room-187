@@ -12,7 +12,7 @@ export default class Navigation extends Components {
         body: 'body',
         navBar: '[data-nav-bar]',
         navLinks: '[data-menu-links]',
-        navLinkText: '.nav-menu .nav-menu-list__item .word',
+        navLinkText: '.nav-menu .nav-menu-list__item [data-nav-link-text]',
         navLinkHover: '[data-nav-hover]'
       }
     })
@@ -93,7 +93,7 @@ export default class Navigation extends Components {
       ease: "zoom",
     })
 
-    this.tl.fromTo(this.elements.navLinkText, { y: "100%" }, { y: 0, duration: 0.8, ease: "zoom", stagger: (i, target) => target.dataset.textReveal ? 0.05 * Number(target.dataset.textReveal): 0.05,
+    this.tl.fromTo(this.elements.navLinkText, { y: "100%" }, { y: 0, duration: 0.8, ease: "zoom",
       onComplete: () => {
         this.isAnimating = false
       }
