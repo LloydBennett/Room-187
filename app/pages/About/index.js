@@ -2,6 +2,8 @@ import Page from 'classes/Page'
 import Lenis from 'lenis'
 import gsap from 'gsap'
 import { CustomEase } from 'gsap/CustomEase'
+import { SplitText } from 'gsap/SplitText'
+import TextSplit from 'components/TextSplit'
 import { scroll } from 'utils/LenisScroll'
 
 export default class About extends Page {
@@ -17,7 +19,7 @@ export default class About extends Page {
       }
     })
     
-    gsap.registerPlugin(CustomEase)
+    gsap.registerPlugin(CustomEase, SplitText)
     CustomEase.create("zoom", "0.71, 0, 0.06, 1")
     this.pageScroll = scroll
     this.isOpen = false
@@ -52,6 +54,8 @@ export default class About extends Page {
       this.elements.bioContainer.innerHTML = divContent.innerHTML
       this.elements.bioImage = this.elements.bioContainer.querySelector('[data-bio-image]')
       this.elements.mainTitles = this.elements.bioContainer.querySelectorAll('[data-bio-overlay-modal] [data-hero] [data-text-reveal]')
+      this.elements.bioText = this.elements.bioContainer.querySelector('.bio__content [data-split-text]')
+      this.elements.bioRole = this.elements.bioContainer.querySelector('[data-bio-overlay-modal] .bio__role [data-split-text]')
       
       if (!this.modalScroll) {
         this.init(); 
@@ -78,8 +82,22 @@ export default class About extends Page {
       })
 
       tl.to(this.elements.mainTitles, { y: 0, duration: 0.8, ease: "zoom", stagger: (i, target) => target.dataset.textReveal ? 0.05 * Number(target.dataset.textReveal): 0.05 }, '-=0.3')
+      tl.to(this.elements.bioRole, { y: 0, duration: 0.8, ease: "zoom"}, '-=0.6')
 
-      tl.to(this.elements.bioImage, { y: 0, opacity: 1, duration: 0.6, ease: "power2.out" }, '-=0.2')
+      document.fonts.ready.then(() => {
+        const split = SplitText.create(this.elements.bioText, {
+          type: "lines",
+          lineClass: "line",
+          mask: "lines",
+          autoSplit: true,
+          onSplit: (self) => {
+            return TextSplit.scrollAnimateText(this.elements.bioText, self.lines)
+          }
+        })
+      })
+
+      tl.to(this.elements.bioImage, { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, '-=0.6')
+      
       tl.to(this.elements.close, { opacity: 1, duration: 0.3, ease: "power2.out", onComplete: ()=> {
         this.isOpen = true
         this.elements.body.classList.remove('no--scrolling')
@@ -100,7 +118,7 @@ export default class About extends Page {
       })
     }
   }
-  
+
   removeContent() {
     this.elements.bioContainer.innerHTML = ""
   }
@@ -131,6 +149,7 @@ export default class About extends Page {
   setAnimationPositions() {
     gsap.set(this.elements.close, { opacity: 0 })
     gsap.set(this.elements.mainTitles, { y: "100%" })
+    gsap.set(this.elements.bioRole, { y: "100%" })
     gsap.set(this.elements.bioImage, { y: "20%", opacity: 0 })
   }
 

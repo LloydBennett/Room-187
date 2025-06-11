@@ -45,14 +45,14 @@ export default class TextSplit extends Components {
           mask: "lines",
           autoSplit: true,
           onSplit: (self) => {
-            return this.scrollAnimateText(el, self.lines)
+            return TextSplit.scrollAnimateText(el, self.lines)
           }
         })
       })
     })
   }
  
-  scrollAnimateText(text, lines) {
+  static scrollAnimateText(text, lines) {
     gsap.fromTo(lines,
       { y: "100%" },
       {
@@ -69,5 +69,4 @@ export default class TextSplit extends Components {
       }
     )
   }
-
 }

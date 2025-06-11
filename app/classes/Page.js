@@ -20,7 +20,8 @@ export default class Page {
       page: '[data-page]',
       body: 'body',
       bg: '[data-bg]',
-      navBar: '[data-nav-bar]'
+      navBar: '[data-nav-bar]',
+      altImg: '[data-alt-hero-img]'
     }
 
     Page.prototype.create = Create
@@ -189,6 +190,10 @@ export default class Page {
           "titles -=0.2"
         )
       })
+
+      if(this.elements.altImg) {
+        tl.fromTo(this.elements.altImg, { y: "20%", opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, '-=0.6')
+      }
 
       tl.fromTo(this.elements.misc, { opacity: 0 }, { opacity: 1, duration: 0.8, ease: 'power2.out' })
       
