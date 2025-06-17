@@ -4,6 +4,8 @@
   grid-column-gap: 5%;
   grid-row-gap: 5%;
   padding-top: spacing(4);
+  min-height: 100vh;
+  grid-auto-rows: max-content;
   
   @include media-query($breakpoint--small) {
     grid-template-columns: repeat(4, 1fr);
@@ -11,6 +13,7 @@
 
   @include media-query($breakpoint--medium) {
     grid-template-columns: repeat(6, 1fr);
+    grid-row-gap: 10%;
     padding-top: spacing(8);
   }
 
@@ -43,6 +46,7 @@
 
   img {
     height: auto;
+    width: 100%;
   }
 }
 
@@ -69,12 +73,16 @@
 }
 
 .slideshow-media__item {
-  transform: scale(0.8);
-  opacity: 0;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   margin: auto
+}
+
+.slideshow__counter {
+  position: absolute;
+  left: 2%;
+  bottom: 5rem;
 }
