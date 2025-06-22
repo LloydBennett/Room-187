@@ -163,7 +163,6 @@ export default class Page {
         : [];
 
       const allLines = [];
-      const blockLineAnimations = []
       
       heroTitles.forEach((el) => {
         const split = SplitText.create(el, 
@@ -177,7 +176,7 @@ export default class Page {
 
         allLines.push(split.lines)
       })
-
+      
       allLines.forEach((text, i) => {
         tl.fromTo(text,
           { y: "100%"},
