@@ -20,7 +20,7 @@
       <ul class="list">
         <% infoDocs.forEach((docs, i) => { %>
           <li class="list__item">
-            <a href="<%- docs.url %>" class="type--white type--xs">
+            <a href="<%- docs.url %>" class="type--white type--xs" data-page-trigger>
               <%- docs.data.title %>
             </a>
           </li>

@@ -36,7 +36,6 @@ export default class Page {
       let tl = gsap.timeline()
       const hasHeroImg = this.hasHeroImage
 
-      //window.scrollTo(0, 0)
       if(!this.elements.body.classList.contains('no--scrolling')) {
         this.preventScrolling()
       }
@@ -54,7 +53,6 @@ export default class Page {
   hide() {
     return new Promise(resolve => {
       let animOut = gsap.timeline()
-      this.preventScrolling()
 
       animOut.to(this.elements.overlay, {
         clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
@@ -176,7 +174,7 @@ export default class Page {
 
         allLines.push(split.lines)
       })
-      
+
       allLines.forEach((text, i) => {
         tl.fromTo(text,
           { y: "100%"},
@@ -197,10 +195,8 @@ export default class Page {
       tl.fromTo(this.elements.misc, { opacity: 0 }, { opacity: 1, duration: 0.8, ease: 'power2.out' })
       
       tl.call(() => {
-        this.elements.body.classList.remove("no--scrolling");
-        document.documentElement.style.overflow = '';
-        this.lScroll.start();
-        resolve();
+        this.enableScrolling()
+        resolve()
       })
     })
   }
@@ -209,6 +205,12 @@ export default class Page {
     this.lScroll.stop()
     document.documentElement.style.overflow = 'hidden';
     this.elements.body.classList.add('no--scrolling')
+  }
+
+  enableScrolling() {
+    this.elements.body.classList.remove("no--scrolling")
+    document.documentElement.style.overflow = ''
+    this.lScroll.start()
   }
 
   get hasHeroImage() {

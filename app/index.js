@@ -181,7 +181,6 @@ class App {
     const links = document.querySelectorAll('[data-page-trigger]')
     
     links.forEach((l) => {
-      
       l.onclick = event => {
         event.preventDefault()
         const href = l.href
