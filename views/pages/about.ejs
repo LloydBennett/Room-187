@@ -13,7 +13,7 @@ let sideImage = document.data.side_image
     <div class="container grid--all hero__grid relative" data-hero-content>
       
       <div class="hero__title flex flex--end text-right">
-        <h1 class="type--xl type--display type--caps type--x-bold type--outline-white" data-main-title data-split-text>
+        <h1 class="type--xl type--display type--caps type--x-bold type--outline-white margin--left-auto" data-main-title data-split-text>
           <%- document.data.title %>
         </h1>      
       </div>
@@ -26,7 +26,7 @@ let sideImage = document.data.side_image
       <% if(section !== null ) { %>
         <div class="column--centered-xl">
           <% section.forEach((s) => { %>
-          <p class="type--xs type--white">
+          <p class="type--xs type--white" data-split-text="scroll">
             <%- s.paragraph %>
           </p>
           <% }) %>
