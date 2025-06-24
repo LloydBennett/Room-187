@@ -23,6 +23,8 @@ export default class About extends Page {
     CustomEase.create("zoom", "0.71, 0, 0.06, 1")
     this.pageScroll = scroll
     this.isOpen = false
+    this.tl = new gsap.timeline()
+    this.mm = gsap.matchMedia()
     this.addEventListeners()
   }
 
@@ -64,63 +66,84 @@ export default class About extends Page {
       }
 
       this.setAnimationPositions()
-      this.animate()
-    }
-  }
-  animate() {
-    let tl = gsap.timeline()
-
-    if(!this.isOpen) {
-      console.log(this.modalScroll)
-      this.pageScroll.stop()
-      this.elements.body.classList.add('no-scrolling')
-
-      tl.to(this.elements.bioOverlay, {
-        clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-        duration: 0.6,
-        ease: "zoom"
-      })
-
-      tl.to(this.elements.mainTitles, { y: 0, duration: 0.8, ease: "zoom", stagger: (i, target) => target.dataset.textReveal ? 0.05 * Number(target.dataset.textReveal): 0.05 }, '-=0.3')
-      tl.to(this.elements.bioRole, { y: 0, duration: 0.8, ease: "zoom"}, '-=0.6')
-
-      document.fonts.ready.then(() => {
-        const split = SplitText.create(this.elements.bioText, {
-          type: "lines",
-          lineClass: "line",
-          mask: "lines",
-          autoSplit: true,
-          onSplit: (self) => {
-            return TextSplit.scrollAnimateText(this.elements.bioText, self.lines)
-          }
-        })
-      })
-
-      tl.to(this.elements.bioImage, { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, '-=0.6')
-      
-      tl.to(this.elements.close, { opacity: 1, duration: 0.3, ease: "power2.out", onComplete: ()=> {
-        this.isOpen = true
-        this.elements.body.classList.remove('no--scrolling')
-        this.modalScroll.start()
-      }}, '-=0.2')
-    }
-    else {
-      tl.to(this.elements.bioOverlay, {
-        clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",  
-        duration: 0.6,
-        ease: "zoom",
-        onComplete: () => {
-          this.isOpen = false
-          this.setAnimationPositions()
-          this.removeContent()
-          this.pageScroll.start()
-        }
-      })
+      this.animateContent()
     }
   }
 
   removeContent() {
     this.elements.bioContainer.innerHTML = ""
+  }
+
+  openModal() {
+    if (this.isOpen) return
+
+    this.pageScroll.stop()
+    this.elements.body.classList.add('no-scrolling')
+
+    this.tl.to(this.elements.bioOverlay, {
+      clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+      duration: 0.6,
+      ease: "zoom"
+    })
+  }
+
+  closeModal() {
+    this.tl.to(this.elements.bioOverlay, {
+      clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",  
+      duration: 0.6,
+      ease: "zoom",
+      onComplete: () => {
+        this.isOpen = false
+        this.setAnimationPositions()
+        this.removeContent()
+        this.pageScroll.start()
+      }
+    })
+  }
+
+  animateContent() {
+    const tl = gsap.timeline()
+    
+    this.tl.to(this.elements.mainTitles, { y: 0, duration: 0.8, ease: "zoom", stagger: (i, target) => target.dataset.textReveal ? 0.05 * Number(target.dataset.textReveal): 0.05 }, '-=0.3')
+    this.tl.to(this.elements.bioRole, { y: 0, duration: 0.8, ease: "zoom"}, '-=0.6')
+
+    document.fonts.ready.then(() => {
+      const split = SplitText.create(this.elements.bioText, {
+        type: "lines",
+        lineClass: "line",
+        mask: "lines",
+        autoSplit: true,
+        onSplit: (self) => {
+          return this.animateBodyText(this.elements.bioText, self.lines)
+        }
+      })
+    })
+
+    this.tl.to(this.elements.bioImage, { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, '-=0.6')
+      
+    this.tl.to(this.elements.close, { opacity: 1, duration: 0.3, ease: "power2.out", onComplete: ()=> {
+      this.isOpen = true
+      this.elements.body.classList.remove('no--scrolling')
+      this.modalScroll.start()
+    }}, '-=0.2')
+  }
+
+  animateBodyText(text, lines) {
+    this.mm.add("(max-width: 1199px)", () => {
+      TextSplit.scrollAnimateText(text, lines)
+    })
+
+    this.mm.add("(min-width: 1200px)", () => {
+      this.tl.fromTo(lines,
+        { y: "100%" },
+        {
+          y: 0,
+          duration: 0.8,
+          ease: "zoom",
+          stagger: 0.05
+        },
+      '-=0.4')
+    })
   }
 
   addEventListeners() {
@@ -132,6 +155,7 @@ export default class About extends Page {
         event.preventDefault()
         const href = l.href
 
+        this.openModal()
         this.onChange({ url: href })
       }
     })
@@ -140,7 +164,8 @@ export default class About extends Page {
       if (this.previousUrl) {
         window.history.replaceState({}, "", this.previousUrl)
       }
-      this.animate()
+
+      this.closeModal()
     })
 
     window.addEventListener('popstate', this.onPopState.bind(this))
