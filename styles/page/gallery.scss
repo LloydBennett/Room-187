@@ -24,13 +24,8 @@
 
 .gallery-grid__item {
   display: flex;
-  flex-grow: 1; /* Allows it to expand */
-  overflow: hidden;
+  flex-grow: 1;
   align-items: center;
-  
-  .thumbnail {
-    cursor: pointer;
-  }
 }
 
 .slideshow__media {
@@ -40,9 +35,6 @@
   margin-right: auto;
   height: 100%;
   position: relative;
-  // display: flex;
-  // justify-content: center;
-  // align-items: center;
 
   img {
     height: auto;

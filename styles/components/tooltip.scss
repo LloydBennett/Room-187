@@ -1,0 +1,21 @@
+.no-touch {
+  .tooltip {
+    mix-blend-mode: difference;
+    position: absolute;
+    opacity: 0;
+    transform: translate(-50%, 0);
+    pointer-events: none;
+    z-index: 2;
+
+    &::before {
+      content: attr(data-tooltip-text);
+      @extend .no-wrap;
+      display: block;
+    }
+  }
+
+  [data-tooltip-item] {
+    cursor: none;
+    position: relative;
+  }
+}
