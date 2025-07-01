@@ -11,6 +11,7 @@ import TextSplit from 'components/TextSplit'
 import VideoPlayer from './components/VideoPlayer'
 import Stats from './components/Stats'
 import Hero from './components/Hero'
+import Tooltip from './components/tooltip'
 
 class App {
   constructor() {
@@ -50,6 +51,10 @@ class App {
 
   createPreloader() {
     this.preloader = new Preloader()
+  }
+
+  createTooltip() {
+    this.tooltip = new Tooltip()
   }
 
   createNavigation() {
@@ -199,6 +204,7 @@ class App {
     this.createVideoPlayer()
     this.createStats()
     this.createHero()
+    this.createTooltip()
   }
 }
 
