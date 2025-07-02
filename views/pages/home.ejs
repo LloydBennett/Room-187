@@ -2,10 +2,10 @@
   let title = document.data.hero_title
   let titleArr = title.split(" ")
 %>
-<section class="hero flex" data-hero data-hero-content>
-  <div class="relative flex section--s-p-b">
+<section class="hero flex flex--column" data-hero data-image-hero="large" data-hero-content>
+  <div class="hero__wrapper relative flex section--s-p-b">
     <div class="overlay no-overflow">
-      <div class="hero__bg overlay" data-bg data-home-bg style="background-image: url('<%- document.data.hero_image.url %>')"></div>
+      <div class="hero__bg overlay" data-bg style="background-image: url('<%- document.data.hero_image.url %>')"></div>
     </div>
     <div class="hero__g-overlay overlay"></div>
     <div class="container grid--all hero__grid relative" data-hero-content>
@@ -41,13 +41,7 @@
 </section>
 
 <div class="video__overlay overlay--reveal bg--black fixed overlay z-index--5" data-video-overlay="intro-video" data-lenis-prevent>
-  
-  <div class="close flex flex--middle" data-close>
-    <div class="inline-block">
-      <%- include('../partials/svg/icons/24/close', { cssClass: 'bg-svg--white' }) -%>
-    </div>
-    <span class="type--xs type--white type--caps type--bold">Close</span>
-  </div>
+  <%- include('../partials/close-button') -%>
   
   <div class="video__wrapper z-index--2">
     <video class="video--bg" controls data-video="intro-video">

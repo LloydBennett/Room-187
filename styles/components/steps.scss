@@ -8,7 +8,7 @@
   }
 
   @include media-query($breakpoint--medium) {
-    grid-column: 1 / 4;
+    grid-column: 1 / 5;
     //min-height: 100vh;
     //max-height: 100vh; /* Prevents infinite height */
   
@@ -20,6 +20,11 @@
     flex-direction: column;
   }
 
+  @include media-query($breakpoint--large) {
+    grid-column: 1 / 4;
+
+  }
+
   @include media-query($breakpoint--xx-large) {
     grid-column: 2 / 5;
   }
@@ -29,6 +34,10 @@
     display: block;
     clear: both;
     height: 100%;
+  }
+
+  p {
+    text-wrap: pretty;
   }
 }
 

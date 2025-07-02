@@ -1,14 +1,11 @@
+<%
+  let errorMessage = `Oops! you've entered the wrong <span class="type--outline-white type--xl block">Room!</span>`
+%>
 <div class="full-height flex flex--middle section--s-p-t section--s-p-b">
   <div class="container grid">
-    <div class="column--centered" data-hero>
-      <h1 class="type--l type--white type--caps type--x-bold type--display" data-main-title>
-        <span class="block no-overflow"><span class="inline-block" data-text-reveal>Oops!</span></span>
-        <div data-split-text="line-break" class="error__column">you&apos;ve entered <span class="no-wrap">the wrong</span></div>
-        <span class="no-overflow block">
-          <span class="type--outline-white type--xl inline-block" data-text-reveal="4">
-            Room&#33;
-          </span>
-        </span>     
+    <div class="column--centered text-center" data-hero>
+      <h1 class="type--l type--white type--caps type--x-bold type--display" data-main-title data-split-text>
+        <%- errorMessage %>    
       </h1>
       <div class="button--m-t" data-misc>
         <%- include('../partials/button', { buttonText: "Back to the party", link: "/", link_target: false, large: true, primaryBtn: true, fullWidth: false } ) -%>

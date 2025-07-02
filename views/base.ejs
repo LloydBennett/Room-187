@@ -7,19 +7,25 @@
 <%- include('./partials/head', { page: page } ) -%>
 
 <body <% if (page === "error") { %>class="error"<% } %>>
-  <% useZoomTransition = (page === "home") ? true : false %>
+  <% useZoomTransition = (page === "home" || page === "about") ? true : false %>
   <%- include('./partials/loader', { zoomIn: useZoomTransition } ) -%>
   <%- include('./partials/navigation-bar') -%>
+  <% if (page !== "error") { %><%- include('./partials/navigation-menu') -%><% } %>
   <main id="main" data-page="<%- page %>" class="main <% if (page !== "error") { %><%- page %><% } %> relative">
-    <% if (page !== "error") { %><%- include('./partials/navigation-menu') -%><% } %>
     <div>
-      <div <% if (page === "contact" || page === "team_members") { %>class="hero--p-t"<% } %>>
+      <div <% if (page !== "home" && page !== "about" && page !== "gallery" && page !== "error") { %>class="hero--p-t"<% } %> data-inner-content>
         <% switch(page) {
           case 'about' : %>
             <%- include('./pages/about') %>
             <%  break; %>
+          <% case 'gallery' : %>
+            <%- include('./pages/gallery') %>
+            <%  break; %>
           <% case 'contact' : %>
             <%- include('./pages/contact') %>
+            <%  break; %>
+          <% case 'documents' : %>
+            <%- include('./pages/documents') %>
             <%  break; %>
           <% case 'team_members' : %>
             <%- include('./pages/team-member') %>
@@ -34,10 +40,9 @@
       
       <%- include('./partials/footer', { showFull: showFullFooter } ) -%>
     </div>
-    
-    
   </main>
-  
+
+  <%- include('./partials/page-transition') -%>
   <script src="/main.js"></script>
 </body>
 

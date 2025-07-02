@@ -2,9 +2,11 @@
   display: block;
 
   svg,
-  img {
+  img,
+  video {
     width: 100%;
     display: block;
+    object-fit: cover;
   }
 }
 

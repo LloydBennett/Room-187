@@ -9,3 +9,15 @@
 .no-overflow-y {
   overflow-y: hidden;
 }
+
+.overflow-scroll {
+  overflow: auto;
+}
+
+.overflow-clip {
+  overflow: clip;
+}
+
+.overflow-clip-y {
+  overflow-y: clip;
+}

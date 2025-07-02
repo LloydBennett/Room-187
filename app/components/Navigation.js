@@ -12,7 +12,7 @@ export default class Navigation extends Components {
         body: 'body',
         navBar: '[data-nav-bar]',
         navLinks: '[data-menu-links]',
-        navLinkText: '.nav-menu [data-text-reveal]',
+        navLinkText: '.nav-menu .nav-menu-list__item [data-nav-link-text]',
         navLinkHover: '[data-nav-hover]'
       }
     })
@@ -37,10 +37,11 @@ export default class Navigation extends Components {
   }
 
   addEventListeners() {
+    if(!this.elements.trigger || !this.elements.navLinks) return
+    
     this.elements.trigger.addEventListener('click', () => {
       if(!this.isAnimating) {
         this.isAnimating = true
-        this.elements.trigger.classList.toggle('open')
         this.isOpen ? this.closeMenu() : this.openMenu()
       }
     })
@@ -77,21 +78,22 @@ export default class Navigation extends Components {
       });
 
     });
-    
   }
 
   openMenu() {
     this.isOpen = true
     this.scroll.stop()
+    this.elements.trigger.classList.add('open')
     this.elements.menu.classList.add('show')
-    
+    console.log(this.elements.navLinkText)
+
     this.tl.to(this.elements.menu, {
       clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
       duration: 0.6,
       ease: "zoom",
     })
 
-    this.tl.fromTo(this.elements.navLinkText, { y: "100%" }, { y: 0, duration: 0.8, ease: "zoom", stagger: (i, target) => target.dataset.textReveal ? 0.05 * Number(target.dataset.textReveal): 0.05,
+    this.tl.fromTo(this.elements.navLinkText, { y: "100%" }, { y: 0, duration: 0.8, ease: "zoom",
       onComplete: () => {
         this.isAnimating = false
       }
@@ -99,12 +101,13 @@ export default class Navigation extends Components {
   }
 
   closeMenu() {
+    this.elements.trigger.classList.remove('open')
     this.tl.to(this.elements.menu, {
       clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
       duration: 0.6,
       ease: "zoom",
     })
-
+    console.log(this.elements.navLinkText)
     this.tl.fromTo(this.elements.navLinkText, { y: 0 }, { y: "100%", duration: 0.01, 
       onComplete: () => {
         this.isAnimating = false

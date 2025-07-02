@@ -21,7 +21,6 @@ export default class Home extends Page {
         progressIndices: '[data-progress-index]',
         steps: '[data-progress-steps]',
         artistNames: '[data-artist-name-animation]',
-        homeBg: '[data-home-bg]',
         stepContainer: '[data-step-container]'
       }
     })
@@ -71,81 +70,53 @@ export default class Home extends Page {
   }
 
   setUpScrollAnimations() {
-    this.heroAnimations()
-
-    if(this.elements.polaroid) {
-      this.elements.polaroid.forEach((element, i) => {
-        gsap.fromTo(element, 
-          {
-            opacity: 0
-          },
-          {
-            opacity: 1,
-            scrollTrigger: {
-              trigger: element,
-              start: '50% bottom', // Start the animation when the top of the heroContent hits 90% of the viewport
-              scrub: false,
-              markers: false
-            },
-            ease: "power2.out",
-            duration: 0.6
-          }
-        )
-  
-        gsap.fromTo(element, 
-          {
-            y: "10%"
-          },
-          {
-            y: "-20%",
-            scrollTrigger: {
-              trigger: element,
-              start: '5% bottom',
-              scrub: true,
-              markers: false,
-            },
-            ease: "power2.out",
-          }
-        )
-      })
-    }
-    
+    this.polaroidParallax()
     this.roomKeyAnimations()
     this.artistSectionAnimations()
   }
+  
+  polaroidParallax() {
+    if(!this.elements.polaroid) return
 
-  heroAnimations() {
-    gsap.fromTo(this.elements.heroContent, 
-      { opacity: 1 },
-      {
-        opacity: 0.1,
-        scrollTrigger: {
-          trigger: this.elements.heroContent,
-          start: '50% center',
-          scrub: true,
-          markers: false
+    this.elements.polaroid.forEach((element, i) => {
+      gsap.fromTo(element, 
+        {
+          opacity: 0
         },
-        ease: "power2.out",
-      }
-    )
+        {
+          opacity: 1,
+          scrollTrigger: {
+            trigger: element,
+            start: '50% bottom', // Start the animation when the top of the heroContent hits 90% of the viewport
+            scrub: false,
+            markers: false
+          },
+          ease: "power2.out",
+          duration: 0.6
+        }
+      )
 
-    gsap.fromTo(this.elements.homeBg, 
-      { scale: 1 },
-      {
-        scale: 1.5,
-        duration: 0.6,
-        scrollTrigger: {
-          trigger: this.elements.heroContent,
-          start: '50% center',
-          scrub: true,
-          markers: false
+      gsap.fromTo(element, 
+        {
+          y: "10%"
         },
-        ease: "power2.out",
-      }
-    )
+        {
+          y: "-20%",
+          scrollTrigger: {
+            trigger: element,
+            start: '5% bottom',
+            scrub: true,
+            markers: false,
+          },
+          ease: "power2.out",
+        }
+      )
+    })
   }
-
+  
   roomKeyAnimations() {
+    if (!this.elements.roomKey || !this.elements.steps || !this.elements.roomKeyHeader || !this.elements.stepContainer || !this.elements.progressBar) return;
+
     let totalStepsHeight = this.elements.steps? Array.from(this.elements.steps).reduce((total, step) => total + step.offsetHeight, 0) : null;
     let adjustedPinDuration = totalStepsHeight - (this.elements.roomKey.offsetHeight + (this.elements.roomKey.offsetHeight / 4));
     let scrollOptions = {
@@ -344,6 +315,8 @@ export default class Home extends Page {
   }
 
   artistSectionAnimations() {
+    if (!this.elements.videoBlock || !this.elements.video || !this.elements.artistNames) return;
+
     gsap.fromTo(this.elements.videoBlock, 
       { clipPath: "polygon(5% 5%, 95% 5%, 95% 95%, 5% 95%)"},
       {

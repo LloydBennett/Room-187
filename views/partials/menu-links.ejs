@@ -1,4 +1,5 @@
-<% let menu = navigation.data.menu_links %>
+<% let menu = navigation.data.menu_links
+%>
 
 <ul class="<%- container_class %>">
   <% menu.forEach((l, i) => { %>
@@ -7,20 +8,24 @@
     %>
   
     <li class="<%- list_class %>">
-      <a href="<%- l.link.url %>" class="<%- list_text_class %> relative" <% if(dataAttr) {%><%- dataAttr %><%}%>>
-        <span data-split-text>
+      <a href="<%- l.link.url %>" class="<%- list_text_class %> relative" <% if(dataAttr) {%><%- dataAttr %><%}%> data-page-trigger>
+        <span class="block" data-nav-link-text>
           <%- name %>
         </span>
       </a>
+      <% if(mainMenu) {%>
       <div class="nav-menu__hover" data-nav-hover></div>
+      <% } %>
     </li>
   <% }) %>
   <li class="<%- list_class %>">
-    <a href="<%- siteDetails.data.main_cta_text %>" target="_blank" class="<%- list_text_class %> relative" <% if(dataAttr) {%><%- dataAttr %><%}%>>
-      <span data-split-text>
+    <a href="<%- siteDetails.data.main_cta_link.url %>" target="_blank" class="<%- list_text_class %> relative" <% if(dataAttr) {%><%- dataAttr %><%}%>>
+      <span class="block" data-nav-link-text>
         Tickets
       </span>
     </a>
+    <% if(mainMenu) {%>
     <div class="nav-menu__hover" data-nav-hover></div>
+    <% } %>
   </li>
 </ul>

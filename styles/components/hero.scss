@@ -6,6 +6,8 @@
 }
 
 .hero--sm {
+  height: 100vh;
+  
   @include media-query($breakpoint--small) {
     height: 60rem;
     min-height: auto;
@@ -14,6 +16,10 @@
   @include media-query($breakpoint--x-large) {
     height: 75rem;
   }
+}
+
+.hero__wrapper {
+  flex: 1;
 }
 
 .hero__bg {

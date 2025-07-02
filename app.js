@@ -25,6 +25,14 @@ const routes = [
     path: '/contact',
   },
   {
+    type: 'gallery',
+    path: '/gallery',
+  },
+  {
+    type: 'documents',
+    path: '/:uid'
+  },
+  {
     type: 'team_members',
     path: '/team/:uid'
   }
@@ -54,6 +62,7 @@ const handleRequest = async api => {
   const members = await client.getAllByType('team_members')
   const testimonials = await client.getAllByType('testimonials')
   const preloader = await client.getSingle('preloader')
+  const infoDocs = await client.getAllByType('documents')
   
   return {
     meta,
@@ -61,7 +70,10 @@ const handleRequest = async api => {
     siteDetails,
     members,
     testimonials,
-    preloader
+    preloader,
+    infoDocs,
+    prismicH: PrismicH,
+    prismic: Prismic
   }
 }
 
@@ -90,6 +102,14 @@ app.get('/team/:uid', async (req, res) => {
   res.render('base', { ...defaults, document, pageType })
 })
 
+app.get('/gallery', async (req, res) => {
+  const pageType = 'gallery'
+  const document = await client.getSingle('gallery')
+  const defaults = await handleRequest(req)
+
+  res.render('base', { ...defaults, document, pageType })
+})
+
 app.get('/contact', async (req, res) => {
   const pageType = 'contact'
   const document = await client.getSingle('contact_us')
@@ -98,14 +118,42 @@ app.get('/contact', async (req, res) => {
   res.render('base', { ...defaults, document, pageType })
 })
 
-app.get('*', async (req, res) => {
-  let pageType = "error"
-  
-  let document = {
-    data: { title: '404 Error' }
+app.get('/:uid', async (req, res) => {
+  const uid = req.params.uid
+  const pageType = 'documents'
+
+  try {
+    const document = await client.getByUID('documents', uid) // Try fetching the document
+
+    if (!document) { // If no document found, show 404
+      return res.status(404).render('base', { 
+        ...await handleRequest(req), 
+        document: { data: { title: '404 Error' } }, 
+        pageType: "error" 
+      })
+    }
+
+    // If document exists, render the page
+    const defaults = await handleRequest(req)
+    res.render('base', { ...defaults, document, pageType })
+    
+  } catch (error) {
+    // Handle Prismic errors (e.g., document not found)
+    return res.status(404).render('base', { 
+      ...await handleRequest(req), 
+      document: { data: { title: '404 Error' } }, 
+      pageType: "error" 
+    })
   }
-  const defaults = await handleRequest(req)
-  res.render('base', { ...defaults, document, pageType })
+})
+
+// FINAL CATCH-ALL ROUTE: If nothing matched before, show 404
+app.get('*', async (req, res) => {
+  res.status(404).render('base', { 
+    ...await handleRequest(req), 
+    document: { data: { title: '404 Error' } }, 
+    pageType: "error" 
+  })
 });
 
 app.listen(port, () => {

@@ -87,8 +87,10 @@
 @import './components/close.scss';
 @import './components/marquee.scss';
 @import './components/rotation.scss';
-@import './components/counter.scss';
+@import './components/section-counter.scss';
 @import './components/steps.scss';
+@import './components/counter.scss';
+@import './components/tooltip.scss';
 
 // ------------------------------------ // ------------------------------------------
 // -------------------------------- P A G E S ---------------------------------------
@@ -97,3 +99,4 @@
 @import './page/contact.scss';
 @import './page/about.scss';
 @import './page/team-member.scss';
+@import './page/gallery.scss';

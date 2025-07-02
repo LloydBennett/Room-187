@@ -1,0 +1,36 @@
+.section-counter {
+  counter-reset: count;
+}
+
+.section-counter__inc {
+  counter-increment: count;
+  position: relative;
+
+  &::before {
+    content: counter(count);
+    @extend .type--display;
+    @extend .type--x-bold;
+    @extend .type--caps;
+
+    -webkit-text-stroke: 0.3rem $colour--grey-500;
+    line-height: 0.5;
+    z-index: -1;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 25rem;
+    left: -10%;
+    
+    @include media-query($breakpoint--medium) {
+      font-size: 35rem;
+    }
+  }
+}
+
+.section-counter__inc-content {
+  padding: 0 0 0 spacing(6);
+
+  @include media-query($breakpoint--small) {
+    padding: 0 0 0 spacing(10);
+  }
+}
