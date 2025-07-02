@@ -9,3 +9,7 @@
 .overlay--reveal {
   clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%);
 }
+
+.overlay--clip-path {
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+}
