@@ -15,8 +15,6 @@ const isGalleryEmpty = gallery.length > 0 && gallery.every(checkEmptyItem)
       <% 
         let isItemEmpty = checkEmptyItem(item) 
         let isSlideShowEmpty = Object.keys(item.slideshow_image).length === 0
-
-        console.log(item.slideshow_image.length)
       %>
       <% if(!isItemEmpty) { %>
         <% let currentIndex = String(i + 1).padStart(3, '0') %>
