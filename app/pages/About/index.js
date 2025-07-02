@@ -142,7 +142,7 @@ export default class About extends Page {
           ease: "zoom",
           stagger: 0.05
         },
-      '-=0.4')
+      '-=0.8')
     })
   }
 

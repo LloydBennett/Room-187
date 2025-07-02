@@ -24,9 +24,10 @@ let team = members.sort(compare)
     <% team.forEach((member) => { %>
       <div class="three--columns-slim">
         <a href="<%- member.url %>" class="avatar__stack" data-bio-trigger>
-          <div class="avatar-stack__thumbnail thumbnail relative avatar__">
+          <div class="avatar-stack__thumbnail thumbnail relative" data-tooltip-item>
             <div class="avatar--bio avatar--bio--s relative" style="background-image: url(<%- member.data.avatar.url %>)"></div>
             <div class="avatar--bio avatar--bio--s avatar--highlighted overlay" style="background-image: url(<%- member.data.avatar.highlighted.url %>)"></div>
+            <div class="tooltip type--xs type--caps type--white" data-tooltip data-tooltip-text="View bio"></div>
           </div>
           <div class="avatar-stack__info">
             <h4 class="avatar-stack__name type--s type--display">
