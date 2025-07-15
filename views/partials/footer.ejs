@@ -40,6 +40,7 @@
           </div>
           <span class="input__line"></span>
         </div>
+        <input type="text" name="bot-field" id="bot-field" autocomplete="off" style="display: none;">
       </form>
     </div>
     <% } %>
@@ -59,3 +60,6 @@
     </div>
   </div>
 </footer>
+<% if (showFull) { %>
+  <%- include('../partials/toast') -%>
+<% }%>
