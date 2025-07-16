@@ -1,8 +1,8 @@
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-column-gap: 5%;
-  grid-row-gap: 5%;
+  grid-column-gap: 10%;
+  grid-row-gap: 10%;
   padding-top: spacing(4);
   min-height: 100vh;
   grid-auto-rows: max-content;
@@ -11,10 +11,10 @@
     grid-template-columns: repeat(4, 1fr);
   }
 
-  @include media-query($breakpoint--medium) {
+  @include media-query($breakpoint--large) {
     grid-template-columns: repeat(6, 1fr);
-    grid-row-gap: 10%;
     padding-top: spacing(8);
+    grid-column-gap: 5%;
   }
 
   @include media-query($breakpoint--xx-large) {
