@@ -162,7 +162,12 @@ app.get('*', async (req, res) => {
 });
 
 app.post('/subscribe', async (req, res) => {
-  const { email } = req.body;
+  const { email, 'bot-field': botField } = req.body;
+
+  // Bot protection: if honeypot field is filled, assume it's a bot and silently ignore
+  if (botField) {
+    return res.status(200).json({ message: 'Thanks!' });
+  }
 
   if (!email) {
     return res.status(400).json({ error: 'Email is required' });
@@ -188,6 +193,13 @@ app.post('/subscribe', async (req, res) => {
 
     const result = await response.json();
 
+    // Handle "Member Exists" error
+    if (result.title === 'Member Exists') {
+      return res.status(400).json({
+        error: `${email} is already subscribed to our mailing list.`,
+      });
+    }
+    
     if (!response.ok) {
       return res.status(response.status).json({ error: result.detail || 'Failed to subscribe' });
     }
