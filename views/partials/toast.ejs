@@ -1,8 +1,16 @@
-<div class="toast absolute success flex flex--middle" data-toast>
+<div class="toast fixed success flex flex--middle z-index--4" data-toast>
   <div class="flex flex--middle toast__content">
-    <%- include('../partials/svg/icons/24/tick', { cssClass: 'icon--white' }) -%>
+    <div class="toast__icon" data-toast-icon>
+      <div class="toast-icon__error">
+        <%- include('../partials/svg/icons/24/warning', { cssClass: 'icon--white' }) -%>
+      </div>
+      <div class="toast-icon__success">
+        <%- include('../partials/svg/icons/24/tick', { cssClass: 'icon--white' }) -%>
+      </div>
+    </div>
     <p class="type--xs type--white" data-toast-message>Yoo</p>
   </div>
-  
-  <%- include('../partials/svg/icons/24/close', { cssClass: 'icon--white'}) -%>
+  <div class="toast__close thumbnail" data-toast-close>
+    <%- include('../partials/svg/icons/24/close', { cssClass: 'icon--white'}) -%>
+  </div>
 </div>

@@ -2,6 +2,10 @@
   background-color: $colour--error;
 }
 
+.error__text {
+  color: $colour--error-light;
+}
+
 .error__column {
   max-width: 110rem;
   margin-left: auto;
@@ -10,4 +14,9 @@
 
 .success {
   background-color: $colour--success;
+}
+
+.info {
+  background-color: $colour--white;
+  color: $colour--black;
 }
