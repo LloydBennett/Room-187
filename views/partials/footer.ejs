@@ -32,13 +32,16 @@
       <h4 class="type--caps type--bold type--white type--display type--xs type--s-margin">
         Join our newsletter
       </h4>
-      <form>
+      <form data-subscription-form>
         <div class="input relative">
           <input type="email" placeholder="Enter your email" name="email" class="input__field input--has-icon-r">
-          <div class="thumbnail input--icon-right" data-submit>
+          <div class="thumbnail input--icon-right" data-subscription-submit-btn>
             <%- include('../partials/svg/icons/24/arrow-right') -%>
           </div>
-          <span class="input__line"></span>
+          <span class="input__line" data-input-line></span>
+        </div>
+        <div class="input__message">
+          <p class="type--xs" data-input-message></p>
         </div>
         <input type="text" name="bot-field" id="bot-field" autocomplete="off" style="display: none;">
       </form>
