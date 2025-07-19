@@ -1,0 +1,62 @@
+.toast {
+  padding: spacing(1);
+  gap: spacing(2);
+  left: 50%;
+  bottom: 10vh;
+  transform: translateX(-50%) translateY(200%);
+  opacity: 0;
+
+  &.loading {
+    .toast__close {
+      display: none;
+    }
+  }
+}
+
+.toast__content {
+  gap: spacing(1);
+}
+
+.toast__close {
+  cursor: pointer;
+  padding-top: $spacing-rule-quarter;
+}
+
+.toast__icon {
+  &.toast-icon--success {
+    .toast-icon__error,
+    & ~ .toast-icon__loading {
+      display: none;
+    }
+
+    .toast-icon__success {
+      display: block;
+    }
+  }
+
+  &.toast-icon--error {
+    .toast-icon__error {
+      display: block;
+    }
+    
+    .toast-icon__success,
+    & ~ .toast-icon__loading {
+      display: none;
+    }
+  }
+
+  &.toast-icon--loading {
+    .toast-icon__error,
+    .toast-icon__success,
+    .toast__close {
+      display: none;
+    }  
+  }
+}
+
+.toast-icon__loading {
+  display: flex;
+  align-items: center;
+  min-width: 6rem;
+  justify-content: center;
+}

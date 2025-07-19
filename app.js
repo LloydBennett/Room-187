@@ -6,10 +6,15 @@ const app = express()
 const path = require('path')
 const port = 3000
 
+const MAILCHIMP_API_KEY = process.env.MAILCHIMP_API_KEY
+const MAILCHIMP_LIST_ID = process.env.MAILCHIMP_LIST_ID
+const MAILCHIMP_DC = 'us5'
+
 const Prismic = require('@prismicio/client');
 const PrismicH = require('@prismicio/helpers');
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.json())
 
 const routes = [
   {
@@ -154,6 +159,55 @@ app.get('*', async (req, res) => {
     document: { data: { title: '404 Error' } }, 
     pageType: "error" 
   })
+});
+
+app.post('/subscribe', async (req, res) => {
+  const { email, 'bot-field': botField } = req.body;
+
+  // Bot protection: if honeypot field is filled, assume it's a bot and silently ignore
+  if (botField) {
+    return res.status(200).json({ message: 'Thanks!' });
+  }
+
+  if (!email) {
+    return res.status(400).json({ error: 'Email is required' });
+  }
+
+  const data = {
+    email_address: email,
+    status: 'subscribed',
+    merge_fields: {
+      CITY: 'N/A'
+    },
+  }
+
+  try {
+    const response = await fetch(`https://${MAILCHIMP_DC}.api.mailchimp.com/3.0/lists/${MAILCHIMP_LIST_ID}/members`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Basic ${Buffer.from('anystring:' + MAILCHIMP_API_KEY).toString('base64')}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    const result = await response.json();
+
+    // Handle "Member Exists" error
+    if (result.title === 'Member Exists') {
+      return res.status(400).json({
+        error: `${email} is already subscribed to our mailing list.`,
+      });
+    }
+
+    if (!response.ok) {
+      return res.status(response.status).json({ error: result.detail || 'Failed to subscribe' });
+    }
+
+    res.status(200).json({ message: `Great! You’re In! Keep an eye on your inbox for the latest updates, tips, and exclusive offers.` });
+  } catch (err) {
+    res.status(500).json({ error: 'Server error. Please try again later.' });
+  }
 });
 
 app.listen(port, () => {

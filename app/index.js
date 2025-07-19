@@ -12,6 +12,7 @@ import VideoPlayer from './components/VideoPlayer'
 import Stats from './components/Stats'
 import Hero from './components/Hero'
 import Tooltip from './components/tooltip'
+import SubscriptionForm from './components/SubscriptionForm'
 
 class App {
   constructor() {
@@ -64,6 +65,10 @@ class App {
   createContent() {
     this.content = document.querySelector('.main')
     this.template = this.content.getAttribute('data-page')
+  }
+
+  createSubscriptionForm() {
+    this.subscriptionForm = new SubscriptionForm()
   }
 
   async initPages() {
@@ -205,6 +210,7 @@ class App {
     this.createStats()
     this.createHero()
     this.createTooltip()
+    this.createSubscriptionForm()
   }
 }
 
