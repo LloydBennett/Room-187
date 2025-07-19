@@ -446,7 +446,7 @@
     }
     &:-webkit-autofill, &:-webkit-autofill:hover,
     &:-webkit-autofill:active, &:-webkit-autofill:focus {
-      -webkit-box-shadow: 0 0 0 1000px grey inset; //change later
+      -webkit-box-shadow: 0 0 0 1000px #000 inset; //change later
     }
   
   }
@@ -470,7 +470,6 @@
   select:-webkit-autofill,
   select:-webkit-autofill:hover,
   select:-webkit-autofill:focus {
-    -webkit-box-shadow: 0 0 0 30px #202020 inset !important;
     -webkit-text-fill-color: white !important;
   }
   

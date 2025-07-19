@@ -199,12 +199,12 @@ app.post('/subscribe', async (req, res) => {
         error: `${email} is already subscribed to our mailing list.`,
       });
     }
-    
+
     if (!response.ok) {
       return res.status(response.status).json({ error: result.detail || 'Failed to subscribe' });
     }
 
-    res.status(200).json({ message: 'Successfully subscribed!' });
+    res.status(200).json({ message: `Great! You’re In! Keep an eye on your inbox for the latest updates, tips, and exclusive offers.` });
   } catch (err) {
     res.status(500).json({ error: 'Server error. Please try again later.' });
   }

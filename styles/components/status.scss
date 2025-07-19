@@ -16,7 +16,10 @@
   background-color: $colour--success;
 }
 
-.info {
+.loading {
   background-color: $colour--white;
-  color: $colour--black;
+
+  p {
+    color: $colour--black !important;
+  }
 }

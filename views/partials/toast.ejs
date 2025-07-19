@@ -1,5 +1,5 @@
-<div class="toast fixed success flex flex--middle z-index--4" data-toast>
-  <div class="flex flex--middle toast__content">
+<div class="toast fixed success flex z-index--4" data-toast>
+  <div class="flex toast__content">
     <div class="toast__icon" data-toast-icon>
       <div class="toast-icon__error">
         <%- include('../partials/svg/icons/24/warning', { cssClass: 'icon--white' }) -%>
@@ -9,6 +9,9 @@
       </div>
     </div>
     <p class="type--xs type--white" data-toast-message>Yoo</p>
+    <div class="toast-icon__loading">
+      <div class="loader__icon"></div>
+    </div>
   </div>
   <div class="toast__close thumbnail" data-toast-close>
     <%- include('../partials/svg/icons/24/close', { cssClass: 'icon--white'}) -%>

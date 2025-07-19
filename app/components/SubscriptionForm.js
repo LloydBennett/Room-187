@@ -1,5 +1,6 @@
 import Components from 'classes/Components'
 import gsap from 'gsap'
+import CustomEase from 'gsap/CustomEase'
 
 export default class SubscriptionForm extends Components {
   constructor() {
@@ -16,7 +17,12 @@ export default class SubscriptionForm extends Components {
         toastIcon: '[data-toast-icon]'
       }
     })
+
+    gsap.registerPlugin(CustomEase)
+    CustomEase.create("zoom", "0.71, 0, 0.06, 1")
+
     this.isToastOpen = false
+    this.toastTimeoutId = null
     this.init()
   }
 
@@ -32,12 +38,12 @@ export default class SubscriptionForm extends Components {
     this.elements.toastIcon.classList.add(`toast-icon--${type}`)
 
     if(type === 'error') {
-      this.elements.toast.classList.remove('success', 'info')
-      this.elements.toastIcon.classList.remove('toast-icon--success', 'toast-icon--info')
+      this.elements.toast.classList.remove('success', 'loading')
+      this.elements.toastIcon.classList.remove('toast-icon--success', 'toast-icon--loading')
 
     } else if(type === 'success') {
-      this.elements.toast.classList.remove('error', 'info')
-      this.elements.toastIcon.classList.remove('toast-icon--error', 'toast-icon--info')
+      this.elements.toast.classList.remove('error', 'loading')
+      this.elements.toastIcon.classList.remove('toast-icon--error', 'toast-icon--loading')
     }
     else {
       this.elements.toast.classList.remove('error', 'success')
@@ -63,23 +69,36 @@ export default class SubscriptionForm extends Components {
     gsap.to(this.elements.toast, {
       y: 0,
       opacity: 1,
-      duration: 0.4,
-      ease: 'power2.out',
+      duration: 0.6,
+      ease: 'zoom',
       onComplete: () => {
         this.isToastOpen = true
-        // setTimeout(() => {
-        //   this.closeToast()
-        // }, 8000)
+
+        // Clear any existing timeout before setting a new one
+        if (this.toastTimeoutId) {
+          clearTimeout(this.toastTimeoutId)
+        }
+
+        this.toastTimeoutId = setTimeout(() => {
+          this.closeToast()
+          this.toastTimeoutId = null
+        }, 8000)
       }
     })
   }
 
   closeToast() {
+    // If timeout exists, clear it so it doesn't trigger after manual close
+    if (this.toastTimeoutId) {
+      clearTimeout(this.toastTimeoutId)
+      this.toastTimeoutId = null
+    }
+
     gsap.to(this.elements.toast, {
       y: '200%',
       opacity: 0,
-      duration: 0.5,
-      ease: 'power2.out',
+      duration: 0.6,
+      ease: 'zoom',
       onComplete: () => {
         this.isToastOpen = false
       }
@@ -108,7 +127,7 @@ export default class SubscriptionForm extends Components {
         return; // silently ignore
       }
       
-      this.updateToast("Subscribing...", "info");
+      this.updateToast("Subscribing", "loading");
   
       try {
         const res = await fetch("/subscribe", {
@@ -121,14 +140,14 @@ export default class SubscriptionForm extends Components {
         if (res.ok) {
           this.updateInputField("", "success")
           this.updateToast(result.message, "success")
-          input.value = "";
+          
         } else {
-          this.updateInputField("", "error")
+          this.updateInputField("", "")
           this.updateToast(result.error || "Something went wrong. Try again.", "error");
         }
       } catch (err) {
         this.updateToast("Server error. Please try again later.", "error");
-        this.updateInputField("", "error")
+        this.updateInputField("", "")
       }
     })
   }
