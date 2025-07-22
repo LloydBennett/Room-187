@@ -62,7 +62,7 @@ $hero--tweakpoint: 1080px;
   grid-column: 1 / 2;
   
   @include media-query($breakpoint--small - 1, max-width) {
-    align-content: flex-end;
+    align-self: flex-end;
     grid-row: 6;
   }
 
