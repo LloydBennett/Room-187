@@ -1,12 +1,12 @@
 .hero {
-  min-height: 100vh;
+  min-height: 100dvh;
   position: sticky;
   top: 0;
   width: 100%;
 }
 
 .hero--sm {
-  height: 100vh;
+  height: 100dvh;
   
   @include media-query($breakpoint--small) {
     height: 60rem;
