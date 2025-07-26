@@ -5,6 +5,15 @@
   bottom: 10vh;
   transform: translateX(-50%) translateY(200%);
   opacity: 0;
+  max-width: 50rem;
+
+  @include media-query($breakpoint--small - 1, max-width) {
+    width: 95%;
+  }
+
+  @include media-query($breakpoint--small) {
+    max-width: 75rem;
+  }
 
   &.loading {
     .toast__close {
