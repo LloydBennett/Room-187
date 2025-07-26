@@ -40,7 +40,7 @@ $hero--tweakpoint: 1080px;
   display: flex;
   align-items: flex-end;
 
-  @include media-query($breakpoint--small - 1, max-width) {
+  @include media-query($breakpoint--medium - 1, max-width) {
     grid-row: 6;
   }
 
@@ -61,12 +61,12 @@ $hero--tweakpoint: 1080px;
 .h-hero__play {
   grid-column: 1 / 2;
   
-  @include media-query($breakpoint--small - 1, max-width) {
+  @include media-query($breakpoint--medium - 1, max-width) {
     align-self: flex-end;
     grid-row: 6;
   }
 
-  @include media-query($breakpoint--small) {
+  @include media-query($breakpoint--medium) {
     grid-row: 2 / 5;
     display: flex;
     align-items: center;
@@ -209,3 +209,43 @@ $hero--tweakpoint: 1080px;
     }
   }
 }
+
+.h-hero__title {
+  @media screen and (max-width: $breakpoint--small - 1) {
+    grid-column: 1 / 7;
+  }
+
+  @media screen and (min-width: $breakpoint--small) and (max-width: $breakpoint--large - 1) {
+    grid-column: 1 / 9;
+  }
+
+  @media screen and (min-width: $breakpoint--large) and (max-width: $breakpoint--x-large - 1) {
+    grid-column: 2 / 9;
+  }
+
+  @media screen and (min-width: $breakpoint--x-large) and (max-width: 1269px) {
+    grid-column: 3 / 9;
+  }
+
+  .type--xl {
+    max-width: 30rem;
+    margin-left: auto;
+    
+    @include media-query($breakpoint--x-small) {
+      max-width: 40rem;
+    }
+
+    @include media-query($breakpoint--small) {
+      max-width: 50rem;
+    }
+
+    @include media-query($breakpoint--medium) {
+      max-width: 60rem;
+    }
+
+    @include media-query($breakpoint--large) {
+      max-width: 80rem;
+    }
+  }
+} 
+
