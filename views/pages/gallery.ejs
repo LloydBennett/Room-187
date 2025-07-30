@@ -21,7 +21,7 @@ const isGalleryEmpty = gallery.length > 0 && gallery.every(checkEmptyItem)
         <% if(item.media.kind === "file") { %>
           <div class="gallery-grid__item">
             <div class="thumbnail" data-index="<%- currentIndex %>" data-tooltip-item>
-              <video data-gallery-item="video" data-gallery-id="<%- item.media.id %>" autoplay muted loop>
+              <video data-gallery-item="video" data-gallery-id="<%- item.media.id %>" autoplay playsinline webkit-playsinline muted loop>
                 <source src="<%- item.media.url %>" type="video/mp4" />
               </video>
               <div class="tooltip type--xxs type--caps type--white" data-tooltip data-tooltip-text="<%- `${currentIndex} ${item.media.alt}` %>"></div>
