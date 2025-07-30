@@ -29,16 +29,21 @@
 }
 
 .slideshow__media {
-  width: 80%;
-  max-width: 144rem;
+  //width: 80%;
+  max-width: 90rem;
   margin-left: auto;
   margin-right: auto;
   height: 100%;
   position: relative;
 
   img {
-    height: auto;
+    height: 100%;
     width: 100%;
+    object-fit: contain;
+  }
+
+  video {
+    height: 75%;
   }
 }
 

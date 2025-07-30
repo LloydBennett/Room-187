@@ -1,0 +1,21 @@
+.minimap {
+  width: 100%;
+  overflow: hidden;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.minimap__item {
+  width: 8rem;
+  height: 8rem;
+  object-fit: cover;
+  transition: 300ms $anim--zoom;
+}
+
+.minimap-item--active {
+  width: 16rem;
+  height: 16rem;
+  object-fit: cover;
+  transition: 300ms $anim--zoom;
+}
