@@ -1,9 +1,9 @@
 .minimap {
   width: 100%;
-  overflow: hidden;
   position: absolute;
   bottom: 0;
   left: 0;
+  will-change: transform;
 }
 
 .minimap__item {
@@ -11,11 +11,18 @@
   height: 8rem;
   object-fit: cover;
   transition: 300ms $anim--zoom;
+  border: 1px solid red;
+  flex-shrink: 0;
 }
 
 .minimap-item--active {
-  width: 16rem;
-  height: 16rem;
+  width: 10rem;
+  height: 10rem;
   object-fit: cover;
   transition: 300ms $anim--zoom;
+
+  @include media-query($breakpoint--small) {
+    width: 12rem;
+    height: 12rem;
+  }
 }

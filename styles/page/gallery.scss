@@ -52,10 +52,10 @@
   top: 50%;
   cursor: pointer;
   opacity: 0;
-  width: 4rem;
+  width: auto;
 
-  @include media-query($breakpoint--medium) {
-    width: auto;
+  @include media-query($breakpoint--large - 1, max-width) {
+    display: none;
   }
 }
 

@@ -77,19 +77,19 @@ const miniMapItems = []
         </div>
       </div>
 
-      <div class="minimap">
+      <div class="minimap" data-mini-map>
         <div class="minimap__indicator"></div>
         <div class="flex flex--align-bottom">
           <% miniMapItems.forEach((item, i) => { %>
             <% if(item.media.kind === "file") { %>
-              <div>
-                <video class="minimap__item" data-gallery-id="<%- item.media.id %>" muted>
+              
+                <video class="minimap__item" data-gallery-id="<%- item.media.id %>" data-mini-map-item muted>
                   <source src="<%- item.media.url %>" type="video/mp4" />
                 </video>
-              </div>
+              
             <% } else { %>
               
-              <img src="<%- item.media.url %>" alt="<%- item.media.alt %>" class="minimap__item" data-gallery-src="<%- item.slideshow_image.url %>" data-gallery-id="<%- item.media.id %>">
+              <img src="<%- item.media.url %>" alt="<%- item.media.alt %>" class="minimap__item" data-gallery-id="<%- item.media.id %>" data-mini-map-item>
               
             <% } %>
           <% })%>

@@ -14,7 +14,9 @@ export default class Gallery extends Page {
         prev: '[data-slideshow-prev]',
         next: '[data-slideshow-next]',
         close: '[data-slideshow] [data-close]',
-        slideShowContainer: '[data-slideshow-container]'
+        slideShowContainer: '[data-slideshow-container]',
+        miniMap: '[data-mini-map]',
+        miniMapItems: '[data-mini-map-item]'
       }
     })
 
@@ -29,14 +31,16 @@ export default class Gallery extends Page {
     this.isHovered = false
     this.scrollSpeed = 1
     this.duplicatedItems = []
+
+    this.allowSlideNavigation = false
     
     this.init()
   }
 
   openSlideShow(e) {
     const mediaElement = e.target;
-    const mediaId = mediaElement.dataset.galleryId;  
-    
+    const mediaId = mediaElement.dataset.galleryId;
+
     this.currentIndex = this.media.findIndex(media => media.dataset.galleryId === mediaId)
     this.scroll.stop()
     this.tl.clear()
@@ -47,8 +51,6 @@ export default class Gallery extends Page {
       ease: "zoom"
     })
 
-    //this.animateImages(false, false)
-
     this.tl.to(this.elements.slideShow, {
       clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
       duration: 0.6,
@@ -56,6 +58,7 @@ export default class Gallery extends Page {
       onComplete: () => {
         this.elements.slideShow.classList.remove('cannot-interact')
         this.showMedia()
+        this.enableSlideNavigation()
       }
     })
 
@@ -65,6 +68,7 @@ export default class Gallery extends Page {
   }
 
   closeSlideShow() {
+    this.disableSlideNavigation()
     let slideShowMedia = document.querySelector('.slideshow-media__item')
     this.elements.slideShow.classList.add('cannot-interact')
 
@@ -109,6 +113,8 @@ export default class Gallery extends Page {
     const mediaCurrentElem = this.media[this.currentIndex]
     const mediaType = mediaCurrentElem.dataset.galleryItem
     const mediaId = mediaCurrentElem.dataset.galleryId;
+    
+    this.updateMinimapIndicator(mediaId)
 
     // If the same media, don't do anything
     if (this.elements.slideShowContainer.querySelector(`[data-slideshow-id="${mediaId}"]`)) {
@@ -126,6 +132,7 @@ export default class Gallery extends Page {
     const newUrl = new URL(window.location)
     newUrl.searchParams.set("media", mediaId)
     window.history.pushState({}, "", newUrl)
+    
   }
 
   createAndSetMediaElement(mediaElem, mediaType) {
@@ -136,7 +143,6 @@ export default class Gallery extends Page {
     this.elements.slideShowContainer.appendChild(newElem)
 
     gsap.fromTo(newElem, { clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)" }, { clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", duration: 0.6, ease: "zoom" })
-
   }
 
   swapMediaElement(mediaElem, mediaType) {
@@ -156,7 +162,61 @@ export default class Gallery extends Page {
         oldElem.remove()
       }
     }, "-=0.2")
+  }
 
+  setupScrollNavigation() {
+    let ticking = false;
+
+    window.addEventListener('wheel', (e) => {
+      if (!this.allowSlideNavigation || ticking) return;
+
+      ticking = true;
+      const direction = e.deltaY > 0 ? 1 : -1;
+
+      this.changeMedia(direction);
+
+      setTimeout(() => {
+        ticking = false;
+      }, 600); // delay to prevent overscroll
+    });
+  }
+
+  setupSwipeNavigation() {
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    console.log('yep')
+
+    const threshold = 50; // Minimum swipe distance
+
+    const container = this.elements.slideShowContainer;
+
+    container.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    });
+
+    container.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    });
+
+    const handleSwipe = () => {
+      if (!this.allowSlideNavigation) return;
+      const delta = touchStartX - touchEndX;
+      
+      if (Math.abs(delta) > threshold) {
+        const direction = delta > 0 ? 1 : -1;
+        this.changeMedia(direction);
+      }
+    };
+  }
+
+  disableSlideNavigation() {
+    this.allowSlideNavigation = false;
+  }
+
+  enableSlideNavigation() {
+    this.allowSlideNavigation = true;
   }
 
   createNewMediaItem(type) {
@@ -183,6 +243,28 @@ export default class Gallery extends Page {
       elem.src = mediaElem.dataset.gallerySrc
       elem.alt = mediaElem.alt || "Gallery Image"
     }
+  }
+
+  updateMinimapIndicator(mediaId = this.media[this.currentIndex]?.dataset.galleryId) {
+    if (!mediaId) return
+    let miniMapWidth = this.elements.miniMap.offsetWidth
+
+    this.elements.miniMapItems.forEach((item, i) => {
+      if (item.dataset.galleryId === mediaId) {
+        item.classList.add('minimap-item--active')
+        
+        const targetX = -item.offsetLeft
+        
+        gsap.to(this.elements.miniMap, {
+          x: targetX,
+          duration: 0.4,
+          ease: "power3.out"
+        })
+
+      } else {
+        item.classList.remove('minimap-item--active');
+      }
+    });
   }
 
   // Check URL on Page Load & Open Slideshow if Needed
@@ -235,6 +317,19 @@ export default class Gallery extends Page {
     })
   }
 
+  handleResize = () => {
+    this.updateMinimapIndicator()
+  }
+
+  // Debounce helper (avoids spamming during resize)
+  debounce(fn, delay = 100) {
+    let timeout
+    return () => {
+      clearTimeout(timeout)
+      timeout = setTimeout(fn, delay)
+    }
+  }
+
   addEventListeners() {
     if(!this.elements.galleryItems || !this.elements.close) return
 
@@ -246,7 +341,6 @@ export default class Gallery extends Page {
         element.addEventListener('click', (e) => {
           this.openSlideShow(e)
         })
-
       });
       
     } else {
@@ -270,10 +364,15 @@ export default class Gallery extends Page {
     this.elements.close.addEventListener('click', () => {
       this.closeSlideShow()
     })
+
+     // 🔁 Handle resize
+    window.addEventListener('resize', this.debounce(this.handleResize))
   }
 
   init() {
     this.addEventListeners()
     this.checkURLForSlideShow()
+    this.setupSwipeNavigation()
+    this.setupScrollNavigation()
   }
 }
