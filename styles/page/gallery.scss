@@ -29,7 +29,6 @@
 }
 
 .slideshow__media {
-  //width: 80%;
   max-width: 90rem;
   margin-left: auto;
   margin-right: auto;
@@ -44,6 +43,7 @@
 
   video {
     height: 75%;
+    max-height: 60rem;
   }
 }
 

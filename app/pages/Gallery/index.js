@@ -30,9 +30,6 @@ export default class Gallery extends Page {
     this.media = []
     this.scroll = scroll
     this.hasMediaBeenSet = false
-    this.isHovered = false
-    this.scrollSpeed = 1
-    this.duplicatedItems = []
 
     this.allowSlideNavigation = false
     
@@ -48,9 +45,12 @@ export default class Gallery extends Page {
     this.scroll.stop()
     this.tl.clear()
 
+    this.updateMinimapIndicator(mediaId, true);
+
+
     this.tl.to(this.elements.galleryItems, { 
       clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)", 
-      duration: 0.6,
+      duration: 0.4,
       ease: "zoom"
     })
 
@@ -63,7 +63,7 @@ export default class Gallery extends Page {
         this.showMedia()
         this.enableSlideNavigation()
       }
-    })
+    }, '-=0.2')
 
     this.tl.to(this.elements.close, { opacity: 1, duration: 0.3, ease: "power2.out" })
     this.tl.to(this.elements.prev, { opacity: 1, duration: 0.3, ease: "power2.out" }, 'controls')
@@ -135,7 +135,6 @@ export default class Gallery extends Page {
     const newUrl = new URL(window.location)
     newUrl.searchParams.set("media", mediaId)
     window.history.pushState({}, "", newUrl)
-    
   }
 
   createAndSetMediaElement(mediaElem, mediaType) {
@@ -145,7 +144,8 @@ export default class Gallery extends Page {
     this.elements.slideShowContainer.innerHTML = '' // Clear previous elements
     this.elements.slideShowContainer.appendChild(newElem)
 
-    gsap.fromTo(newElem, { clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)" }, { clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", duration: 0.6, ease: "zoom" })
+
+    gsap.fromTo(newElem, { clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)" }, { clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", duration: 0.6, ease: "power2.out" })
   }
 
   displayIndex() {
@@ -158,12 +158,12 @@ export default class Gallery extends Page {
     this.setMediaAttributes(newElem, mediaElem, mediaType)
 
     this.elements.slideShowContainer.appendChild(newElem)
-
-    this.tl.fromTo(newElem, { clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)" }, { clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", duration: 0.6, ease: "zoom" })
+    
+    this.tl.fromTo(newElem, { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" })
     
     this.tl.to(oldElem, {
-      clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
-      duration: 0.6,
+      opacity: 0,
+      duration: 0.4,
       ease: "power2.out",
       onComplete: () => {
         oldElem.remove()
@@ -191,8 +191,6 @@ export default class Gallery extends Page {
   setupSwipeNavigation() {
     let touchStartX = 0;
     let touchEndX = 0;
-
-    console.log('yep')
 
     const threshold = 50; // Minimum swipe distance
 
@@ -241,43 +239,53 @@ export default class Gallery extends Page {
       elem.setAttribute('autoplay', '')
       elem.setAttribute('muted', '')
       elem.setAttribute('loop', '')
+      elem.setAttribute('playsinline', '')
 
       const source = document.createElement('source')
       source.src = mediaElem.querySelector("source").src
       source.type = "video/mp4"
       elem.appendChild(source)
+
+      // ✅ Important: call play explicitly
+      elem.addEventListener('loadeddata', () => {
+        elem.play().catch((err) => {
+          console.warn('Autoplay prevented:', err);
+        });
+      });
     } else {
       elem.src = mediaElem.dataset.gallerySrc
       elem.alt = mediaElem.alt || "Gallery Image"
     }
   }
 
-  updateMinimapIndicator(mediaId = this.media[this.currentIndex]?.dataset.galleryId) {
+  updateMinimapIndicator(mediaId = this.media[this.currentIndex]?.dataset.galleryId, instant = false) {
     if (!mediaId) return
     let miniMapRect = this.elements.miniMap.getBoundingClientRect()
 
     this.elements.miniMapItems.forEach((item, i) => {
       if (item.dataset.galleryId === mediaId) {
-    
         let itemRect = item.getBoundingClientRect()
         
         const targetX = -item.offsetLeft
         const indicatorXpos = itemRect.left - miniMapRect.left
 
-        gsap.to(this.elements.miniMapIndicator, {
-          x: indicatorXpos,
-          duration: 0.4,
-          ease: "zoom"
-        })
+        if (instant) {
+          gsap.set(this.elements.miniMapIndicator, {x: indicatorXpos})
+          gsap.set(this.elements.miniMap, { x: targetX })
 
-        gsap.to(this.elements.miniMap, {
-          x: targetX,
-          duration: 0.4,
-          ease: "power3.out"
-        })
+        } else {
+          gsap.to(this.elements.miniMapIndicator, {
+            x: indicatorXpos,
+            duration: 0.4,
+            ease: "zoom"
+          })
 
-      } else {
-        item.classList.remove('minimap-item--active');
+          gsap.to(this.elements.miniMap, {
+            x: targetX,
+            duration: 0.4,
+            ease: "power3.out"
+          })
+        }
       }
     });
   }
