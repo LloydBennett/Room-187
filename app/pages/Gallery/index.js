@@ -97,6 +97,21 @@ export default class Gallery extends Page {
     window.history.pushState({}, "", newUrl);
   }
   
+  goToMedia(index) {
+    if (index < 0 || index >= this.media.length || index === this.currentIndex) return;
+    
+    this.currentIndex = index;
+    this.displayIndex();
+
+    if (this.tl.isActive()) {
+      this.tl.add(() => {
+        this.showMedia();
+      });
+    } else {
+      this.showMedia();
+    }
+  }
+
   changeMedia(direction) {
     const oldIndex = this.currentIndex
     this.currentIndex = (this.currentIndex + direction + this.media.length) % this.media.length
@@ -387,6 +402,15 @@ export default class Gallery extends Page {
     this.elements.close.addEventListener('click', () => {
       this.closeSlideShow()
     })
+
+    if(this.elements.miniMapItems) {
+      this.elements.miniMapItems.forEach((elem, i) => {
+        elem.addEventListener('click', () => {
+          if (!this.allowSlideNavigation) return;
+          this.goToMedia(i)
+        })
+      })
+    }
 
     window.addEventListener('resize', this.debounce(this.handleResize))
   }
