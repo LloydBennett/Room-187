@@ -50,35 +50,13 @@ const miniMapItems = []
 
     <div class="fixed cannot-interact bg--black overlay overlay--reveal flex--middle z-index--5" data-slideshow data-lenis-prevent>
       <%- include('../partials/close-button') -%>
+      <div class="slideshow__counter type--xs type--white">
+        <span data-slideshow-index></span>&nbsp;of&nbsp;<span><%- gallery.length %></span>
+      </div>
       <div class="slideshow__media" data-slideshow-container></div>
 
-      <div class="slideshow__counter counter relative no-overflow">
-        <div class="absolute flex" data-counter-prev>
-          <span class="type--bold type--l type--white no-overflow">
-            <span class="inline-block">0</span>
-          </span>
-          <span class="type--bold type--l type--white no-overflow">
-            <span class="inline-block">1</span>
-          </span>
-          <span class="type--bold type--l type--white no-overflow">
-            <span class="inline-block">2</span>
-          </span>
-        </div>
-        <div class="absolute flex" data-counter-next>
-          <span class="type--bold type--l type--white no-overflow">
-            <span class="inline-block">0</span>
-          </span>
-          <span class="type--bold type--l type--white no-overflow">
-            <span class="inline-block">0</span>
-          </span>
-          <span class="type--bold type--l type--white no-overflow">
-            <span class="inline-block">0</span>
-          </span>
-        </div>
-      </div>
-
       <div class="minimap" data-mini-map>
-        <div class="minimap__indicator"></div>
+        <div class="minimap__indicator" data-mini-map-indicator></div>
         <div class="flex flex--align-bottom">
           <% miniMapItems.forEach((item, i) => { %>
             <% if(item.media.kind === "file") { %>

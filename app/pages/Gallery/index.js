@@ -15,8 +15,10 @@ export default class Gallery extends Page {
         next: '[data-slideshow-next]',
         close: '[data-slideshow] [data-close]',
         slideShowContainer: '[data-slideshow-container]',
+        slideShowCounter: '[data-slideshow-index]',
         miniMap: '[data-mini-map]',
-        miniMapItems: '[data-mini-map-item]'
+        miniMapItems: '[data-mini-map-item]',
+        miniMapIndicator: '[data-mini-map-indicator]'
       }
     })
 
@@ -42,6 +44,7 @@ export default class Gallery extends Page {
     const mediaId = mediaElement.dataset.galleryId;
 
     this.currentIndex = this.media.findIndex(media => media.dataset.galleryId === mediaId)
+    this.displayIndex()
     this.scroll.stop()
     this.tl.clear()
 
@@ -97,7 +100,7 @@ export default class Gallery extends Page {
   changeMedia(direction) {
     const oldIndex = this.currentIndex
     this.currentIndex = (this.currentIndex + direction + this.media.length) % this.media.length
-    
+    this.displayIndex()
     if (oldIndex === this.currentIndex) return
 
     if (this.tl.isActive()) {
@@ -143,6 +146,10 @@ export default class Gallery extends Page {
     this.elements.slideShowContainer.appendChild(newElem)
 
     gsap.fromTo(newElem, { clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)" }, { clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", duration: 0.6, ease: "zoom" })
+  }
+
+  displayIndex() {
+    this.elements.slideShowCounter.innerHTML = String(this.currentIndex + 1).padStart(2, '0')
   }
 
   swapMediaElement(mediaElem, mediaType) {
@@ -247,14 +254,22 @@ export default class Gallery extends Page {
 
   updateMinimapIndicator(mediaId = this.media[this.currentIndex]?.dataset.galleryId) {
     if (!mediaId) return
-    let miniMapWidth = this.elements.miniMap.offsetWidth
+    let miniMapRect = this.elements.miniMap.getBoundingClientRect()
 
     this.elements.miniMapItems.forEach((item, i) => {
       if (item.dataset.galleryId === mediaId) {
-        item.classList.add('minimap-item--active')
+    
+        let itemRect = item.getBoundingClientRect()
         
         const targetX = -item.offsetLeft
-        
+        const indicatorXpos = itemRect.left - miniMapRect.left
+
+        gsap.to(this.elements.miniMapIndicator, {
+          x: indicatorXpos,
+          duration: 0.4,
+          ease: "zoom"
+        })
+
         gsap.to(this.elements.miniMap, {
           x: targetX,
           duration: 0.4,
@@ -365,7 +380,6 @@ export default class Gallery extends Page {
       this.closeSlideShow()
     })
 
-     // 🔁 Handle resize
     window.addEventListener('resize', this.debounce(this.handleResize))
   }
 

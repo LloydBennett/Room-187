@@ -80,6 +80,19 @@
 
 .slideshow__counter {
   position: absolute;
-  left: 2%;
-  bottom: 5rem;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  
+  @include media-query($breakpoint--small) {
+    top: 10%;
+  }
+
+  @include media-query($breakpoint--medium) {
+    top: 1.6rem;
+  }
+
+  @include media-query($breakpoint--x-large) {
+    top: 2.4rem;
+  }
 }

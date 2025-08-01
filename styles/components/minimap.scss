@@ -6,23 +6,18 @@
   will-change: transform;
 }
 
+.minimap__indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 0.3rem solid $colour--gold-400;
+  width: 8rem;
+  height: 8rem;
+}
+
 .minimap__item {
   width: 8rem;
   height: 8rem;
   object-fit: cover;
-  transition: 300ms $anim--zoom;
-  border: 1px solid red;
   flex-shrink: 0;
-}
-
-.minimap-item--active {
-  width: 10rem;
-  height: 10rem;
-  object-fit: cover;
-  transition: 300ms $anim--zoom;
-
-  @include media-query($breakpoint--small) {
-    width: 12rem;
-    height: 12rem;
-  }
 }
