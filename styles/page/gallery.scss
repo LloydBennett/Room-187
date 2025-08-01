@@ -1,19 +1,24 @@
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-column-gap: 10%;
+  grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 30%;
   grid-row-gap: 10%;
-  padding-top: spacing(4);
+  padding-top: spacing(10);
   min-height: 100vh;
   grid-auto-rows: max-content;
   
   @include media-query($breakpoint--small) {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    grid-column-gap: 20%;
   }
 
-  @include media-query($breakpoint--large) {
+  @include media-query($breakpoint--medium) {
+    grid-template-columns: repeat(4, 1fr);
+    grid-column-gap: 10%;
+  }
+
+  @include media-query($breakpoint--x-large) {
     grid-template-columns: repeat(6, 1fr);
-    padding-top: spacing(8);
     grid-column-gap: 5%;
   }
 
