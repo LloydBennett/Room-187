@@ -9,7 +9,7 @@ const miniMapItems = []
 
 %>
 
-<div class="container section--l-m-b <% if(!isGalleryEmpty){%>gallery-grid<%} else {%>grid<%}%>" data-gallery>
+<div class="container <% if(!isGalleryEmpty){%>gallery-grid<%} else {%>grid<%}%>" data-gallery>
   <% if(gallery.length !== 0 && !isGalleryEmpty) { %>
     
     <% gallery.forEach((item, i) => { %>
