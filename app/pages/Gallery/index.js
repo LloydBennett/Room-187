@@ -47,7 +47,6 @@ export default class Gallery extends Page {
 
     this.updateMinimapIndicator(mediaId, true);
 
-
     this.tl.to(this.elements.galleryItems, { 
       clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)", 
       duration: 0.4,
@@ -204,13 +203,15 @@ export default class Gallery extends Page {
   }
 
   setupSwipeNavigation() {
+    if(!this.elements.slideShowContainer) return
+
     let touchStartX = 0;
     let touchEndX = 0;
 
     const threshold = 50; // Minimum swipe distance
 
     const container = this.elements.slideShowContainer;
-
+    
     container.addEventListener('touchstart', (e) => {
       touchStartX = e.changedTouches[0].screenX;
     });
@@ -252,21 +253,14 @@ export default class Gallery extends Page {
 
     if (mediaType === "video") {
       elem.setAttribute('autoplay', '')
-      elem.setAttribute('muted', '')
       elem.setAttribute('loop', '')
       elem.setAttribute('playsinline', '')
 
       const source = document.createElement('source')
-      source.src = mediaElem.querySelector("source").src
+      source.src = mediaElem.dataset.gallerySrc
       source.type = "video/mp4"
       elem.appendChild(source)
 
-      // ✅ Important: call play explicitly
-      elem.addEventListener('loadeddata', () => {
-        elem.play().catch((err) => {
-          console.warn('Autoplay prevented:', err);
-        });
-      });
     } else {
       elem.src = mediaElem.dataset.gallerySrc
       elem.alt = mediaElem.alt || "Gallery Image"

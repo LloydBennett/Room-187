@@ -2,7 +2,7 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-column-gap: 30%;
-  padding-top: spacing(10);
+  padding-top: spacing(15);
   min-height: 100vh;
   grid-auto-rows: max-content;
   
@@ -17,8 +17,16 @@
   }
 
   @include media-query($breakpoint--x-large) {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  @include media-query($breakpoint--xx-large) {
     grid-template-columns: repeat(6, 1fr);
   }
+}
+
+.gallery__no-grid {
+  margin-top: 20rem;
 }
 
 .gallery-grid__item {
@@ -84,16 +92,12 @@
 
 .slideshow__counter {
   position: absolute;
-  top: 20%;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 1.6rem;
+  left: 2.5%;
   
-  @include media-query($breakpoint--small) {
-    top: 10%;
-  }
-
-  @include media-query($breakpoint--medium) {
-    top: 1.6rem;
+  @include media-query($breakpoint--large) {
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   @include media-query($breakpoint--x-large) {

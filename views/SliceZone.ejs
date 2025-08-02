@@ -13,6 +13,12 @@
       case 'room_key':
         return prevSlices + include('./slices/RoomKey.ejs', { slice: slice })
         break;
+      case 'image_gallery_item':
+        return prevSlices + include('./slices/ImageGalleryItem.ejs', { slice: slice })
+        break;
+      case 'video_gallery_item':
+        return prevSlices + include('./slices/VideoGalleryItem.ejs', { slice: slice })
+        break;
       default :
         return '<h1>No Slices found</h1>'
     }

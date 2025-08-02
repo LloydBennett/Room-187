@@ -1,0 +1,26 @@
+<% 
+  const { video_file, video_poster_image } = slice.primary;
+  const currentIndex = String(slice_index + 1).padStart(3, '0');
+  miniMapItems.push({ 
+    type: 'video', 
+    id: video_file.id, 
+    image: video_poster_image.minimap,
+    slideshowUrl: video_file.url,
+    alt: video_poster_image.alt 
+  });
+%>
+
+<div class="gallery-grid__item">
+  <div class="thumbnail" data-index="<%- currentIndex %>" data-tooltip-item>
+    <img
+      src="<%- video_poster_image.url %>"
+      alt="<%- video_poster_image.alt %>"
+      data-gallery-item="video"
+      data-gallery-id="<%- video_file.id %>"
+      data-gallery-src="<%= video_file.url %>" />
+
+    <div class="tooltip type--xxs type--caps type--white no-wrap"
+      data-tooltip
+      data-tooltip-text="<%- `&#9654; ${currentIndex} Play Video` %>"></div>
+  </div>
+</div>

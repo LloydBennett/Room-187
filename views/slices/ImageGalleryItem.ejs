@@ -1,0 +1,26 @@
+<% 
+  const slideShowImg = slice.primary.slideshow_image
+  const gridImg = slideShowImg.grid
+  const miniMap = slideShowImg.minimap
+
+  const currentIndex = String(slice_index + 1).padStart(3, '0')
+  miniMapItems.push({ 
+    type: 'image', 
+    id: slideShowImg.id, 
+    image: miniMap,
+    slideshowUrl: slideShowImg.url,
+    alt: slideShowImg.alt
+  });
+%>
+
+<div class="gallery-grid__item">
+  <div class="thumbnail" data-index="<%- currentIndex %>" data-tooltip-item>
+    <img src="<%- gridImg.url %>" alt="<%- slideShowImg.alt %>" class="thumbnail"
+      data-gallery-item="image"
+      data-gallery-src="<%- slideShowImg.url %>"
+      data-gallery-id="<%- slideShowImg.id %>">
+    <div class="tooltip type--xxs type--caps type--white no-wrap"
+      data-tooltip
+      data-tooltip-text="<%- `${currentIndex} View image` %>"></div>
+  </div>
+</div>
