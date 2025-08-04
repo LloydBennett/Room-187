@@ -360,7 +360,6 @@ export default class Gallery extends Page {
     // Only proceed if slideshow is open
     if (!this.elements.slideShow || this.elements.slideShow.classList.contains('cannot-interact')) return
 
-    console.log("we working")
     if (e.key === 'ArrowRight') {
       this.changeMedia(1)
     } else if (e.key === 'ArrowLeft') {
