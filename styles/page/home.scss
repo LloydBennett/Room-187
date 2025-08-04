@@ -82,7 +82,7 @@ $hero--tweakpoint: 1080px;
     grid-column: 3 / 4;
   }
   
-  .play--button {
+  .play-btn {
     @include media-query($breakpoint--medium) {
       display: inline-block;
     }

@@ -26,13 +26,13 @@
       </div>
 
       <div class="h-hero__play" data-misc>
-        <div class="play--button thumbnail" data-play="intro-video" data-open-video-overlay>
+        <div class="play-btn play-btn--large thumbnail" data-play="intro-video" data-open-video-overlay>
           <%- include('../partials/play-button') -%>
         </div>
       </div>
 
       <div class="h-hero__cta button--m-t" data-misc>
-        <%- include('../partials/button', { buttonText: siteDetails.data.main_cta_text, link: siteDetails.data.main_cta_link.url, link_target: true, large: true, primaryBtn: true, fullWidth: true } ) -%>
+        <%- include('../partials/button', { buttonText: siteDetails.data.main_cta_text, link: siteDetails.data.main_cta_link.url, link_target: true, large: true, primaryBtn: true, fullWidth: true, pageTransition: false } ) -%>
       </div>
       
     </div>

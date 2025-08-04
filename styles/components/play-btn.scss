@@ -1,0 +1,48 @@
+.play-btn {
+  cursor: pointer;
+}
+
+.play-btn--large {
+  width: 5.4rem;
+  height: 5.4rem;
+
+  @include media-query($breakpoint--small) {
+    width: 7.2rem;
+    height: 7.2rem;
+  }
+
+  @include media-query($breakpoint--medium) {
+    width: 10rem;
+    height: 10rem;
+  }
+
+  @include media-query($breakpoint--large) {
+    width: auto;
+    height: auto;
+  }
+}
+
+.play-btn--small {
+  width: 3.4rem;
+  height: 3.4rem;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.play-btn--middle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.touch .play-btn--touch {
+  display: block;
+}
+
+.no-touch .play-btn--no-touch {
+  display: block;
+}

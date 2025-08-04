@@ -14,7 +14,13 @@ export default class Gallery extends Page {
         prev: '[data-slideshow-prev]',
         next: '[data-slideshow-next]',
         close: '[data-slideshow] [data-close]',
-        slideShowContainer: '[data-slideshow-container]'
+        slideShowContainer: '[data-slideshow-container]',
+        slideShowCounter: '[data-slideshow-index]',
+        miniMap: '[data-mini-map]',
+        miniMapItems: '[data-mini-map-item]',
+        miniMapIndicator: '[data-mini-map-indicator]',
+        playBtns: '[data-gallery-item-play-btn]'
+
       }
     })
 
@@ -26,28 +32,35 @@ export default class Gallery extends Page {
     this.media = []
     this.scroll = scroll
     this.hasMediaBeenSet = false
-    this.isHovered = false
-    this.scrollSpeed = 1
-    this.duplicatedItems = []
+
+    this.allowSlideNavigation = false
     
     this.init()
   }
 
   openSlideShow(e) {
     const mediaElement = e.target;
-    const mediaId = mediaElement.dataset.galleryId;  
-    
+    const mediaId = mediaElement.dataset.galleryId;
+
     this.currentIndex = this.media.findIndex(media => media.dataset.galleryId === mediaId)
+    this.displayIndex()
     this.scroll.stop()
     this.tl.clear()
 
+    this.updateMinimapIndicator(mediaId, true);
+
     this.tl.to(this.elements.galleryItems, { 
       clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)", 
-      duration: 0.6,
+      duration: 0.4,
       ease: "zoom"
     })
 
-    //this.animateImages(false, false)
+    this.tl.to(this.elements.playBtns, 
+    {
+      opacity: 0,
+      duration: 0.4,
+      ease: "power2.out"
+    },'-=0.4')
 
     this.tl.to(this.elements.slideShow, {
       clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
@@ -56,8 +69,9 @@ export default class Gallery extends Page {
       onComplete: () => {
         this.elements.slideShow.classList.remove('cannot-interact')
         this.showMedia()
+        this.enableSlideNavigation()
       }
-    })
+    }, '-=0.2')
 
     this.tl.to(this.elements.close, { opacity: 1, duration: 0.3, ease: "power2.out" })
     this.tl.to(this.elements.prev, { opacity: 1, duration: 0.3, ease: "power2.out" }, 'controls')
@@ -65,6 +79,7 @@ export default class Gallery extends Page {
   }
 
   closeSlideShow() {
+    this.disableSlideNavigation()
     let slideShowMedia = document.querySelector('.slideshow-media__item')
     this.elements.slideShow.classList.add('cannot-interact')
 
@@ -80,6 +95,12 @@ export default class Gallery extends Page {
       }
     })
 
+    this.tl.to(this.elements.playBtns, {
+      opacity: 1,
+      duration: 0.4,
+      ease: "power2.out"
+    }, "+=0.2")
+
     this.tl.to(this.elements.close, { opacity: 0, duration: 0.001 }, 'hide')
     this.tl.to(this.elements.prev, { opacity: 0, duration: 0.001 }, 'hide')
     this.tl.to(this.elements.next, { opacity: 0, duration: 0.001 }, 'hide')
@@ -90,9 +111,25 @@ export default class Gallery extends Page {
     window.history.pushState({}, "", newUrl);
   }
   
+  goToMedia(index) {
+    if (index < 0 || index >= this.media.length || index === this.currentIndex) return;
+    
+    this.currentIndex = index;
+    this.displayIndex();
+
+    if (this.tl.isActive()) {
+      this.tl.add(() => {
+        this.showMedia();
+      });
+    } else {
+      this.showMedia();
+    }
+  }
+
   changeMedia(direction) {
     const oldIndex = this.currentIndex
     this.currentIndex = (this.currentIndex + direction + this.media.length) % this.media.length
+    this.displayIndex()
     
     if (oldIndex === this.currentIndex) return
 
@@ -109,6 +146,8 @@ export default class Gallery extends Page {
     const mediaCurrentElem = this.media[this.currentIndex]
     const mediaType = mediaCurrentElem.dataset.galleryItem
     const mediaId = mediaCurrentElem.dataset.galleryId;
+    
+    this.updateMinimapIndicator(mediaId)
 
     // If the same media, don't do anything
     if (this.elements.slideShowContainer.querySelector(`[data-slideshow-id="${mediaId}"]`)) {
@@ -135,8 +174,11 @@ export default class Gallery extends Page {
     this.elements.slideShowContainer.innerHTML = '' // Clear previous elements
     this.elements.slideShowContainer.appendChild(newElem)
 
-    gsap.fromTo(newElem, { clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)" }, { clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", duration: 0.6, ease: "zoom" })
+    gsap.fromTo(newElem, { clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)" }, { clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", duration: 0.6, ease: "power2.out" })
+  }
 
+  displayIndex() {
+    this.elements.slideShowCounter.innerHTML = String(this.currentIndex + 1).padStart(2, '0')
   }
 
   swapMediaElement(mediaElem, mediaType) {
@@ -145,18 +187,72 @@ export default class Gallery extends Page {
     this.setMediaAttributes(newElem, mediaElem, mediaType)
 
     this.elements.slideShowContainer.appendChild(newElem)
-
-    this.tl.fromTo(newElem, { clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)" }, { clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", duration: 0.6, ease: "zoom" })
+    
+    this.tl.fromTo(newElem, { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" })
     
     this.tl.to(oldElem, {
-      clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
-      duration: 0.6,
+      opacity: 0,
+      duration: 0.4,
       ease: "power2.out",
       onComplete: () => {
         oldElem.remove()
       }
     }, "-=0.2")
+  }
 
+  setupScrollNavigation() {
+    let ticking = false;
+
+    window.addEventListener('wheel', (e) => {
+      if (!this.allowSlideNavigation || ticking) return;
+
+      ticking = true;
+      const direction = e.deltaY > 0 ? 1 : -1;
+
+      this.changeMedia(direction);
+
+      setTimeout(() => {
+        ticking = false;
+      }, 600); // delay to prevent overscroll
+    });
+  }
+
+  setupSwipeNavigation() {
+    if(!this.elements.slideShowContainer) return
+
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    const threshold = 50; // Minimum swipe distance
+
+    const container = this.elements.slideShowContainer;
+    
+    container.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    });
+
+    container.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    });
+
+    const handleSwipe = () => {
+      if (!this.allowSlideNavigation) return;
+      const delta = touchStartX - touchEndX;
+      
+      if (Math.abs(delta) > threshold) {
+        const direction = delta > 0 ? 1 : -1;
+        this.changeMedia(direction);
+      }
+    };
+  }
+
+  disableSlideNavigation() {
+    this.allowSlideNavigation = false;
+  }
+
+  enableSlideNavigation() {
+    this.allowSlideNavigation = true;
   }
 
   createNewMediaItem(type) {
@@ -167,22 +263,58 @@ export default class Gallery extends Page {
 
   setMediaAttributes(elem, mediaElem, mediaType) {
     const mediaId = mediaElem.dataset.galleryId
+    const posterImg = mediaElem.src
 
     elem.setAttribute('data-slideshow-id', mediaId)
 
     if (mediaType === "video") {
       elem.setAttribute('autoplay', '')
-      elem.setAttribute('muted', '')
       elem.setAttribute('loop', '')
+      elem.setAttribute('playsinline', '')
+      elem.setAttribute('controls', '')
+      elem.setAttribute('poster', posterImg)
 
       const source = document.createElement('source')
-      source.src = mediaElem.querySelector("source").src
+      source.src = mediaElem.dataset.gallerySrc
       source.type = "video/mp4"
       elem.appendChild(source)
+
     } else {
       elem.src = mediaElem.dataset.gallerySrc
       elem.alt = mediaElem.alt || "Gallery Image"
     }
+  }
+
+  updateMinimapIndicator(mediaId = this.media[this.currentIndex]?.dataset.galleryId, instant = false) {
+    if (!mediaId) return
+    let miniMapRect = this.elements.miniMap.getBoundingClientRect()
+
+    this.elements.miniMapItems.forEach((item, i) => {
+      if (item.dataset.galleryId === mediaId) {
+        let itemRect = item.getBoundingClientRect()
+        
+        const targetX = -item.offsetLeft
+        const indicatorXpos = itemRect.left - miniMapRect.left
+
+        if (instant) {
+          gsap.set(this.elements.miniMapIndicator, {x: indicatorXpos})
+          gsap.set(this.elements.miniMap, { x: targetX })
+
+        } else {
+          gsap.to(this.elements.miniMapIndicator, {
+            x: indicatorXpos,
+            duration: 0.4,
+            ease: "zoom"
+          })
+
+          gsap.to(this.elements.miniMap, {
+            x: targetX,
+            duration: 0.4,
+            ease: "power3.out"
+          })
+        }
+      }
+    });
   }
 
   // Check URL on Page Load & Open Slideshow if Needed
@@ -225,6 +357,12 @@ export default class Gallery extends Page {
         }
       )
     }
+
+    this.tl.to(this.elements.playBtns, {
+      opacity: 1,
+      duration: 0.4,
+      ease: "power2.out"
+    }, "+=0.2")
   }
 
   animateAssets(tl, resolve) {
@@ -235,18 +373,45 @@ export default class Gallery extends Page {
     })
   }
 
+  handleResize = () => {
+    this.updateMinimapIndicator()
+  }
+
+  handleKeyDown = (e) => {
+    // Only proceed if slideshow is open
+    if (!this.elements.slideShow || this.elements.slideShow.classList.contains('cannot-interact')) return
+
+    if (e.key === 'ArrowRight') {
+      this.changeMedia(1)
+    } else if (e.key === 'ArrowLeft') {
+      this.changeMedia(-1)
+    }
+  }
+
+  // Debounce helper (avoids spamming during resize)
+  debounce(fn, delay = 100) {
+    let timeout
+    return () => {
+      clearTimeout(timeout)
+      timeout = setTimeout(fn, delay)
+    }
+  }
+
   addEventListeners() {
     if(!this.elements.galleryItems || !this.elements.close) return
 
     gsap.set(this.elements.galleryItems, { clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)"})
-    
+  
+    if(this.elements.playBtns) {
+      gsap.set(this.elements.playBtns, { opacity: 0 })
+    }
+
     if (Array.isArray(this.elements.galleryItems) || (typeof this.elements.galleryItems === 'object')) {
       this.media = Array.from(this.elements.galleryItems)
       this.elements.galleryItems.forEach(element => {
         element.addEventListener('click', (e) => {
           this.openSlideShow(e)
         })
-
       });
       
     } else {
@@ -270,10 +435,25 @@ export default class Gallery extends Page {
     this.elements.close.addEventListener('click', () => {
       this.closeSlideShow()
     })
+
+    document.addEventListener('keydown', this.handleKeyDown)
+
+    if(this.elements.miniMapItems) {
+      this.elements.miniMapItems.forEach((elem, i) => {
+        elem.addEventListener('click', () => {
+          if (!this.allowSlideNavigation) return;
+          this.goToMedia(i)
+        })
+      })
+    }
+
+    window.addEventListener('resize', this.debounce(this.handleResize))
   }
 
   init() {
     this.addEventListeners()
     this.checkURLForSlideShow()
+    this.setupSwipeNavigation()
+    this.setupScrollNavigation()
   }
 }

@@ -55,3 +55,9 @@ $rotate--small: rotate(2deg);
 $rotate--minus-small: rotate(-2deg);
 $rotate--large: rotate(4deg);
 $rotate--minus-large: rotate(-4deg);
+
+/* Animation */
+$anim--zoom: cubic-bezier(0.71, 0, 0.06, 1);
+
+/* Box shadow */
+$box-shadow--highlight: 0 1rem 2rem 0.5rem transparentize($colour--gold-400, 0.5);

@@ -9,13 +9,11 @@ export default class Tooltip extends Components {
         tooltipItem: '[data-tooltip-item]',
       }
     })
-    console.log('loggggg!')
 
     this.init()
   }
   addEventListener() {
     const tooltipItems = this.elements.tooltipItem;
-    console.log('Found tooltipItems:', tooltipItems); // 👈 Add this
   
     if (!tooltipItems) return;
 
@@ -47,6 +45,5 @@ export default class Tooltip extends Components {
 
   init() {
     this.addEventListener()
-    console.log('testing')
   }
 }

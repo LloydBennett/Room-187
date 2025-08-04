@@ -1,44 +1,63 @@
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-column-gap: 10%;
-  grid-row-gap: 10%;
-  padding-top: spacing(4);
+  grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 30%;
+  padding-top: spacing(15);
   min-height: 100vh;
   grid-auto-rows: max-content;
   
   @include media-query($breakpoint--small) {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    grid-column-gap: 20%;
   }
 
-  @include media-query($breakpoint--large) {
-    grid-template-columns: repeat(6, 1fr);
-    padding-top: spacing(8);
-    grid-column-gap: 5%;
+  @include media-query($breakpoint--medium) {
+    grid-template-columns: repeat(4, 1fr);
+    grid-column-gap: 10%;
+  }
+
+  @include media-query($breakpoint--x-large) {
+    grid-template-columns: repeat(5, 1fr);
   }
 
   @include media-query($breakpoint--xx-large) {
-    grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(6, 1fr);
   }
+}
+
+.gallery__no-grid {
+  margin-top: 20rem;
 }
 
 .gallery-grid__item {
   display: flex;
   flex-grow: 1;
   align-items: center;
+  margin-bottom: spacing(10);
+
+  @include media-query($breakpoint--x-large) {
+    margin-bottom: spacing(15);
+  }
 }
 
 .slideshow__media {
-  width: 80%;
-  max-width: 144rem;
+  max-width: 90rem;
   margin-left: auto;
   margin-right: auto;
   height: 100%;
   position: relative;
 
   img {
-    height: auto;
+    height: 100%;
     width: 100%;
+    object-fit: contain;
+  }
+
+  video {
+    height: 75%;
+    max-height: 60rem;
+    width: 100%;
+    object-fit: contain;
   }
 }
 
@@ -47,10 +66,10 @@
   top: 50%;
   cursor: pointer;
   opacity: 0;
-  width: 4rem;
+  width: auto;
 
-  @include media-query($breakpoint--medium) {
-    width: auto;
+  @include media-query($breakpoint--large - 1, max-width) {
+    display: none;
   }
 }
 
@@ -75,6 +94,15 @@
 
 .slideshow__counter {
   position: absolute;
-  left: 2%;
-  bottom: 5rem;
+  top: 1.6rem;
+  left: 2.5%;
+  
+  @include media-query($breakpoint--large) {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  @include media-query($breakpoint--x-large) {
+    top: 2.4rem;
+  }
 }

@@ -1,4 +1,5 @@
-<a href="<%- link %>" <% if (link_target) { %>target="_blank"<% } %> class="button <% if (large) { %>button--l <%} else {%>button--s <%}%><% if (primaryBtn) { %>button--primary <%}%><% if (fullWidth) { %> block--full-width <%}%>">
+<a href="<%- link %>" <% if (link_target) { %>target="_blank"<% } %> class="button <% if (large) { %>button--l <%} else {%>button--s <%}%><% if (primaryBtn) { %>button--primary <%}%><% if (fullWidth) { %> block--full-width <%}%>"
+  <%if(pageTransition) {%>data-page-trigger<%}%>>
   <span class="inline-block no-overflow">
     <span class="button__wrapper inline-block relative">
       <span class="inline-block"><%- buttonText %></span>
