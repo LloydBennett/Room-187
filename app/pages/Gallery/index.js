@@ -248,6 +248,7 @@ export default class Gallery extends Page {
 
   setMediaAttributes(elem, mediaElem, mediaType) {
     const mediaId = mediaElem.dataset.galleryId
+    const posterImg = mediaElem.src
 
     elem.setAttribute('data-slideshow-id', mediaId)
 
@@ -255,6 +256,8 @@ export default class Gallery extends Page {
       elem.setAttribute('autoplay', '')
       elem.setAttribute('loop', '')
       elem.setAttribute('playsinline', '')
+      elem.setAttribute('controls', '')
+      elem.setAttribute('poster', posterImg)
 
       const source = document.createElement('source')
       source.src = mediaElem.dataset.gallerySrc

@@ -11,7 +11,10 @@
 %>
 
 <div class="gallery-grid__item">
-  <div class="thumbnail" data-index="<%- currentIndex %>" data-tooltip-item>
+  <div class="thumbnail relative" data-index="<%- currentIndex %>" data-tooltip-item>
+    <div class="play-btn play-btn--small play-btn--middle z-index--1 hidden play-btn--touch">
+      <%- include('../partials/play-button.ejs') %>
+    </div>
     <img
       src="<%- video_poster_image.url %>"
       alt="<%- video_poster_image.alt %>"
