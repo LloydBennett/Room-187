@@ -356,6 +356,18 @@ export default class Gallery extends Page {
     this.updateMinimapIndicator()
   }
 
+  handleKeyDown = (e) => {
+    // Only proceed if slideshow is open
+    if (!this.elements.slideShow || this.elements.slideShow.classList.contains('cannot-interact')) return
+
+    console.log("we working")
+    if (e.key === 'ArrowRight') {
+      this.changeMedia(1)
+    } else if (e.key === 'ArrowLeft') {
+      this.changeMedia(-1)
+    }
+  }
+
   // Debounce helper (avoids spamming during resize)
   debounce(fn, delay = 100) {
     let timeout
@@ -399,6 +411,8 @@ export default class Gallery extends Page {
     this.elements.close.addEventListener('click', () => {
       this.closeSlideShow()
     })
+
+    document.addEventListener('keydown', this.handleKeyDown)
 
     if(this.elements.miniMapItems) {
       this.elements.miniMapItems.forEach((elem, i) => {
