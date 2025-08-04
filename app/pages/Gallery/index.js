@@ -18,7 +18,9 @@ export default class Gallery extends Page {
         slideShowCounter: '[data-slideshow-index]',
         miniMap: '[data-mini-map]',
         miniMapItems: '[data-mini-map-item]',
-        miniMapIndicator: '[data-mini-map-indicator]'
+        miniMapIndicator: '[data-mini-map-indicator]',
+        playBtns: '[data-gallery-item-play-btn]'
+
       }
     })
 
@@ -53,6 +55,13 @@ export default class Gallery extends Page {
       ease: "zoom"
     })
 
+    this.tl.to(this.elements.playBtns, 
+    {
+      opacity: 0,
+      duration: 0.4,
+      ease: "power2.out"
+    },'-=0.4')
+
     this.tl.to(this.elements.slideShow, {
       clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
       duration: 0.6,
@@ -86,6 +95,12 @@ export default class Gallery extends Page {
       }
     })
 
+    this.tl.to(this.elements.playBtns, {
+      opacity: 1,
+      duration: 0.4,
+      ease: "power2.out"
+    }, "+=0.2")
+
     this.tl.to(this.elements.close, { opacity: 0, duration: 0.001 }, 'hide')
     this.tl.to(this.elements.prev, { opacity: 0, duration: 0.001 }, 'hide')
     this.tl.to(this.elements.next, { opacity: 0, duration: 0.001 }, 'hide')
@@ -115,6 +130,7 @@ export default class Gallery extends Page {
     const oldIndex = this.currentIndex
     this.currentIndex = (this.currentIndex + direction + this.media.length) % this.media.length
     this.displayIndex()
+    
     if (oldIndex === this.currentIndex) return
 
     if (this.tl.isActive()) {
@@ -157,7 +173,6 @@ export default class Gallery extends Page {
 
     this.elements.slideShowContainer.innerHTML = '' // Clear previous elements
     this.elements.slideShowContainer.appendChild(newElem)
-
 
     gsap.fromTo(newElem, { clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)" }, { clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", duration: 0.6, ease: "power2.out" })
   }
@@ -342,6 +357,12 @@ export default class Gallery extends Page {
         }
       )
     }
+
+    this.tl.to(this.elements.playBtns, {
+      opacity: 1,
+      duration: 0.4,
+      ease: "power2.out"
+    }, "+=0.2")
   }
 
   animateAssets(tl, resolve) {
@@ -380,7 +401,11 @@ export default class Gallery extends Page {
     if(!this.elements.galleryItems || !this.elements.close) return
 
     gsap.set(this.elements.galleryItems, { clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)"})
-    
+  
+    if(this.elements.playBtns) {
+      gsap.set(this.elements.playBtns, { opacity: 0 })
+    }
+
     if (Array.isArray(this.elements.galleryItems) || (typeof this.elements.galleryItems === 'object')) {
       this.media = Array.from(this.elements.galleryItems)
       this.elements.galleryItems.forEach(element => {
