@@ -1,7 +1,7 @@
 <%
   const slices = document.data.body || []
   let miniMapItems = []
-  console.log(document.data.body[2].primary)
+  
   const isEmptyMedia = (field) =>
     !field || Object.keys(field).length === 0 ||
     (field.link_type === 'Media' && !field.url)
