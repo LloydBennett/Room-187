@@ -154,18 +154,18 @@ export default class Home extends Page {
       ScrollTrigger.create({
         trigger: this.elements.roomKey,
         start: "center 30%",
-        end: `+=${adjustedPinDuration}`,
+        end: `+=${adjustedPinDuration + this.elements.steps.length * window.innerHeight}`,
         pin: true,
         scrub: true
       });
 
       // 2️⃣ Pin Step Container AFTER RoomKey is done
       ScrollTrigger.create({
-        trigger: this.elements.stepContainer,
-        start: "bottom bottom",
+        trigger: this.elements.roomKey,
+        start: "center 70%",
         end: `+=${this.elements.steps.length * window.innerHeight}`,
-        pin: true,
-        markers: true,
+        pin: this.elements.stepContainer,
+        //markers: true,
         pinSpacing: false
       });
 
@@ -179,59 +179,45 @@ export default class Home extends Page {
           start: "top center",
           end: `+=${this.elements.steps.length * window.innerHeight}`,
           scrub: true,
-          pin: true
+          pin: true,
+          onUpdate: self => {
+            // Calculate which step is active based on progress
+            let totalSteps = this.elements.steps.length;
+            let rawIndex = Math.floor(self.progress * totalSteps); // 0..totalSteps-1
+
+            // Clamp to valid index
+            let activeIndex = Math.min(Math.max(rawIndex, 1), totalSteps - 1);
+
+            // Update highlighter
+            this.animateIndexHighlighter(activeIndex - 1);
+
+            // Flip for step 1 (index === 1)
+            if (activeIndex === 2) {
+              this.elements.roomKey.classList.add("flip");
+            }
+            if (activeIndex < 2) {
+              this.elements.roomKey.classList.remove("flip");
+            }
+          }
         }
       });
 
-      this.elements.steps.forEach((step, index) => {
-        stepTl.to(step, { opacity: 1, duration: 0.8 }) // Step fades in
-              .to(step, { opacity: 0, duration: 0.8 }, `+=1.5`); // Delay before hiding
 
-        // ✅ Step Controls Update in Sync with Steps
-        ScrollTrigger.create({
-          trigger: step,
-          start: "top 60%", // Ensure step is fully visible before updating
-          end: "top 40%",
-          onEnter: () => {
-            if(index === 0) {
-              this.animateIndexHighlighter(index); // Highlight the corresponding dot for the current step
-            } else {
-              this.animateIndexHighlighter(index - 1); // Highlight the corresponding dot for the current step
-            }
-          },
-          onLeaveBack: () => {
-            if(index === 1) {
-              this.animateIndexHighlighter(index - 1);
-            } else {
-              this.animateIndexHighlighter(index - 2);
-            }
-          }
-        });
+      this.elements.steps.forEach((step) => {
+        stepTl
+          .to(step, { opacity: 1, duration: 0.8 })
+          .to(step, { opacity: 0, duration: 0.8 }, "+=1.5");
       });
 
-      // 5️⃣ RoomKey Flip - KEPT SAME AS YOUR CODE
       ScrollTrigger.create({
-        trigger: this.elements.steps[1], // Step 2
-        start: "top center",
-        onEnter: () => this.elements.roomKey.classList.add("flip"),
-        onLeaveBack: () => this.elements.roomKey.classList.remove("flip")
-      });
-
-      // // 6️⃣ Unpin Step Container at the End
-      // ScrollTrigger.create({
-      //   trigger: this.elements.steps[this.elements.steps.length - 1],
-      //   start: "bottom center",
-      //   onEnter: () => gsap.set(this.elements.stepContainer, { position: "relative" }),
-      //   onLeaveBack: () => gsap.set(this.elements.stepContainer, { position: "fixed" })
-      // });
-
-      // 7️⃣ Ensure Progress Bar Shows Like min-width: 768px
-      ScrollTrigger.create({
-        trigger: this.elements.steps[1],
-        start: "top center",
+        trigger: this.elements.steps[1], // first real step
+        start: "top 60%",
+        end: "top 40%",
         onEnter: () => this.showProgressBar(),
         onLeaveBack: () => this.hideProgressBar()
       });
+
+      
     });
     
     

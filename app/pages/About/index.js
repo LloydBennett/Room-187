@@ -131,6 +131,7 @@ export default class About extends Page {
   animateBodyText(text, lines) {
     this.mm.add("(max-width: 1199px)", () => {
       TextSplit.scrollAnimateText(text, lines)
+      console.log('its working')
     })
 
     this.mm.add("(min-width: 1200px)", () => {
