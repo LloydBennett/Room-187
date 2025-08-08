@@ -21,6 +21,10 @@
     font-size: 25rem;
     left: -10%;
     
+    @include media-query($breakpoint--small - 1, max-width) {
+      display: none;
+    }
+
     @include media-query($breakpoint--medium) {
       font-size: 35rem;
     }
@@ -28,9 +32,9 @@
 }
 
 .section-counter__inc-content {
-  padding: 0 0 0 spacing(6);
+  //padding: 0 0 0 spacing(6);
 
-  @include media-query($breakpoint--small) {
+  @include media-query($breakpoint--medium) {
     padding: 0 0 0 spacing(10);
   }
 }
