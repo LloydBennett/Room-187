@@ -133,8 +133,6 @@ export default class Home extends Page {
     this.mm.add("(max-width: 767px)", () => {
       const roomKeyPinStart = "center 30%";
       const roomKeyPinEnd = adjustedPinDuration + this.elements.steps.length * window.innerHeight;
-      const supportsEnv = CSS.supports("bottom", "calc(0px + env(safe-area-inset-bottom, 0px))");
-      const bottomValue = supportsEnv ? "calc(0px + env(safe-area-inset-bottom, 0px))" : "0px";
       
       ScrollTrigger.create({
         id: "roomKeyPin",
@@ -176,7 +174,7 @@ export default class Home extends Page {
         pin: true,
         scrub: true,
         onEnter: () => {
-          gsap.set(this.elements.stepContainer, { y: 0, bottom: bottomValue, top: "auto", position: "fixed", width: "100%" });
+          gsap.set(this.elements.stepContainer, { y: 0, bottom: "2dvh", top: "auto", position: "fixed", width: "100%" });
         },
         onLeave: () => {
           gsap.set(this.elements.stepContainer, { position: "", bottom: "", top: "", y: "" });
