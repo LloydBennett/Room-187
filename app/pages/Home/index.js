@@ -174,7 +174,7 @@ export default class Home extends Page {
         pin: true,
         scrub: true,
         onEnter: () => {
-          gsap.set(this.elements.stepContainer, { y: 0, bottom: "2dvh", top: "auto", position: "fixed", width: "100%" });
+          gsap.set(this.elements.stepContainer, { y: 0, bottom: "8dvh", top: "auto", position: "fixed", width: "100%" });
         },
         onLeave: () => {
           gsap.set(this.elements.stepContainer, { position: "", bottom: "", top: "", y: "" });
