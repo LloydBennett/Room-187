@@ -159,11 +159,14 @@ export default class Home extends Page {
         }
       })
 
+      // master pin
       ScrollTrigger.create({
         trigger: this.elements.roomKey,
         start: roomKeyPinStart,
         end: `+=${roomKeyPinEnd}`,
-        pin: true,
+        pin: this.elements.roomKeySection,
+        pinSpacing: true,
+        anticipatePin: 0.5,
         scrub: true
       });
 
@@ -171,17 +174,7 @@ export default class Home extends Page {
         trigger: this.elements.stepContainer,
         start: "bottom bottom",
         end: `+=${roomKeyPinEnd}`,
-        pin: true,
-        scrub: true,
-        onEnter: () => {
-          gsap.set(this.elements.stepContainer, { y: 0, bottom: "8dvh", top: "auto", position: "fixed", width: "100%" });
-        },
-        onLeave: () => {
-          gsap.set(this.elements.stepContainer, { position: "", bottom: "", top: "", y: "" });
-        },
-        onLeaveBack: () => {
-          gsap.set(this.elements.stepContainer, { position: "", bottom: "", top: "", y: "" });
-        }
+        scrub: true
       });
 
       gsap.set(this.elements.steps, { opacity: 0, position: "absolute", width: "100%" });

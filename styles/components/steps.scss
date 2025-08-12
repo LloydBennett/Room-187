@@ -2,9 +2,7 @@
   grid-column: 1 / 9;
 
   @include media-query($breakpoint--medium - 1, max-width) {
-    // display: flex;
-    // flex-direction: column;
-    // flex-grow: 1; 
+    margin-top: 10dvh;
     height: 20rem;
   }
 
