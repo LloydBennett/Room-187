@@ -133,15 +133,7 @@ export default class Home extends Page {
     this.mm.add("(max-width: 767px)", () => {
       const roomKeyPinStart = "center 30%";
       const roomKeyPinEnd = adjustedPinDuration + this.elements.steps.length * window.innerHeight;
-
-      let updateStepContainerBottom = () => {
-        const bottomValue = `calc(8dvh + env(safe-area-inset-bottom))`;
-        gsap.set(this.elements.stepContainer, { bottom: bottomValue });
-      }
-
-      const boundUpdate = updateStepContainerBottom.bind(this);
-
-
+      
       ScrollTrigger.create({
         id: "roomKeyPin",
         trigger: this.elements.roomKeyHeader,
@@ -182,8 +174,7 @@ export default class Home extends Page {
         pin: true,
         scrub: true,
         onEnter: () => {
-          boundUpdate()
-          gsap.set(this.elements.stepContainer, { y: 0, top: "auto", position: "fixed", width: "100%" });
+          gsap.set(this.elements.stepContainer, { y: 0, bottom: "8dvh", top: "auto", position: "fixed", width: "100%" });
         },
         onLeave: () => {
           gsap.set(this.elements.stepContainer, { position: "", bottom: "", top: "", y: "" });
@@ -239,15 +230,7 @@ export default class Home extends Page {
         pinSpacing: false
       });
 
-      if (window.visualViewport) {
-        window.visualViewport.addEventListener("resize", () => {
-          boundUpdate();
-          ScrollTrigger.refresh();
-        });
-      }
-
-      boundUpdate()
-      //window.addEventListener("resize", () => ScrollTrigger.refresh());
+      window.addEventListener("resize", () => ScrollTrigger.refresh());
     });
     
     
