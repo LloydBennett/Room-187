@@ -17,20 +17,20 @@
     const albumImage = track.album.images[0]?.url;
   %>
     <li data-track-list-item class="track-list__item relative">
-      <a href="<%- playlist.external_urls.spotify %>" target="_blank" class="track-list-item__wrapper">
-        <span class="type--white type--caps track__text track__no"><%= i + 1 %></span>
-        <span class="type--white type--caps track__text track__titles"><%= artistName %></span>
-        <span class="type--white type--caps track__text track__titles"><%= track.name %></span>
-        <span class="type--white type--caps track__text track__duration"><%= durationFormatted %></span>
+      <a href="<%- playlist.external_urls.spotify %>" target="_blank" class="track-list-item__wrapper relative z-index--2">
+        <span class="type--caps track__text track__no relative"><span class="digit"><%= i + 1 %></span><span class="absolute icon">&#9654;</span></span>
+        <span class="type--caps track__text track__titles"><%= artistName %></span>
+        <span class="type--caps track__text track__titles"><%= track.name %></span>
+        <span class="type--caps track__text track__duration"><%= durationFormatted %></span>
         <div class="relative track-list-item__img">
           <% if (albumImage) { %>
-            <img src="<%= albumImage %>" alt="<%= artistName %>" class="clip-path--hide" />
+            <img src="<%= albumImage %>" alt="<%= artistName %>" class="clip-path--hide z-index--2" data-track-list-img />
           <% } else { %>
-            <div style="width:100px; height:100px; background:#ccc; display:flex;align-items:center;justify-content:center;"></div>
+            <div style="width:100px; height:100px; background:#ccc; display:flex;align-items:center;justify-content:center;" data-track-list-img></div>
           <% } %>
         </div>
       </a>
-      <div class="overlay bg--gold-400 clip-path--hide"></div>
+      <div class="overlay bg--gold-400 clip-path--hide" data-track-list-bg></div>
     </li>
   <% }) %>
   </ol>

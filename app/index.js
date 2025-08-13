@@ -6,6 +6,7 @@ import About from 'pages/About'
 import Home from 'pages/Home'
 import Gallery from 'pages/Gallery'
 import Contact from './pages/Contact'
+import Playlists from './pages/Playlists'
 import Navigation from 'components/Navigation'
 import TextSplit from 'components/TextSplit'
 import VideoPlayer from './components/VideoPlayer'
@@ -76,7 +77,8 @@ class App {
       home: Home,
       about: About,
       gallery: Gallery,
-      contact: Contact
+      contact: Contact,
+      playlists: Playlists
     }
 
     const id = this.template

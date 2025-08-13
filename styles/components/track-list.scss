@@ -1,10 +1,11 @@
 .track-list {
-  color: $colour--white;
   list-style-type: none;
 }
 
 .track-list__item {
   cursor: pointer;
+  color: $colour--white;
+  transition: 300ms ease;
   padding: spacing(2) spacing(1);
 
   @include media-query($breakpoint--small) {
@@ -13,6 +14,19 @@
 
   @include media-query($breakpoint--x-large) {
     padding: spacing(3);
+  }
+
+  &.active {
+    color: $colour--black;
+    transition: 300ms ease;
+
+    .digit {
+      opacity: 0;
+    }
+
+    .icon {
+      opacity: 1;
+    }
   }
 }
 
@@ -60,6 +74,19 @@
 
   @include media-query($breakpoint--xx-large) {
     flex: 10%;
+  }
+
+  .digit {
+    opacity: 1;
+    color: $colour--white;
+  }
+
+  .icon {
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    color: $colour--black;
+    opacity: 0;
   }
 }
 
