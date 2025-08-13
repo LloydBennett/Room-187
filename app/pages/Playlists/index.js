@@ -15,6 +15,9 @@ export default class Playlists extends Page {
     gsap.registerPlugin(ScrollTrigger, CustomEase)
     CustomEase.create("zoom", "0.71, 0, 0.06, 1")
 
+    this.clickEfx = new Audio('/click.mp3');
+    console.log(this.clickEfx)
+
     this.init()
   }
 
@@ -28,8 +31,8 @@ export default class Playlists extends Page {
 
         element.addEventListener('mouseenter', (e) => {
           element.classList.add('active');
-
-
+          this.clickEfx.currentTime = 0
+          this.clickEfx.play()
 
           gsap.to(bg, 
           {
@@ -49,7 +52,7 @@ export default class Playlists extends Page {
 
         element.addEventListener('mouseleave', (e) => {
           element.classList.remove('active');
-          gsap.to(bg, 
+          gsap.to(bg,
           {
             clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)", 
             duration: 0.3, 
