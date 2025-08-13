@@ -5,46 +5,33 @@
     </h1>
   </div>
 </div>
-<ol>
-    <% spotifyTracks.forEach((item, i) => {
-      const track = item.track;
-      const artistName = track.artists[0]?.name || 'Unknown Artist';
-      const durationMs = track.duration_ms;
-      const minutes = Math.floor(durationMs / 60000);
-      const seconds = Math.floor((durationMs % 60000) / 1000).toString().padStart(2, '0');
-      const durationFormatted = `${minutes}:${seconds}`;
-      const previewUrl = track.preview_url;
-      const noPreviewClass = previewUrl ? '' : 'no-preview';
-
-        console.log(`Track ${i+1}:`, item.track);
-
-    %>
-      <li data-index="<%= i + 1 %>"class="track-list-item<%if(!previewUrl) {%> disable-track<%}%>">
-        <span class="type--white type--caps type--xs"><%= artistName %></span>
-        <span class="type--white type--caps type--xs"><%= track.name %></span>
-        <span class="type--white type--caps type--xs"><%= durationFormatted %></span>
-
-        <% if (previewUrl) { %>
-          <button class="play-btn" data-index="<%= i + 1 %>">▶️</button>
-          <audio src="<%= previewUrl %>" preload="none"></audio>
-        <% } %>
-      </li>
-    <% }) %>
+<section class="section--l-m-b">
+  <ol class="track-list">
+  <% spotifyTracks.forEach((item, i) => {
+    const track = item.track;
+    const artistName = track.artists[0]?.name || 'Unknown Artist';
+    const durationMs = track.duration_ms;
+    const minutes = Math.floor(durationMs / 60000);
+    const seconds = Math.floor((durationMs % 60000) / 1000).toString().padStart(2, '0');
+    const durationFormatted = `${minutes}:${seconds}`;
+    const albumImage = track.album.images[0]?.url;
+  %>
+    <li data-track-list-item class="track-list__item relative">
+      <a href="<%- playlist.external_urls.spotify %>" target="_blank" class="track-list-item__wrapper">
+        <span class="type--white type--caps track__text track__no"><%= i + 1 %></span>
+        <span class="type--white type--caps track__text track__titles"><%= artistName %></span>
+        <span class="type--white type--caps track__text track__titles"><%= track.name %></span>
+        <span class="type--white type--caps track__text track__duration"><%= durationFormatted %></span>
+        <div class="relative track-list-item__img">
+          <% if (albumImage) { %>
+            <img src="<%= albumImage %>" alt="<%= artistName %>" class="clip-path--hide" />
+          <% } else { %>
+            <div style="width:100px; height:100px; background:#ccc; display:flex;align-items:center;justify-content:center;"></div>
+          <% } %>
+        </div>
+      </a>
+      <div class="overlay bg--gold-400 clip-path--hide"></div>
+    </li>
+  <% }) %>
   </ol>
-  <div>
-    <% spotifyTracks.forEach((item, i) => {
-      const track = item.track;
-      const albumImage = track.album.images[0]?.url;
-      const artistName = track.artists[0]?.name || 'Unknown Artist';
-    %>
-      <div class="thumbnail" data-index="<%= i + 1 %>">
-        <% if (albumImage) { %>
-          <img src="<%= albumImage %>" alt="<%= artistName %>" width="100" />
-        <% } else { %>
-          <div style="width:100px; height:100px; background:#ccc; display:flex;align-items:center;justify-content:center;">
-            No Image
-          </div>
-        <% } %>
-      </div>
-    <% }) %>
-  </div>
+</section>

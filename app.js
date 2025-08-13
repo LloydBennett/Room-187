@@ -202,6 +202,7 @@ app.get('/playlists', async (req, res) => {
         pageType: 'playlists',
         spotifyPlaylists: [],
         spotifyTracks: [],
+        playlist: null, // ✅ still pass playlist var
         document: { data: { title: 'Playlists' } },
       });
     }
@@ -225,6 +226,7 @@ app.get('/playlists', async (req, res) => {
       spotifyPlaylists: playlistsData.items,
       spotifyTracks: tracksData.items || [],
       defaultPlaylistId: defaultPlaylist.id,
+      playlist: defaultPlaylist, // ✅ pass playlist object
       document: { data: { title: 'Playlists' } },
     });
   } catch (err) {
@@ -233,6 +235,7 @@ app.get('/playlists', async (req, res) => {
     res.status(500).render('base', {
       ...defaults,
       pageType: 'error',
+      playlist: null,
       document: { data: { title: '500 Error: Failed to load playlists' } },
     });
   }
