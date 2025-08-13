@@ -10,6 +10,11 @@ const MAILCHIMP_API_KEY = process.env.MAILCHIMP_API_KEY
 const MAILCHIMP_LIST_ID = process.env.MAILCHIMP_LIST_ID
 const MAILCHIMP_DC = 'us5'
 
+// ====== SPOTIFY CONFIG ======
+const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID
+const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET
+const SPOTIFY_USER_ID = process.env.SPOTIFY_USER_ID
+
 const Prismic = require('@prismicio/client');
 const PrismicH = require('@prismicio/helpers');
 
@@ -82,8 +87,62 @@ const handleRequest = async api => {
   }
 }
 
+// ===== Spotify helper: get access token =====
+async function getSpotifyToken() {
+  const creds = Buffer.from(`${SPOTIFY_CLIENT_ID}:${SPOTIFY_CLIENT_SECRET}`).toString('base64');
+  const response = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: {
+      Authorization: `Basic ${creds}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: 'grant_type=client_credentials',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to get Spotify token');
+  }
+
+  const data = await response.json();
+  return data.access_token;
+}
+
+// Return all playlists for user
+app.get('/api/playlists', async (req, res) => {
+  try {
+    const token = await getSpotifyToken();
+    const response = await fetch(`https://api.spotify.com/v1/users/${SPOTIFY_USER_ID}/playlists`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!response.ok) throw new Error('Failed to fetch playlists');
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Spotify playlists fetch failed' });
+  }
+});
+
+// Return tracks for specific playlist
+app.get('/api/playlists/:playlistId/tracks', async (req, res) => {
+  try {
+    const { playlistId } = req.params;
+    const token = await getSpotifyToken();
+    const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!response.ok) throw new Error('Failed to fetch playlist tracks');
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Spotify playlist tracks fetch failed' });
+  }
+});
+
 // Query for the root path.
 app.get('/', async (req, res) => {
+  console.log('Home page route hit');
   const pageType = 'home'
   const document = await client.getSingle('home')
   const defaults = await handleRequest(req)
@@ -122,6 +181,62 @@ app.get('/contact', async (req, res) => {
 
   res.render('base', { ...defaults, document, pageType })
 })
+
+// ===== RENDER /playlists PAGE =====
+app.get('/playlists', async (req, res) => {
+  try {
+    const defaults = await handleRequest(req);
+    const token = await getSpotifyToken();
+
+    // Fetch playlists
+    const playlistsResponse = await fetch(`https://api.spotify.com/v1/users/${SPOTIFY_USER_ID}/playlists`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!playlistsResponse.ok) throw new Error('Failed to fetch playlists');
+    const playlistsData = await playlistsResponse.json();
+
+    if (!playlistsData.items || playlistsData.items.length === 0) {
+      return res.render('base', {
+        ...defaults,
+        pageType: 'playlists',
+        spotifyPlaylists: [],
+        spotifyTracks: [],
+        document: { data: { title: 'Playlists' } },
+      });
+    }
+
+    // Default to first playlist
+    const defaultPlaylist = playlistsData.items[0];
+
+    // Fetch tracks for default playlist
+    const tracksResponse = await fetch(`https://api.spotify.com/v1/playlists/${defaultPlaylist.id}/tracks`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!tracksResponse.ok) throw new Error('Failed to fetch playlist tracks');
+    const tracksData = await tracksResponse.json();
+
+    console.log('Rendering playlists page with pageType:', 'playlists');
+
+    res.render('base', {
+      ...defaults,
+      pageType: 'playlists',
+      spotifyPlaylists: playlistsData.items,
+      spotifyTracks: tracksData.items || [],
+      defaultPlaylistId: defaultPlaylist.id,
+      document: { data: { title: 'Playlists' } },
+    });
+  } catch (err) {
+    console.error('Error loading playlists page:', err);
+    const defaults = await handleRequest(req);
+    res.status(500).render('base', {
+      ...defaults,
+      pageType: 'error',
+      document: { data: { title: '500 Error: Failed to load playlists' } },
+    });
+  }
+});
 
 app.get('/:uid', async (req, res) => {
   const uid = req.params.uid

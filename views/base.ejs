@@ -30,6 +30,9 @@
           <% case 'team_members' : %>
             <%- include('./pages/team-member') %>
             <%  break; %>
+          <% case 'playlists' : %>
+            <%- include('./pages/playlists') %>
+            <%  break; %>
           <% case 'error' : %>
             <%- include('./pages/error') -%>
             <% break; %>
@@ -37,7 +40,7 @@
           <%- include('./pages/home') -%>
         <% } %>
       </div>
-      
+      <div><%- page %></div>
       <%- include('./partials/footer', { showFull: showFullFooter } ) -%>
     </div>
   </main>

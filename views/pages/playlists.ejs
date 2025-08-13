@@ -1,0 +1,50 @@
+<div class="container grid grid--all section--l-m-b" data-hero>
+  <div class="bio__header column--header">
+    <h1 class="type--l type--x-bold type--display type--caps type--white" data-main-title data-split-text>
+      <%- document.data.title %>
+    </h1>
+  </div>
+</div>
+<ol>
+    <% spotifyTracks.forEach((item, i) => {
+      const track = item.track;
+      const artistName = track.artists[0]?.name || 'Unknown Artist';
+      const durationMs = track.duration_ms;
+      const minutes = Math.floor(durationMs / 60000);
+      const seconds = Math.floor((durationMs % 60000) / 1000).toString().padStart(2, '0');
+      const durationFormatted = `${minutes}:${seconds}`;
+      const previewUrl = track.preview_url;
+      const noPreviewClass = previewUrl ? '' : 'no-preview';
+
+        console.log(`Track ${i+1}:`, item.track);
+
+    %>
+      <li data-index="<%= i + 1 %>"class="track-list-item<%if(!previewUrl) {%> disable-track<%}%>">
+        <span class="type--white type--caps type--xs"><%= artistName %></span>
+        <span class="type--white type--caps type--xs"><%= track.name %></span>
+        <span class="type--white type--caps type--xs"><%= durationFormatted %></span>
+
+        <% if (previewUrl) { %>
+          <button class="play-btn" data-index="<%= i + 1 %>">▶️</button>
+          <audio src="<%= previewUrl %>" preload="none"></audio>
+        <% } %>
+      </li>
+    <% }) %>
+  </ol>
+  <div>
+    <% spotifyTracks.forEach((item, i) => {
+      const track = item.track;
+      const albumImage = track.album.images[0]?.url;
+      const artistName = track.artists[0]?.name || 'Unknown Artist';
+    %>
+      <div class="thumbnail" data-index="<%= i + 1 %>">
+        <% if (albumImage) { %>
+          <img src="<%= albumImage %>" alt="<%= artistName %>" width="100" />
+        <% } else { %>
+          <div style="width:100px; height:100px; background:#ccc; display:flex;align-items:center;justify-content:center;">
+            No Image
+          </div>
+        <% } %>
+      </div>
+    <% }) %>
+  </div>
