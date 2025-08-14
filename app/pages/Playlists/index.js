@@ -22,61 +22,52 @@ export default class Playlists extends Page {
   }
 
   addEventListener() {
-    if(!this.elements.trackListItems) return
+    if (!this.elements.trackListItems) return;
 
-    if (Array.isArray(this.elements.trackListItems) || (typeof this.elements.trackListItems === 'object')) {
-      this.elements.trackListItems.forEach(element => {
-        let bg = element.querySelector('[data-track-list-bg]')
-        let albumImg = element.querySelector('[data-track-list-img]')
+    // Always turn into an array so .forEach works
+    const trackListItems = this.elements.trackListItems.length !== undefined
+      ? Array.from(this.elements.trackListItems) // NodeList or HTMLCollection
+      : [this.elements.trackListItems];          // Single element
 
-        element.addEventListener('mouseenter', (e) => {
-          element.classList.add('active');
-          this.clickEfx.currentTime = 0
-          this.clickEfx.play()
+    trackListItems.forEach(element => {
+      let bg = element.querySelector('[data-track-list-bg]');
+      let albumImg = element.querySelector('[data-track-list-img]');
 
-          gsap.to(bg, 
-          {
-            clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", 
-            duration: 0.3, 
-            ease: "zoom"
-          })
+      element.addEventListener('mouseenter', () => {
+        element.classList.add('active');
+        this.clickEfx.currentTime = 0;
+        this.clickEfx.play();
 
-          gsap.to(albumImg, 
-          {
-            clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", 
-            duration: 0.3, 
-            ease: "zoom"
-          })
+        gsap.to(bg, {
+          clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+          duration: 0.3,
+          ease: "zoom"
+        });
 
-        })
-
-        element.addEventListener('mouseleave', (e) => {
-          element.classList.remove('active');
-          gsap.to(bg,
-          {
-            clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)", 
-            duration: 0.3, 
-            ease: "zoom"
-          })
-
-          gsap.to(albumImg, 
-          {
-            clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)", 
-            duration: 0.3, 
-            ease: "zoom"
-          })
-
-        })
+        gsap.to(albumImg, {
+          clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+          duration: 0.3,
+          ease: "zoom"
+        });
       });
-      
-    } else {
-      this.elements.galleryItems.addEventListener('click', (e) => {
-        this.openSlideShow(e)
-      })
-    }
 
+      element.addEventListener('mouseleave', () => {
+        element.classList.remove('active');
+        gsap.to(bg, {
+          clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
+          duration: 0.3,
+          ease: "zoom"
+        });
 
+        gsap.to(albumImg, {
+          clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
+          duration: 0.3,
+          ease: "zoom"
+        });
+      });
+    });
   }
+
 
   init() {
     this.addEventListener()
