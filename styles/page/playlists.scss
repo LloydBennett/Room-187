@@ -1,0 +1,31 @@
+.playlist-group {
+  @include container;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: spacing(10);
+  row-gap: spacing(10);
+
+  @include media-query($breakpoint--large) {
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: spacing(14);
+    row-gap: spacing(14);
+  }
+}
+
+.playlist-card__meta {
+  padding-top: spacing(2);
+
+  @include media-query($breakpoint--small) {
+    padding-top: spacing(4);
+  }
+}
+
+.playlist-card-meta__details {
+  display: flex;
+  flex-direction: column;
+
+  @include media-query($breakpoint--small) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}

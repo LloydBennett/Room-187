@@ -1,34 +1,65 @@
 <% if (pageType === 'playlists-grid') { %>
+<section class="section--l-m-b">
   <section class="section--l-m-b">
     <div class="container" data-hero>
       <div>
-        <h1 class="type--xl type--x-bold type--display type--caps type--white" data-main-title data-split-text>
+        <h1 class="type--l type--x-bold type--display type--caps type--white" data-main-title data-split-text>
           <%- document.data.title %>
         </h1>
       </div>
     </div>
   </section>
-  <section class="playlists-grid">
+  <section class="playlist-group">
     <% spotifyPlaylists.forEach(pl => { %>
-      <div class="playlist-card" data-playlist-id="<%= pl.id %>">
-        <img src="<%= pl.images[0]?.url %>" alt="<%= pl.name %>">
-        <h3><%= pl.name %></h3>
-        <p><%= pl.tracks.total %> tracks</p>
-        <a href="/playlists/<%= pl.id %>" class="type--s type--white">View</a>
-      </div>
+      <% 
+        const totalMinutes = Math.floor(pl.total_duration_ms / 60000);
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
+      %>
+      <a href="/playlists/<%= pl.id %>" class="playlist-card" data-playlist-id="<%= pl.id %>">
+        <div class="thumbnail playlist-card__img">
+          <img src="<%= pl.images[0]?.url %>" alt="<%= pl.name %>">
+        </div>
+        <div class="playlist-card__meta">
+          <h3 class="type--xs type--caps type--x-bold type--white"><%= pl.name %></h3>
+          <div class="playlist-card-meta__details">
+            <span class="type--xs type--caps type--reg type--white"><%= pl.tracks.total %> tracks</span>
+            <span class="type--xs type--caps type--reg type--white no-margin">
+              <% if (hours > 0) { %>
+                <%= hours %> hr <%= minutes %> min
+              <% } else { %>
+                <%= minutes %> min
+              <% } %>
+            </span>
+          </div>
+          
+        </div>
+        
+      </a>
     <% }) %>
   </section>
+
+</section>
+  
 <% } %>
 
 <% if (pageType === 'playlists-detail') { %>
   <% const playlistData = playlist; %>
   
-  <section class="playlists-row">
+  <section class="playlist-group">
     <% spotifyPlaylists.forEach(pl => { %>
-      <div class="playlist-card" data-playlist-id="<%= pl.id %>">
-        <img src="<%= pl.images[0]?.url %>" alt="<%= pl.name %>">
-        <h3><%= pl.name %></h3>
-      </div>
+      <a href="/playlists/<%= pl.id %>" class="playlist-card" data-playlist-id="<%= pl.id %>">
+        <div class="thumbnail playlist-card__img">
+          <img src="<%= pl.images[0]?.url %>" alt="<%= pl.name %>">
+        </div>
+        <div class="playlist-card__meta">
+          <h3 class="type--xs type--caps type--x-bold type--white"><%= pl.name %></h3>
+          <div>
+            <span class="type--xs type--caps type--reg type--white"><%= pl.tracks.total %> tracks</span>
+            <span class="type--xs type--caps type--reg type--white"><%= pl.totalDuration %></span>
+          </div>
+        </div>
+      </a>
     <% }) %>
   </section>
 

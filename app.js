@@ -191,22 +191,30 @@ app.get('/playlists/:playlistId?', async (req, res) => {
     if (!playlistsResponse.ok) throw new Error('Failed to fetch playlists');
     const playlistsData = await playlistsResponse.json();
 
+    // Add total_duration_ms to each playlist
+    const playlistsWithDuration = await Promise.all(
+      playlistsData.items.map(async (pl) => {
+        // Fetch tracks for this playlist
+        const tracksResponse = await fetch(`https://api.spotify.com/v1/playlists/${pl.id}/tracks`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const tracksJson = await tracksResponse.json();
+        const totalMs = tracksJson.items.reduce((sum, item) => sum + (item.track?.duration_ms || 0), 0);
+
+        return { ...pl, total_duration_ms: totalMs };
+      })
+    );
+
     const playlistId = req.params.playlistId || null;
     let selectedPlaylist = null;
     let tracksData = [];
 
     if (playlistId) {
-      // Find the playlist in the fetched playlists
-      selectedPlaylist = playlistsData.items.find(p => p.id === playlistId);
-
-      // If playlist exists, fetch its tracks
+      selectedPlaylist = playlistsWithDuration.find(p => p.id === playlistId);
       if (selectedPlaylist) {
         const tracksResponse = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-
-        if (!tracksResponse.ok) throw new Error('Failed to fetch playlist tracks');
-
         const tracksJson = await tracksResponse.json();
         tracksData = tracksJson.items || [];
       }
@@ -217,7 +225,7 @@ app.get('/playlists/:playlistId?', async (req, res) => {
     res.render('base', {
       ...defaults,
       pageType,
-      spotifyPlaylists: playlistsData.items || [],
+      spotifyPlaylists: playlistsWithDuration,
       spotifyTracks: tracksData,
       playlist: selectedPlaylist,
       defaultPlaylistId: selectedPlaylist?.id || null,
@@ -236,6 +244,7 @@ app.get('/playlists/:playlistId?', async (req, res) => {
     });
   }
 });
+
 
 app.get('/:uid', async (req, res) => {
   const uid = req.params.uid
