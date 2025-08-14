@@ -7,8 +7,36 @@
 
   @include media-query($breakpoint--large) {
     grid-template-columns: repeat(3, 1fr);
-    column-gap: spacing(14);
-    row-gap: spacing(14);
+    column-gap: spacing(16);
+    row-gap: spacing(16);
+  }
+
+  &.playlist-group--row {
+    display: flex;
+    width: 100%;
+    padding-left: 2.5%;
+    overflow: scroll;
+    column-gap: spacing(3);
+
+    @include media-query($breakpoint--x-large) {
+      column-gap: spacing(6);
+    }
+
+    .playlist-card {
+      flex-shrink: 0;
+      width: 20%;
+
+      @include media-query($breakpoint--large) {
+        width: 15%;
+      }
+
+      .playlist-card__meta {
+        @include media-query($breakpoint--large - 1, max-width) {
+          display: none;
+        }
+      }
+      
+    }
   }
 }
 
@@ -27,5 +55,37 @@
   @include media-query($breakpoint--small) {
     flex-direction: row;
     justify-content: space-between;
+  }
+}
+
+.playlist-detail__header {
+  margin-top: spacing(8);
+  max-width: 120rem;
+  
+  @include media-query($breakpoint--medium) {
+    margin-top: spacing(11);
+  }
+
+  @include media-query($breakpoint--x-large) {
+		margin-top: spacing(20);
+	}
+
+	@include media-query($breakpoint--xx-large) {
+		margin-top: spacing(26);
+	}
+
+}
+
+.playlist-detail-header__meta {
+  max-width: 40rem;
+  display: flex;
+  gap: spacing(2);
+
+  @include media-query($breakpoint--medium) {
+    gap: spacing(4);
+  }
+
+  span {
+    flex: 50%;
   }
 }

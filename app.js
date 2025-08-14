@@ -210,13 +210,21 @@ app.get('/playlists/:playlistId?', async (req, res) => {
     let tracksData = [];
 
     if (playlistId) {
-      selectedPlaylist = playlistsWithDuration.find(p => p.id === playlistId);
+      selectedPlaylist = playlistsData.items.find(p => p.id === playlistId);
+
       if (selectedPlaylist) {
         const tracksResponse = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
           headers: { Authorization: `Bearer ${token}` },
         });
+
+        if (!tracksResponse.ok) throw new Error('Failed to fetch playlist tracks');
+
         const tracksJson = await tracksResponse.json();
         tracksData = tracksJson.items || [];
+
+        // Calculate total duration (ms → minutes/hours)
+        const totalMs = tracksData.reduce((sum, item) => sum + (item.track?.duration_ms || 0), 0);
+        selectedPlaylist.total_duration_ms = totalMs;
       }
     }
 
