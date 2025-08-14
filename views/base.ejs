@@ -30,11 +30,8 @@
           <% case 'team_members' : %>
             <%- include('./pages/team-member') %>
             <%  break; %>
-          <% case 'playlists-grid': %>
-            <%- include('./pages/playlists', { spotifyPlaylists, pageType }) %>
-            <%  break; %>
-          <% case 'playlists-detail': %>
-            <%- include('./pages/playlists', { spotifyPlaylists, spotifyTracks, pageType, document }) %>
+          <% case 'playlists': %>
+            <%- include('./pages/playlists', { spotifyPlaylists, spotifyTracks, pageViewType, document }) %>
           <%  break; %>
           <% case 'error' : %>
             <%- include('./pages/error') -%>

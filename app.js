@@ -179,6 +179,7 @@ app.get('/contact', async (req, res) => {
 })
 
 // ===== RENDER /playlists PAGE =====
+// ===== RENDER /playlists PAGE =====
 app.get('/playlists/:playlistId?', async (req, res) => {
   try {
     const defaults = await handleRequest(req);
@@ -194,7 +195,6 @@ app.get('/playlists/:playlistId?', async (req, res) => {
     // Add total_duration_ms to each playlist
     const playlistsWithDuration = await Promise.all(
       playlistsData.items.map(async (pl) => {
-        // Fetch tracks for this playlist
         const tracksResponse = await fetch(`https://api.spotify.com/v1/playlists/${pl.id}/tracks`, {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -209,6 +209,8 @@ app.get('/playlists/:playlistId?', async (req, res) => {
     let selectedPlaylist = null;
     let tracksData = [];
 
+    let pageViewType = 'grid'; // default
+
     if (playlistId) {
       selectedPlaylist = playlistsData.items.find(p => p.id === playlistId);
 
@@ -216,23 +218,26 @@ app.get('/playlists/:playlistId?', async (req, res) => {
         const tracksResponse = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-
         if (!tracksResponse.ok) throw new Error('Failed to fetch playlist tracks');
 
         const tracksJson = await tracksResponse.json();
         tracksData = tracksJson.items || [];
 
-        // Calculate total duration (ms → minutes/hours)
+        // Calculate total duration for this playlist
         const totalMs = tracksData.reduce((sum, item) => sum + (item.track?.duration_ms || 0), 0);
         selectedPlaylist.total_duration_ms = totalMs;
+
+        pageViewType = 'detail';
       }
     }
 
-    const pageType = selectedPlaylist ? 'playlists-detail' : 'playlists-grid';
+    // Always set pageType to "playlists"
+    const pageType = 'playlists';
 
     res.render('base', {
       ...defaults,
       pageType,
+      pageViewType,
       spotifyPlaylists: playlistsWithDuration,
       spotifyTracks: tracksData,
       playlist: selectedPlaylist,
@@ -245,6 +250,7 @@ app.get('/playlists/:playlistId?', async (req, res) => {
     res.status(500).render('base', {
       ...defaults,
       pageType: 'error',
+      pageViewType: null,
       playlist: null,
       spotifyPlaylists: [],
       spotifyTracks: [],
@@ -252,7 +258,6 @@ app.get('/playlists/:playlistId?', async (req, res) => {
     });
   }
 });
-
 
 app.get('/:uid', async (req, res) => {
   const uid = req.params.uid
