@@ -88,7 +88,22 @@ const handleRequest = async api => {
 }
 
 // ===== Spotify helper =====
+
+let spotifyCache = {
+  token: null,
+  tokenExpires: 0,
+  playlists: null,
+  playlistsExpires: 0,
+};
+
+
+// ====== Get Spotify token (cached) ======  // NEW/UPDATED
 async function getSpotifyToken() {
+  const now = Date.now();
+  if (spotifyCache.token && now < spotifyCache.tokenExpires) {
+    return spotifyCache.token;
+  }
+
   const creds = Buffer.from(`${SPOTIFY_CLIENT_ID}:${SPOTIFY_CLIENT_SECRET}`).toString('base64');
   const response = await fetch('https://accounts.spotify.com/api/token', {
     method: 'POST',
@@ -101,19 +116,47 @@ async function getSpotifyToken() {
 
   if (!response.ok) throw new Error('Failed to get Spotify token');
   const data = await response.json();
+
+  // Cache for slightly less than 1 hour (Spotify tokens expire in 1 hour)
+  spotifyCache.token = data.access_token;
+  spotifyCache.tokenExpires = now + (data.expires_in - 60) * 1000;
+
   return data.access_token;
+}
+
+// ====== Fetch playlists with cache ======  // UPDATED
+async function fetchSpotifyPlaylists() {
+  const now = Date.now();
+  if (spotifyCache.playlists && now < spotifyCache.playlistsExpires) {
+    return spotifyCache.playlists;
+  }
+
+  const token = await getSpotifyToken();
+  const response = await fetch(`https://api.spotify.com/v1/users/${SPOTIFY_USER_ID}/playlists`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!response.ok) throw new Error('Failed to fetch playlists');
+
+  const data = await response.json();
+
+  // 🆕 Pre-fill total_duration_ms = 0 for each playlist to avoid NaN
+  const playlists = data.items.map(p => ({
+    ...p,
+    total_duration_ms: 0
+  }));
+
+  spotifyCache.playlists = playlists;
+  spotifyCache.playlistsExpires = now + 5 * 60 * 1000; // Cache playlists for 5 minutes
+
+  return playlists;
 }
 
 // ===== Spotify AJAX ENDPOINTS =====
 app.get('/api/playlists', async (req, res) => {
   try {
-    const token = await getSpotifyToken();
-    const response = await fetch(`https://api.spotify.com/v1/users/${SPOTIFY_USER_ID}/playlists`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (!response.ok) throw new Error('Failed to fetch playlists');
-    const data = await response.json();
-    res.json(data.items);
+    const playlists = await fetchSpotifyPlaylists();
+    res.json(playlists);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Spotify playlists fetch failed' });
@@ -178,72 +221,82 @@ app.get('/contact', async (req, res) => {
   res.render('base', { ...defaults, document, pageType })
 })
 
-// ===== RENDER /playlists PAGE =====
-// ===== RENDER /playlists PAGE =====
-app.get('/playlists/:playlistId?', async (req, res) => {
+// ===== PLAYLIST ROUTE WITH CACHING =====  // UPDATED
+app.get(['/playlists', '/playlists/:playlistId?'], async (req, res) => {
   try {
+    console.log('[Playlists] Step 1: Getting defaults from Prismic');
     const defaults = await handleRequest(req);
-    const token = await getSpotifyToken();
 
-    // Fetch all playlists
-    const playlistsResponse = await fetch(`https://api.spotify.com/v1/users/${SPOTIFY_USER_ID}/playlists`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (!playlistsResponse.ok) throw new Error('Failed to fetch playlists');
-    const playlistsData = await playlistsResponse.json();
-
-    // Add total_duration_ms to each playlist
-    const playlistsWithDuration = await Promise.all(
-      playlistsData.items.map(async (pl) => {
-        const tracksResponse = await fetch(`https://api.spotify.com/v1/playlists/${pl.id}/tracks`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const tracksJson = await tracksResponse.json();
-        const totalMs = tracksJson.items.reduce((sum, item) => sum + (item.track?.duration_ms || 0), 0);
-
-        return { ...pl, total_duration_ms: totalMs };
-      })
-    );
+    console.log('[Playlists] Step 2: Fetching Spotify playlists from cache');
+    let playlistsData = await fetchSpotifyPlaylists();
 
     const playlistId = req.params.playlistId || null;
     let selectedPlaylist = null;
     let tracksData = [];
-
-    let pageViewType = 'grid'; // default
+    let pageViewType = 'grid';
 
     if (playlistId) {
-      selectedPlaylist = playlistsData.items.find(p => p.id === playlistId);
+      console.log(`[Playlists] Step 3: Loading tracks for playlist ${playlistId}`);
+      selectedPlaylist = playlistsData.find(p => p.id === playlistId);
 
       if (selectedPlaylist) {
+        const token = await getSpotifyToken(); // cached token
         const tracksResponse = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (!tracksResponse.ok) throw new Error('Failed to fetch playlist tracks');
+
+        if (tracksResponse.status === 429) {
+          const retryAfter = parseInt(tracksResponse.headers.get('Retry-After') || '1', 10);
+          console.warn(`[Spotify] Tracks API rate limited, waiting ${retryAfter}s`);
+          await new Promise(r => setTimeout(r, retryAfter * 1000));
+          return res.redirect(req.originalUrl);
+        }
+
+        if (!tracksResponse.ok) throw new Error(`Failed to fetch playlist tracks: ${tracksResponse.status}`);
 
         const tracksJson = await tracksResponse.json();
         tracksData = tracksJson.items || [];
 
-        // Calculate total duration for this playlist
+        // ✅ Calculate total duration for this playlist
         const totalMs = tracksData.reduce((sum, item) => sum + (item.track?.duration_ms || 0), 0);
         selectedPlaylist.total_duration_ms = totalMs;
 
         pageViewType = 'detail';
       }
+    } else {
+      console.log('[Playlists] Step 3: Calculating durations for all playlists in grid view');
+
+      // 🆕 Calculate durations for all playlists in parallel
+      const token = await getSpotifyToken();
+      const updatedPlaylists = await Promise.all(playlistsData.map(async (playlist) => {
+        const tracksResponse = await fetch(`https://api.spotify.com/v1/playlists/${playlist.id}/tracks?fields=items(track(duration_ms))`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (!tracksResponse.ok) return playlist;
+
+        const tracksJson = await tracksResponse.json();
+        const totalMs = (tracksJson.items || []).reduce((sum, item) => sum + (item.track?.duration_ms || 0), 0);
+
+        return { ...playlist, total_duration_ms: totalMs };
+      }));
+
+      playlistsData = updatedPlaylists;
     }
 
-    // Always set pageType to "playlists"
-    const pageType = 'playlists';
+    console.log('[Playlists] Step 4: Rendering playlists page');
 
     res.render('base', {
       ...defaults,
-      pageType,
+      pageType: 'playlists',
       pageViewType,
-      spotifyPlaylists: playlistsWithDuration,
+      spotifyPlaylists: playlistsData,
       spotifyTracks: tracksData,
       playlist: selectedPlaylist,
       defaultPlaylistId: selectedPlaylist?.id || null,
       document: { data: { title: 'Playlists' } },
     });
+
   } catch (err) {
     console.error('Error rendering playlists page:', err);
     const defaults = await handleRequest(req);

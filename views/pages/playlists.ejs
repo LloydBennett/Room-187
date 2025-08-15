@@ -9,14 +9,14 @@
       </div>
     </div>
   </section>
-  <section class="playlist-group">
+  <section class="playlist-group" data-playlist-group>
     <% spotifyPlaylists.forEach(pl => { %>
       <% 
         const totalMinutes = Math.floor(pl.total_duration_ms / 60000);
         const hours = Math.floor(totalMinutes / 60);
         const minutes = totalMinutes % 60;
       %>
-      <a href="/playlists/<%= pl.id %>" class="playlist-card" data-playlist-id="<%= pl.id %>">
+      <a href="/playlists/<%= pl.id %>" class="playlist-card" data-playlist-id="<%= pl.id %>" data-playlist-card data-playlist-trigger>
         <div class="thumbnail playlist-card__img">
           <img src="<%= pl.images[0]?.url %>" alt="<%= pl.name %>">
         </div>
