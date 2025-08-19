@@ -3,6 +3,8 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { CustomEase } from 'gsap/CustomEase'
 import { Flip } from 'gsap/Flip'
+import { scroll } from 'utils/LenisScroll'
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 
 export default class Playlists extends Page {
   constructor() {
@@ -13,52 +15,79 @@ export default class Playlists extends Page {
         trackListItems: '[data-track-list-item]',
         playlistGroup: '[data-playlist-group]',
         playlistCards: '[data-playlist-card]',
-        pageTrigger: '[data-playlist-trigger]'
+        pageTrigger: '[data-playlist-trigger]',
+        mainTitle: '[data-main-title]',
+        playlistCardMeta: '[data-playlist-meta]', 
+        hero: '[data-hero]'
       }
     })
 
-    gsap.registerPlugin(ScrollTrigger, CustomEase, Flip)
+    gsap.registerPlugin(ScrollTrigger, CustomEase, Flip, ScrollToPlugin)
     CustomEase.create('zoom', '0.71, 0, 0.06, 1')
 
     this.clickEfx = new Audio('/click.mp3')
+    this.scroll = scroll
 
     this.init()
+  }l
+
+  lockScroll(lock = true) {
+    document.body.style.overflow = lock ? 'hidden' : ''
+    lock? this.scroll.stop() : this.scroll.start()
   }
 
-  // morph grid → row
   beforeNavigate(linkEl) {
     const gridEl = this.elements.playlistGroup
     const cards = Array.from(this.elements.playlistCards || [])
+    const mainTitleSection = this.elements.hero
+    const meta = this.elements.playlistCardMeta
+    const mainTitleMask = this.elements.mainTitle.querySelectorAll('div > div')
 
-    if (!gridEl || !cards.length) return Promise.resolve()
-    if (gridEl.classList.contains('playlist-group--row')) return Promise.resolve()
-    if (!linkEl) return Promise.resolve()
+    if (!gridEl || !cards.length || !linkEl) return Promise.resolve()
+
+    console.log(mainTitleMask)  
 
     return new Promise((resolve) => {
-      const state = Flip.getState(cards, { props: 'width,height' })
-      gsap.set(gridEl, { height: gridEl.offsetHeight })
+      let tl = gsap.timeline()
+      this.lockScroll(true)
 
-      gridEl.prepend(linkEl)
-      gridEl.classList.add('playlist-group--row')
-
-      Flip.from(state, {
-        duration: 0.6,
-        ease: 'zoom',
-        absolute: true,
-        stagger: 0.02,
-        // onStart: () => {
-        //   gsap.to(linkEl, { scale: 1.03, duration: 0.3, ease: 'power2.out' })
-        // },
+      tl.to(meta, { opacity: 0, duration: 0.4, ease: "power2.out"})
+      
+      tl.to(window, {
+        scrollTo: { y: 0 },
+        duration: 0.8,
+        ease: 'power2.out',
         onComplete: () => {
-          gsap.set(gridEl, { clearProps: 'height' })
-          //gsap.to(linkEl, { scale: 1, duration: 0.2 })
-          resolve()
+          gsap.set(gridEl, { height: Math.max(gridEl.offsetHeight, window.innerHeight) })
         }
       })
+
+      tl.to(mainTitleMask, 
+        { 
+          yPercent: -100,
+          duration: 0.6,
+          ease: 'zoom',
+          onComplete: () => {
+            if (mainTitleSection) mainTitleSection.remove()
+            
+            const state = Flip.getState(cards, { absolute: true })
+
+            gridEl.classList.add('playlist-group--row')
+
+            Flip.from(state, {
+              duration: 0.6,
+              ease: 'zoom',
+              absolute: true,
+              onComplete: () => {
+                resolve()
+              }
+            }) 
+          }
+        }, 
+      '-=0.2')
     })
   }
 
-  // lightweight navigation (playlist detail view)
   async handleNavigation(url, { replaceState = false } = {}) {
     try {
       const res = await fetch(url)
@@ -66,20 +95,23 @@ export default class Playlists extends Page {
       const parser = new DOMParser()
       const doc = parser.parseFromString(html, 'text/html')
 
-      const newTrackList = doc.querySelector('[data-track-list]')
-      const newPlaylistGroup = doc.querySelector('[data-playlist-group]')
-
-      if (newTrackList && this.elements.trackList) {
-        this.elements.trackList.innerHTML = newTrackList.innerHTML
-      }
-      if (newPlaylistGroup && this.elements.playlistGroup) {
-        this.elements.playlistGroup.innerHTML = newPlaylistGroup.innerHTML
+      // Inject hero section
+      const newHero = doc.querySelector('[data-hero]')
+      if (newHero) {
+        this.elements.playlistGroup.insertAdjacentElement('afterend', newHero)
       }
 
-      // refresh element references (important!)
+      // Inject track list section
+      const newTrackListSection = doc.querySelector('[data-playlist-tracks]')
+      if (newTrackListSection) {
+        newHero.insertAdjacentElement('afterend', newTrackListSection)
+      }
+
+      // Refresh element references
       this.elements.trackListItems = document.querySelectorAll('[data-track-list-item]')
       this.elements.playlistCards = document.querySelectorAll('[data-playlist-card]')
       this.elements.pageTrigger = document.querySelectorAll('[data-playlist-trigger]')
+      this.elements.mainTitle = document.querySelector('[data-main-title]')
 
       this.addHoverListeners()
       this.playListCardListeners()
@@ -89,9 +121,38 @@ export default class Playlists extends Page {
       } else {
         history.pushState({}, '', url)
       }
+
+      // Run after navigation animations
+      this.afterNavigateAnimations()
+
     } catch (err) {
       console.error('Playlist navigation error:', err)
     }
+  }
+
+  afterNavigateAnimations() {
+    const splitTextEls = document.querySelectorAll('[data-split-text]')
+    splitTextEls.forEach(el => {
+      const text = el.textContent
+      el.innerHTML = text.split('').map(ch => `<span>${ch}</span>`).join('')
+    })
+
+    // Animate text in
+    gsap.fromTo(splitTextEls, 
+      { yPercent: -100 }, 
+      { yPercent: 0, duration: 0.5, ease: 'power2.out', stagger: 0.02 }
+    )
+
+    // Delay then fade in track items
+    if (this.elements.trackListItems) {
+      gsap.fromTo(this.elements.trackListItems,
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.3, stagger: 0.05, delay: 0.2 }
+      )
+    }
+
+    // Unlock scroll after animations
+    gsap.delayedCall(1.2, () => this.lockScroll(false))
   }
 
   playListCardListeners() {
@@ -102,7 +163,7 @@ export default class Playlists extends Page {
         e.preventDefault()
         await this.beforeNavigate(card)
         const url = card.href
-        this.handleNavigation(url)
+        //this.handleNavigation(url)
       })
     })
   }
