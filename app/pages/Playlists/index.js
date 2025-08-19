@@ -64,7 +64,7 @@ export default class Playlists extends Page {
 
       tl.to(mainTitleMask, 
         { 
-          yPercent: -100,
+          yPercent: 100,
           duration: 0.6,
           ease: 'zoom',
           onComplete: () => {
