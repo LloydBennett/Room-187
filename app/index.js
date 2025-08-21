@@ -91,6 +91,10 @@ class App {
     await this.page.show(this.isFirstVisit)
 
     this.isFirstVisit = false
+
+    window.dispatchEvent(new CustomEvent('pageLoaded', {
+      detail: { page: this.page, template: this.template }
+    }))
   }
 
   onPopState () {

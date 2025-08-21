@@ -24,13 +24,6 @@
           <h3 class="type--xs type--caps type--x-bold type--white"><%= pl.name %></h3>
           <div class="playlist-card-meta__details">
             <span class="type--xs type--caps type--reg type--white"><%= pl.tracks.total %> tracks</span>
-            <span class="type--xs type--caps type--reg type--white no-margin">
-              <% if (hours > 0) { %>
-                <%= hours %> hr <%= minutes %> min
-              <% } else { %>
-                <%= minutes %> min
-              <% } %>
-            </span>
           </div>
           
         </div>
@@ -62,7 +55,6 @@
           <h3 class="type--xs type--caps type--x-bold type--white"><%= pl.name %></h3>
           <div>
             <span class="type--xs type--caps type--reg type--white"><%= pl.tracks.total %> tracks</span>
-            <span class="type--xs type--caps type--reg type--white"><%= pl.totalDuration %></span>
           </div>
         </div>
       </a>

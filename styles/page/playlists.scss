@@ -18,6 +18,10 @@
     overflow: scroll;
     column-gap: spacing(3);
 
+    @include media-query($breakpoint--large) {
+		  padding-left: spacing(4);
+	  }
+
     @include media-query($breakpoint--x-large) {
       column-gap: spacing(6);
     }

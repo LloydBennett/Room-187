@@ -38,12 +38,16 @@
   background: linear-gradient(270deg, rgba(0, 0, 0, 0.80) 0%, rgba(0, 0, 0, 0.00) 120%);
 }
 
-.hero--p-t {
+.hero--l-p-t {
   padding-top: spacing(20);
 
   @include media-query($breakpoint--medium) {
     padding-top: spacing(26);
   }
+}
+
+.hero--s-p-t {
+  padding-top: 10rem;
 }
 
 .hero__grid {

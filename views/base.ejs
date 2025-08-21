@@ -11,9 +11,17 @@
   <%- include('./partials/loader', { zoomIn: useZoomTransition } ) -%>
   <%- include('./partials/navigation-bar') -%>
   <% if (page !== "error") { %><%- include('./partials/navigation-menu') -%><% } %>
-  <main id="main" data-page="<%- page %>" class="main <% if (page !== "error") { %><%- page %><% } %> relative">
+  <main id="main" data-page="<%- page %>" <% if(page === "playlists") { %>data-page-view-type="<%- pageViewType %>" <%} %> class="main <% if (page !== "error") { %><%- page %><% } %> relative">
     <div>
-      <div <% if (page !== "home" && page !== "about" && page !== "gallery" && page !== "error") { %>class="hero--p-t"<% } %> data-inner-content>
+      <div 
+        <% if (page !== "home" && page !== "about" && page !== "gallery" && page !== "error") { %>
+          class="<% if (page === "playlists") { %>min-height <% if (pageViewType === "grid") { %>hero--l-p-t<% } else if (pageViewType === "detail") { %>hero--s-p-t<% } %>
+            <% } else { %>
+              hero--p-t
+            <% } %>
+          "
+        <% } %>
+        data-inner-content>
         <% switch(page) {
           case 'about' : %>
             <%- include('./pages/about') %>
