@@ -30,17 +30,53 @@ export default class Playlists extends Page {
 
     this.clickEfx = new Audio('/click.mp3')
     this.scroll = scroll
+    this.tl = gsap.timeline()
 
     this.init()
   }
 
   loadAnimations() {
-    if (this.viewPageType !== "grid") return;
+    if (this.viewPageType === "grid") {
+      this.animateCardsInView()
+      this.scrollCardAnimations()
+    } else {
+      gsap.to(this.elements.trackListItems,
+        { 
+          opacity: 1,
+          pointerEvents: "auto", 
+          duration: 0.4, 
+          ease: "power2.out", 
+          stagger: 0.05 
+        }
+      )
+    }
+  }
 
+  updateIndicator(targetEl) {
+    let playlistScroll = this.elements.playlistGroup
+    if (!playlistScroll) return
+    
+    const scrollRect = playlistScroll.getBoundingClientRect()
+    const targetRect = targetEl.getBoundingClientRect()
+
+    // How far the card is from the left edge of the scroll container
+    const deltaX = targetRect.left - scrollRect.left
+    const targetX = -deltaX
+    
+    gsap.to(playlistScroll, {
+      x: targetX,
+      duration: 0.4,
+      ease: "power3.out"
+    })
+  }
+
+  scrollCardAnimations() {
     const cards = this.elements.playlistCards;
     if (!cards || !cards.length) return;
 
-    gsap.set(cards, { opacity: 0 }); // start all cards invisible
+    // only hide cards that have NOT been animated
+    gsap.set(cards, { opacity: (i, el) => el.dataset.animated === "true" ? 1 : 0 });
+    //gsap.set(cards, { opacity: 0 }); // start all cards invisible
 
     const animateBatch = (batch) => {
       gsap.fromTo(batch,
@@ -75,11 +111,9 @@ export default class Playlists extends Page {
     const cards = this.elements.playlistCards;
     if (!cards || !cards.length || this.viewPageType !== "grid" ) return;
 
-    gsap.set(cards, { opacity: 0 }); // start all cards invisible
-
     const inViewCards = Array.from(cards).filter(card => {
       const rect = card.getBoundingClientRect();
-      return rect.top < window.innerHeight * 0.8 && card.dataset.animated !== "true";
+      return rect.top < window.innerHeight * 0.95 && card.dataset.animated !== "true";
     });
 
     if (!inViewCards.length) return;
@@ -96,14 +130,41 @@ export default class Playlists extends Page {
     );
   }
 
-
   lockScroll(lock = true) {
     document.body.style.overflow = lock ? 'hidden' : ''
     lock? this.scroll.stop() : this.scroll.start()
   }
 
-  detailPageTransitionOut() {
-    return Promise.resolve()
+  detailPageTransitionOut(card) {
+    this.updateIndicator(card)
+    const splitText = document.querySelectorAll('[data-split-text]')
+    const trackListSection = this.elements.trackListSection
+
+    splitText.forEach((el, i) => {
+      let divs = el.querySelectorAll('div > div')
+      this.tl.to(el, { 
+        yPercent: 100, 
+        duration: 0.6, 
+        ease: 'zoom',
+        onComplete: () => {
+          el.remove()
+        }
+      }, 'group')
+    })
+
+    this.tl.to(trackListSection, { 
+      opacity: 0, 
+      duration: 0.4, 
+      ease: 'power2.out', 
+      onComplete: () => {
+        trackListSection.remove();
+      }
+    }, 'group')
+
+    this.tl.add(() => {
+      return Promise.resolve()
+    }, 'group +=0.2')
+
   }
 
   gridPageTransitionOut() {
@@ -116,18 +177,23 @@ export default class Playlists extends Page {
     if (!gridEl || !cards.length ) return Promise.resolve() 
 
     return new Promise((resolve) => {
-      let tl = gsap.timeline()
       this.lockScroll(true)
 
-      tl.to(meta, { opacity: 0, duration: 0.4, ease: "power2.out"})
+      cards.forEach(el => {
+        if (el.dataset.animated !== "true") {
+          gsap.set(el, { opacity: 1 })
+        }
+      })
+
+      this.tl.to(meta, { opacity: 0, duration: 0.4, ease: "power2.out"})
       
-      tl.to(window, {
+      this.tl.to(window, {
         scrollTo: { y: 0 },
         duration: 0.8,
         ease: 'power2.out'
       })
 
-      tl.to(mainTitleMask, 
+      this.tl.to(mainTitleMask, 
         { 
           yPercent: 100,
           duration: 0.6,
@@ -145,46 +211,88 @@ export default class Playlists extends Page {
             Flip.from(state, {
               duration: 0.6,
               ease: 'zoom',
-              absolute: true,
-              onComplete: () => {
-                resolve()
-              }
+              absolute: true
             }) 
           }
         }, 
       '-=0.2')
+      
+      this.tl.add(() => {
+        resolve()
+      }, '-=0.2')
     })
   }
 
-  async beforeNavigate() {
-    let pageType = this.viewPageType
+  async beforeNavigate(card, url) {
+    const currentType = this.viewPageType; // "grid" or "detail"
+    const pathSegments = new URL(url, location.origin).pathname.split('/').filter(Boolean);
+    const nextType = pathSegments.length === 1 ? 'grid' : 'detail';
 
-    if(pageType === "grid") {
-      await this.gridPageTransitionOut()
-    }
-    else {
-      await this.detailPageTransitionOut()
+    if (currentType === "grid" && nextType === "detail") {
+      // Grid → Detail
+      await this.gridPageTransitionOut(card);
+      this.updatePageViewType(); // grid → detail
+    } else if (currentType === "detail" && nextType === "detail") {
+      // Detail → Detail
+      await this.detailPageTransitionOut(card);
+    } else if (currentType === "detail" && nextType === "grid") {
+      // Detail → Grid (e.g., back button)
+      await this.gridPageTransitionFromDetail(); // we’ll define a Flip-based transition
+      this.updatePageViewType(); // detail → grid
     }
   }
 
+
   async handleNavigation(url, { replaceState = false } = {}) {
     try {
+
+       // Determine page types
+      const currentType = this.viewPageType; // current page type
+      const pathSegments = new URL(url, location.origin).pathname.split('/').filter(Boolean);
+      const nextType = pathSegments.length === 1 ? 'grid' : 'detail'; // next page type based on URL
+
       const res = await fetch(url)
       const html = await res.text()
       const parser = new DOMParser()
       const doc = parser.parseFromString(html, 'text/html')
       const container = this.elements.container
       const newHero = doc.querySelector('[data-hero]')
+      const mainTitle = doc.querySelector('[data-main-title]')
+      const currentMeta = this.elements.playlistCardMeta 
+      const newMetaText = doc.querySelectorAll('.playlist-detail-header__meta [data-split-text]')
+       
 
-      if (newHero) {
-        gsap.set(newHero, {
-          opacity: 0,
-          pointerEvents: "none"
+      if (currentType === "grid" && nextType === "detail") {
+
+        if (newHero) {
+          gsap.set(newHero, { opacity: 0, pointerEvents: "none" })
+          container.appendChild(newHero)
+        }
+
+      } else if (currentType === "detail" && nextType === "detail") {
+        const heroContainer = document.querySelector('[data-hero] .container')
+        
+        gsap.set(mainTitle, { opacity: 0, pointerEvents: "none" })
+
+        heroContainer.appendChild(mainTitle)
+
+        newMetaText.forEach(el => {
+          gsap.set(el, { opacity: 0, pointerEvents: "none" })
+          currentMeta.appendChild(el)
         })
+    
 
-        container.appendChild(newHero)
+        // gsap.set(newHero, {
+        //   opacity: 0,
+        //   pointerEvents: "none"
+        // })
+
+      } else if (currentType === "detail" && nextType === "grid") {
+        // nothing happens - as we wont need anything
       }
 
+
+      // this bit is what i need for grid to detail and detail to detail 
       const newTrackListSection = doc.querySelector('[data-playlist-tracks]')
 
       if (newTrackListSection) {
@@ -216,8 +324,6 @@ export default class Playlists extends Page {
         history.pushState({}, '', url)
       }
 
-      this.updatePageViewType()
-
       return true
 
     } catch (err) {
@@ -228,20 +334,12 @@ export default class Playlists extends Page {
 
   afterNavigateAnimations() {
     return new Promise((resolve) => {
-  
-      let tl = gsap.timeline( {
-        onComplete: () => {
-          this.lockScroll(false)
-          resolve()
-        } 
-      })
-
       const hero = document.querySelector('[data-hero]')
       const trackSection = document.querySelector('[data-playlist-tracks]')
       const pTitles = hero.querySelectorAll('[data-split-text]')
       let titlesArr = []
 
-      tl.to(hero, {
+      this.tl.to(hero, {
         opacity: 1,
         clearProps: "pointerEvents"
       })
@@ -259,7 +357,7 @@ export default class Playlists extends Page {
       })
       
       titlesArr.forEach((text) => {
-        tl.fromTo(text,
+        this.tl.fromTo(text,
           { yPercent: 100 },
           {
             yPercent: 0, 
@@ -267,42 +365,47 @@ export default class Playlists extends Page {
             ease: "zoom",
             stagger: 0.05
           }
-        ,'titles')
+        ,'titles -=0.2')
       })
       
-      tl.to(trackSection, {
+      this.tl.to(trackSection, {
         opacity: 1,
         clearProps: "pointerEvents",
         onComplete: () => {
           this.lockScroll(false)
+          resolve()
         }
       })
 
       if (this.elements.trackListItems) {
-        gsap.set(this.elements.trackListItems, { visibility: "visible" })
+        const items = Array.from(this.elements.trackListItems);
+
+        gsap.set(items, { opacity: 0, visibility: "visible" })
        
-        tl.to(this.elements.trackListItems,
+        this.tl.to(items,
         { 
           opacity: 1,
           pointerEvents: "auto", 
           duration: 0.4, 
           ease: "power2.out", 
           stagger: 0.05 
-        })
+        }, "-=0.2")
       }
     })
   }
 
-  updatePageViewType() {
-    let pageType = this.viewPageType
+  updatePageViewType(nextType) {
+    if (!nextType) return;
 
-    if (pageType === "grid") {
+    if (nextType === "grid") {
       this.elements.pageContainer.dataset.pageViewType = "detail"
-
-    } else if (pageType === "detail") {
-      this.elements.pageContainer.dataset.pageViewType = "grid"
       this.elements.container.classList.remove('hero--s-p-t')
       this.elements.container.classList.add('hero--l-p-t')
+
+    } else if (nextType === "detail" ) {
+      this.elements.pageContainer.dataset.pageViewType = "grid"
+      this.elements.container.classList.remove('hero--l-p-t')
+      this.elements.container.classList.add('hero--s-p-t')
     }
   }
 
@@ -319,7 +422,7 @@ export default class Playlists extends Page {
         e.preventDefault()
         const url = card.href
 
-        await this.beforeNavigate()
+        await this.beforeNavigate(card, url)
 
         if(await this.handleNavigation(url)) {
           await this.afterNavigateAnimations() // Run after navigation animations
@@ -327,6 +430,16 @@ export default class Playlists extends Page {
         
       })
     })
+  }
+
+  hideCards() {
+    gsap.set(this.elements.playlistCards, { opacity: 0 })
+  }
+
+  hideTracks() {
+    if(this.elements.trackListItems) {
+      gsap.set(this.elements.trackListItems, { opacity: 0, pointerEvents: "none" })
+    }
   }
 
   addHoverListeners() {
@@ -358,12 +471,21 @@ export default class Playlists extends Page {
   init() {
     this.addHoverListeners()
     this.playListCardListeners()
-    this.loadAnimations()
+    this.hideCards()
+    this.hideTracks()
 
-    window.addEventListener('pageReady', (e) => {
+    window.addEventListener('pageLoaded', (e) => {
       if (e.detail.template === 'playlists') {
-        this.animateCardsInView();
+        this.loadAnimations()
       }
+    })
+
+    window.addEventListener('popstate', async () => {
+      const url = window.location.href;
+      // call the same beforeNavigate logic, no card in this case
+      await this.beforeNavigate(null, url);
+      await this.handleNavigation(url, { replaceState: true });
+      await this.afterNavigateAnimations();
     })
   }
 }

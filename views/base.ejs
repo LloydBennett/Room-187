@@ -15,7 +15,7 @@
     <div>
       <div 
         <% if (page !== "home" && page !== "about" && page !== "gallery" && page !== "error") { %>
-          class="<% if (page === "playlists") { %>min-height <% if (pageViewType === "grid") { %>hero--l-p-t<% } else if (pageViewType === "detail") { %>hero--s-p-t<% } %>
+          class="<% if (page === "playlists") { %>min-height no-overflow <% if (pageViewType === "grid") { %>hero--l-p-t<% } else if (pageViewType === "detail") { %>hero--s-p-t<% } %>
             <% } else { %>
               hero--p-t
             <% } %>

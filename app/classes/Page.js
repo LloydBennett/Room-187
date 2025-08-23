@@ -194,10 +194,10 @@ export default class Page {
 
       tl.fromTo(this.elements.misc, { opacity: 0 }, { opacity: 1, duration: 0.8, ease: 'power2.out' })
       
-      tl.call(() => {
+      tl.add(() => {
         this.enableScrolling()
         resolve()
-      })
+      }, '-=0.5')
     })
   }
 

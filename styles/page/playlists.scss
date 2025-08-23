@@ -2,8 +2,12 @@
   @include container;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  column-gap: spacing(10);
+  column-gap: spacing(5);
   row-gap: spacing(10);
+
+  @include media-query($breakpoint--small) {
+    column-gap: spacing(10);
+  }
 
   @include media-query($breakpoint--large) {
     grid-template-columns: repeat(3, 1fr);
@@ -15,7 +19,6 @@
     display: flex;
     width: 100%;
     padding-left: 2.5%;
-    overflow: scroll;
     column-gap: spacing(3);
 
     @include media-query($breakpoint--large) {

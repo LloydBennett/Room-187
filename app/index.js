@@ -157,6 +157,12 @@ class App {
     this.template = divContent.getAttribute('data-page')
     this.content.setAttribute('data-page', this.template)
 
+    if(this.template === "playlists") {
+      this.content.setAttribute('data-page-view-type', 'grid')
+    } else {
+      this.content.removeAttribute('data-page-view-type')
+    }
+
     if(this.template !== "error") {
       if(body.classList.contains('error')) {
         body.classList.remove('error')

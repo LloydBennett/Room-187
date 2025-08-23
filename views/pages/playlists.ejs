@@ -45,9 +45,9 @@
     const minutes = totalMinutes % 60;
   %>
   
-  <section class="playlist-group playlist-group--row">
+  <section class="playlist-group playlist-group--row" data-playlist-group>
     <% spotifyPlaylists.forEach(pl => { %>
-      <a href="/playlists/<%= pl.id %>" class="playlist-card" data-playlist-id="<%= pl.id %>">
+      <a href="/playlists/<%= pl.id %>" class="playlist-card" data-playlist-id="<%= pl.id %>" data-playlist-trigger>
         <div class="thumbnail playlist-card__img">
           <img src="<%= pl.images[0]?.url %>" alt="<%= pl.name %>">
         </div>
