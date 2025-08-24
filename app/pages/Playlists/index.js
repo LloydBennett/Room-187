@@ -12,7 +12,7 @@ export default class Playlists extends Page {
     super({
       id: 'playlists',
       elements: {
-        trackList: '[data-track-list]',
+        trackList: '[data-track-list]', 
         trackListItems: '[data-track-list-item]',
         playlistGroup: '[data-playlist-group]',
         playlistCards: '[data-playlist-card]',
@@ -135,39 +135,40 @@ export default class Playlists extends Page {
     lock? this.scroll.stop() : this.scroll.start()
   }
 
-  detailPageTransitionOut(card) {
-    this.updateIndicator(card)
-    const splitText = document.querySelectorAll('[data-split-text]')
-    const trackListSection = this.elements.trackListSection
+  detailToDetailTransition(card) {
+    return new Promise((resolve) => {
+      this.updateIndicator(card)
+      const splitText = document.querySelectorAll('[data-split-text]')
+      const trackListSection = this.elements.trackList
 
-    splitText.forEach((el, i) => {
-      let divs = el.querySelectorAll('div > div')
-      this.tl.to(el, { 
-        yPercent: 100, 
-        duration: 0.6, 
-        ease: 'zoom',
+      console.log(trackListSection)
+
+      splitText.forEach((el, i) => {
+        let divs = el.querySelectorAll('div > div')
+        this.tl.to(divs, { 
+          yPercent: 100, 
+          duration: 0.6, 
+          ease: 'zoom'
+        }, 'group')
+
+        this.tl.add(() => el.remove(), 'group+=0.6')
+      })
+
+      this.tl.to(trackListSection, { 
+        opacity: 0, 
+        duration: 0.4, 
+        ease: 'power2.out', 
         onComplete: () => {
-          el.remove()
+          trackListSection.remove();
         }
       }, 'group')
+
+      this.tl.add(resolve, '>')
     })
-
-    this.tl.to(trackListSection, { 
-      opacity: 0, 
-      duration: 0.4, 
-      ease: 'power2.out', 
-      onComplete: () => {
-        trackListSection.remove();
-      }
-    }, 'group')
-
-    this.tl.add(() => {
-      return Promise.resolve()
-    }, 'group +=0.2')
 
   }
 
-  gridPageTransitionOut() {
+  gridToDetailTransition() {
     const gridEl = this.elements.playlistGroup
     const cards = Array.from(this.elements.playlistCards || [])
     const mainTitleSection = this.elements.hero
@@ -223,30 +224,71 @@ export default class Playlists extends Page {
     })
   }
 
+  detailToGridTransition() {
+    const splitText = document.querySelectorAll('[data-split-text]')
+    const cards = Array.from(this.elements.playlistCards || [])
+    const trackListSection = this.elements.trackList
+    const hero = this.elements.hero
+    const gridEl = this.elements.playlistGroup
+    const state = Flip.getState(cards, { absolute: true })
+    
+    splitText.forEach((el, i) => {
+      let divs = el.querySelectorAll('div > div')
+      this.tl.to(divs, { 
+        yPercent: 100, 
+        duration: 0.6, 
+        ease: 'zoom'
+      }, 'group')
+    })
+
+    this.tl.to(trackListSection, { 
+      opacity: 0, 
+      duration: 0.4, 
+      ease: 'power2.out', 
+      onComplete: () => {
+        trackListSection.remove();
+      }
+    }, 'group')
+
+    this.tl.add(() => {
+      hero.remove()
+      gridEl.classList.remove('playlist-group--row')
+
+      Flip.from(state, {
+        duration: 0.6,
+        ease: 'zoom',
+        absolute: true
+      })
+    })
+
+    this.tl.add(() => {
+      return Promise.resolve()
+    })
+
+  }
+
   async beforeNavigate(card, url) {
+    this.tl.clear();
     const currentType = this.viewPageType; // "grid" or "detail"
     const pathSegments = new URL(url, location.origin).pathname.split('/').filter(Boolean);
     const nextType = pathSegments.length === 1 ? 'grid' : 'detail';
 
     if (currentType === "grid" && nextType === "detail") {
       // Grid → Detail
-      await this.gridPageTransitionOut(card);
-      this.updatePageViewType(); // grid → detail
+      await this.gridToDetailTransition(card)
     } else if (currentType === "detail" && nextType === "detail") {
       // Detail → Detail
-      await this.detailPageTransitionOut(card);
+      await this.detailToDetailTransition(card)
     } else if (currentType === "detail" && nextType === "grid") {
       // Detail → Grid (e.g., back button)
-      await this.gridPageTransitionFromDetail(); // we’ll define a Flip-based transition
-      this.updatePageViewType(); // detail → grid
+      await this.detailToGridTransition()
     }
   }
 
 
   async handleNavigation(url, { replaceState = false } = {}) {
     try {
-
-       // Determine page types
+      // Determine page types
       const currentType = this.viewPageType; // current page type
       const pathSegments = new URL(url, location.origin).pathname.split('/').filter(Boolean);
       const nextType = pathSegments.length === 1 ? 'grid' : 'detail'; // next page type based on URL
@@ -256,57 +298,51 @@ export default class Playlists extends Page {
       const parser = new DOMParser()
       const doc = parser.parseFromString(html, 'text/html')
       const container = this.elements.container
+      const pageWrapper = container.querySelector('[data-playlist-page-wrapper]')
       const newHero = doc.querySelector('[data-hero]')
       const mainTitle = doc.querySelector('[data-main-title]')
-      const currentMeta = this.elements.playlistCardMeta 
+      const currentMeta = document.querySelector('.playlist-detail-header__meta') 
       const newMetaText = doc.querySelectorAll('.playlist-detail-header__meta [data-split-text]')
-       
+      const newTrackListSection = doc.querySelector('[data-track-list]')
 
       if (currentType === "grid" && nextType === "detail") {
 
         if (newHero) {
           gsap.set(newHero, { opacity: 0, pointerEvents: "none" })
-          container.appendChild(newHero)
+          pageWrapper.appendChild(newHero)
         }
 
       } else if (currentType === "detail" && nextType === "detail") {
         const heroContainer = document.querySelector('[data-hero] .container')
-        
+      
         gsap.set(mainTitle, { opacity: 0, pointerEvents: "none" })
 
-        heroContainer.appendChild(mainTitle)
+        heroContainer.prepend(mainTitle)
 
         newMetaText.forEach(el => {
           gsap.set(el, { opacity: 0, pointerEvents: "none" })
           currentMeta.appendChild(el)
         })
-    
 
-        // gsap.set(newHero, {
-        //   opacity: 0,
-        //   pointerEvents: "none"
-        // })
+        // this bit is what i need for grid to detail and detail to detail 
 
       } else if (currentType === "detail" && nextType === "grid") {
-        // nothing happens - as we wont need anything
+        gsap.set(newHero, { opacity: 0 })
+        pageWrapper.prepend(newHero)
       }
-
-
-      // this bit is what i need for grid to detail and detail to detail 
-      const newTrackListSection = doc.querySelector('[data-playlist-tracks]')
 
       if (newTrackListSection) {
         const newItems = newTrackListSection.querySelectorAll('[data-track-list-item]')
         
-        newTrackListSection.style.visibility = 'hidden'
-        newTrackListSection.style.opacity = '0'
+        gsap.set(newItems, { opacity: 0, visibility: "hidden" })
 
         gsap.set(newTrackListSection, {
           opacity: 0,
-          pointerEvents: "none"
+          pointerEvents: "none",
+          visibility: "hidden"
         })
 
-        container.appendChild(newTrackListSection)
+        pageWrapper.appendChild(newTrackListSection)
       }
 
       // Refresh element references
@@ -314,9 +350,11 @@ export default class Playlists extends Page {
       this.elements.playlistCards = document.querySelectorAll('[data-playlist-card]')
       this.elements.pageTrigger = document.querySelectorAll('[data-playlist-trigger]')
       this.elements.mainTitle = document.querySelector('[data-main-title]')
+      this.elements.trackList = document.querySelector('[data-track-list]')
 
       this.addHoverListeners()
       this.playListCardListeners()
+      this.updatePageViewType()
 
       if (replaceState) {
         history.replaceState({}, '', url)
@@ -334,9 +372,13 @@ export default class Playlists extends Page {
 
   afterNavigateAnimations() {
     return new Promise((resolve) => {
+      const currentType = this.viewPageType; // current page type
+      
       const hero = document.querySelector('[data-hero]')
-      const trackSection = document.querySelector('[data-playlist-tracks]')
+      const trackSection = this.elements.trackList
       const pTitles = hero.querySelectorAll('[data-split-text]')
+      const items = Array.from(this.elements.trackListItems);
+    
       let titlesArr = []
 
       this.tl.to(hero, {
@@ -352,6 +394,7 @@ export default class Playlists extends Page {
           mask: "lines",
           autoSplit: true,
         })
+        gsap.set(el, { opacity: 1, clearProps: "pointerEvents" })
 
         titlesArr.push(split.lines)
       })
@@ -368,28 +411,33 @@ export default class Playlists extends Page {
         ,'titles -=0.2')
       })
       
-      this.tl.to(trackSection, {
-        opacity: 1,
-        clearProps: "pointerEvents",
-        onComplete: () => {
+      if (currentType === "detail") {
+        trackSection.style.visibility = "visible"
+        items.forEach(i => i.style.visibility = "visible")
+
+        this.tl.add(() => {
           this.lockScroll(false)
           resolve()
-        }
-      })
+        })
 
-      if (this.elements.trackListItems) {
-        const items = Array.from(this.elements.trackListItems);
+        // gsap.set(trackSection, { opacity: 1, visibility: "visible", clearProps: "pointerEvents" })
+        // gsap.set(items, { clearProps: "visibility" })
 
-        gsap.set(items, { opacity: 0, visibility: "visible" })
        
-        this.tl.to(items,
-        { 
-          opacity: 1,
-          pointerEvents: "auto", 
-          duration: 0.4, 
-          ease: "power2.out", 
-          stagger: 0.05 
-        }, "-=0.2")
+          this.tl.to(items,
+          { 
+            opacity: 1,
+            pointerEvents: "auto", 
+            duration: 0.4, 
+            ease: "power2.out", 
+            stagger: 0.05 
+          }, "-=0.2")
+        
+
+      } else {
+        this.tl.add(() => {
+          resolve()
+        })
       }
     })
   }
