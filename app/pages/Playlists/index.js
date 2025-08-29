@@ -230,39 +230,46 @@ export default class Playlists extends Page {
     const trackListSection = this.elements.trackList
     const hero = this.elements.hero
     const gridEl = this.elements.playlistGroup
-    const state = Flip.getState(cards, { absolute: true })
+
+    if (!cards.length || !gridEl) return Promise.resolve()
+
+    return new Promise((resolve) => {
+      this.lockScroll(true)
     
-    splitText.forEach((el, i) => {
-      let divs = el.querySelectorAll('div > div')
-      this.tl.to(divs, { 
-        yPercent: 100, 
-        duration: 0.6, 
-        ease: 'zoom'
-      }, 'group')
-    })
+      const state = Flip.getState(cards, { absolute: true })
 
-    this.tl.to(trackListSection, { 
-      opacity: 0, 
-      duration: 0.4, 
-      ease: 'power2.out', 
-      onComplete: () => {
-        trackListSection.remove();
-      }
-    }, 'group')
-
-    this.tl.add(() => {
-      hero.remove()
-      gridEl.classList.remove('playlist-group--row')
-
-      Flip.from(state, {
-        duration: 0.6,
-        ease: 'zoom',
-        absolute: true
+      splitText.forEach((el, i) => {
+        let divs = el.querySelectorAll('div > div')
+        this.tl.to(divs, { 
+          yPercent: 100, 
+          duration: 0.6, 
+          ease: 'zoom'
+        }, 'group')
       })
-    })
 
-    this.tl.add(() => {
-      return Promise.resolve()
+      this.tl.to(trackListSection, { 
+        opacity: 0, 
+        duration: 0.4, 
+        ease: 'power2.out', 
+        onComplete: () => {
+          trackListSection.remove();
+        }
+      }, 'group')
+
+      this.tl.add(() => {
+        hero.remove()
+        gridEl.classList.remove('playlist-group--row')
+
+        Flip.from(state, {
+          duration: 0.6,
+          ease: 'zoom',
+          absolute: true
+        })
+      }, )
+
+      this.tl.add(() => {
+        return Promise.resolve()
+      })
     })
 
   }
@@ -354,7 +361,7 @@ export default class Playlists extends Page {
 
       this.addHoverListeners()
       this.playListCardListeners()
-      this.updatePageViewType()
+      this.updatePageViewType(nextType)
 
       if (replaceState) {
         history.replaceState({}, '', url)
@@ -413,29 +420,29 @@ export default class Playlists extends Page {
       
       if (currentType === "detail") {
         trackSection.style.visibility = "visible"
+        trackSection.style.opacity = 1
+        trackSection.style.pointerEvents = "auto"
+
         items.forEach(i => i.style.visibility = "visible")
 
         this.tl.add(() => {
           this.lockScroll(false)
           resolve()
         })
-
-        // gsap.set(trackSection, { opacity: 1, visibility: "visible", clearProps: "pointerEvents" })
-        // gsap.set(items, { clearProps: "visibility" })
-
        
-          this.tl.to(items,
-          { 
-            opacity: 1,
-            pointerEvents: "auto", 
-            duration: 0.4, 
-            ease: "power2.out", 
-            stagger: 0.05 
-          }, "-=0.2")
+        this.tl.to(items,
+        { 
+          opacity: 1,
+          pointerEvents: "auto", 
+          duration: 0.4, 
+          ease: "power2.out", 
+          stagger: 0.05 
+        }, "-=0.2")
         
 
       } else {
         this.tl.add(() => {
+          this.lockScroll(false)
           resolve()
         })
       }
@@ -445,13 +452,13 @@ export default class Playlists extends Page {
   updatePageViewType(nextType) {
     if (!nextType) return;
 
+    this.elements.pageContainer.dataset.pageViewType = nextType
+
     if (nextType === "grid") {
-      this.elements.pageContainer.dataset.pageViewType = "detail"
       this.elements.container.classList.remove('hero--s-p-t')
       this.elements.container.classList.add('hero--l-p-t')
 
     } else if (nextType === "detail" ) {
-      this.elements.pageContainer.dataset.pageViewType = "grid"
       this.elements.container.classList.remove('hero--l-p-t')
       this.elements.container.classList.add('hero--s-p-t')
     }
