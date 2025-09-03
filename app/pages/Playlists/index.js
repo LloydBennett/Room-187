@@ -21,7 +21,8 @@ export default class Playlists extends Page {
         playlistCardMeta: '[data-playlist-meta]', 
         hero: '[data-hero]',
         container: '[data-inner-content]',
-        pageContainer: '[data-page-view-type]'
+        pageContainer: '[data-page-view-type]',
+        indicator: '[data-playlist-indicator]'
       }
     })
 
@@ -52,26 +53,34 @@ export default class Playlists extends Page {
     }
   }
 
-  updateIndicator(targetEl) {
-    let playlistScroll = this.elements.playlistGroup
-    if (!playlistScroll) return
+updateIndicator(targetEl) {
+  const playlistScroll = this.elements.playlistGroup
+  const indicator = this.elements.indicator
+  if (!playlistScroll || !indicator || !targetEl) return
 
-    const scrollLeft = playlistScroll.scrollLeft
-    const rowRect = playlistScroll.getBoundingClientRect()
-    const targetRect = targetEl.getBoundingClientRect()
+  const scrollLeft = playlistScroll.scrollLeft
+  const paddingLeft = parseFloat(getComputedStyle(playlistScroll).paddingLeft) || 0
 
-    // Get computed padding-left of the scroll container
-    const paddingLeft = parseFloat(getComputedStyle(playlistScroll).paddingLeft) || 0
+  // Current position of target relative to container (including scroll)
+  const targetX = targetEl.offsetLeft + targetEl.offsetWidth / 2 - paddingLeft
 
-    // Adjust for padding
-    const offset = (targetRect.left - rowRect.left) - paddingLeft
+  // Animate scroll to align target’s left edge (existing working logic)
+  const offset = targetEl.offsetLeft - paddingLeft
+  gsap.to(playlistScroll, {
+    scrollLeft: offset,
+    duration: 0.6,
+    ease: "power3.out"
+  })
 
-    gsap.to(playlistScroll, {
-      scrollLeft: scrollLeft + offset,
-      duration: 0.6,
-      ease: "power3.out"
-    })
-  }
+  // Animate indicator to center over target
+  const indicatorX = targetX - indicator.offsetWidth / 2
+  gsap.to(indicator, {
+    x: indicatorX,
+    duration: 0.6,
+    ease: "power3.out"
+  })
+}
+
 
   scrollCardAnimations() {
     const cards = this.elements.playlistCards;
@@ -168,7 +177,9 @@ export default class Playlists extends Page {
 
   }
 
-  gridToDetailTransition() {
+  gridToDetailTransition(selectedCard) {
+    if(!selectedCard) return
+
     const gridEl = this.elements.playlistGroup
     const cards = Array.from(this.elements.playlistCards || [])
     const mainTitleSection = this.elements.hero
@@ -213,15 +224,15 @@ export default class Playlists extends Page {
             Flip.from(state, {
               duration: 0.6,
               ease: 'zoom',
-              absolute: true
+              absolute: true,
+              onComplete: () => {
+                this.updateIndicator(selectedCard)
+                resolve()
+              }
             }) 
           }
         }, 
       '-=0.2')
-      
-      this.tl.add(() => {
-        resolve()
-      }, '-=0.2')
     })
   }
 

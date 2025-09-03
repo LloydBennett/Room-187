@@ -10,6 +10,7 @@
     </div>
   </section>
   <section class="playlist-group" data-playlist-group>
+    <div class="playlist__indicator" data-playlist-indicator></div>
     <% spotifyPlaylists.forEach(pl => { %>
       <% 
         const totalMinutes = Math.floor(pl.total_duration_ms / 60000);
@@ -48,6 +49,7 @@
   %>
   <div class="section--l-m-b" data-playlist-page-wrapper>
     <section class="playlist-group playlist-group--row" data-playlist-group>
+      <div class="playlist__indicator" data-playlist-indicator></div>
       <% spotifyPlaylists.forEach(pl => { %>
         <a href="/playlists/<%= pl.id %>" class="playlist-card" data-playlist-id="<%= pl.id %>" data-playlist-trigger>
           <div class="thumbnail playlist-card__img">

@@ -20,6 +20,7 @@
     width: 100%;
     padding-left: 2.5%;
     column-gap: spacing(2);
+    position: relative;
 
     overflow-x: auto;
     scroll-behavior: auto;
@@ -127,4 +128,14 @@
   transform: translate(-50%, -50%);
   opacity: 0;
   transition: opacity 0.3s ease;
+}
+
+.playlist__indicator {
+  width: 0; 
+  height: 0; 
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 15px solid $colour--gold-300;
+  position: absolute;
+  bottom: 0;
 }
