@@ -80,20 +80,8 @@
 
 .playlist-detail__header {
   margin-top: spacing(8);
+  margin-bottom: spacing(8);
   max-width: 120rem;
-  
-  @include media-query($breakpoint--medium) {
-    margin-top: spacing(11);
-  }
-
-  @include media-query($breakpoint--x-large) {
-		margin-top: spacing(20);
-	}
-
-	@include media-query($breakpoint--xx-large) {
-		margin-top: spacing(26);
-	}
-
 }
 
 .playlist-detail-header__meta {
