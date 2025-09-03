@@ -55,13 +55,20 @@ export default class Playlists extends Page {
   updateIndicator(targetEl) {
     let playlistScroll = this.elements.playlistGroup
     if (!playlistScroll) return
-    
-    const scrollLeft = playlistScroll.scrollLeft;
-    const offset = targetEl.getBoundingClientRect().left - playlistScroll.getBoundingClientRect().left;
+
+    const scrollLeft = playlistScroll.scrollLeft
+    const rowRect = playlistScroll.getBoundingClientRect()
+    const targetRect = targetEl.getBoundingClientRect()
+
+    // Get computed padding-left of the scroll container
+    const paddingLeft = parseFloat(getComputedStyle(playlistScroll).paddingLeft) || 0
+
+    // Adjust for padding
+    const offset = (targetRect.left - rowRect.left) - paddingLeft
 
     gsap.to(playlistScroll, {
       scrollLeft: scrollLeft + offset,
-      duration: 0.4,
+      duration: 0.6,
       ease: "power3.out"
     })
   }
@@ -467,6 +474,9 @@ export default class Playlists extends Page {
     const cards = Array.from(document.querySelectorAll('[data-playlist-trigger]') || [])
 
     cards.forEach(card => {
+      const cardImg = card.querySelector('.playlist-card__img')
+      const glow = cardImg.querySelector('.glow-overlay')
+
       card.addEventListener('click', async (e) => {
         e.preventDefault()
         const url = card.href
@@ -478,6 +488,52 @@ export default class Playlists extends Page {
         }
         
       })
+
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect()
+        const x = e.clientX - rect.left
+        const y = e.clientY - rect.top
+
+        const maxTilt = 8 // adjust this for intensity
+        const rotateX = ((y / rect.height) - 0.5) * -2 * maxTilt
+        const rotateY = ((x / rect.width) - 0.5) * 2 * maxTilt
+        const glowX = (x / rect.width) * 100
+        const glowY = (y / rect.height) * 100
+
+        gsap.to(cardImg, {
+          rotateX,
+          rotateY,
+          scale: 1.03,
+          transformPerspective: 1000,
+          ease: "cubic-bezier(0.03, 0.98, 0.52, 0.99)",
+          duration: 0.4
+        });
+
+        gsap.to(glow, {
+          xPercent: glowX - 50,
+          yPercent: glowY - 50,
+          opacity: 1,
+          duration: 0.4,
+          ease: "power2.out"
+        })
+      });
+
+      card.addEventListener('mouseleave', () => {
+        gsap.to(cardImg, {
+          rotateX: 0,
+          rotateY: 0,
+          scale: 1,
+          ease: "elastic.out(1, 0.3)", // natural "settle back"
+          duration: 1.2
+        });
+
+        gsap.to(glow, {
+          opacity: 0,
+          duration: 0.6,
+          ease: "power3.out"
+        })
+      });
+
     })
   }
 

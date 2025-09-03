@@ -17,8 +17,10 @@
         const minutes = totalMinutes % 60;
       %>
       <a href="/playlists/<%= pl.id %>" class="playlist-card" data-playlist-id="<%= pl.id %>" data-playlist-card data-playlist-trigger>
+        
         <div class="thumbnail playlist-card__img">
           <img src="<%= pl.images[0]?.url %>" alt="<%= pl.name %>">
+          <div class="glow-overlay"></div>
         </div>
         <div class="playlist-card__meta" data-playlist-meta>
           <h3 class="type--xs type--caps type--x-bold type--white"><%= pl.name %></h3>
@@ -50,6 +52,7 @@
         <a href="/playlists/<%= pl.id %>" class="playlist-card" data-playlist-id="<%= pl.id %>" data-playlist-trigger>
           <div class="thumbnail playlist-card__img">
             <img src="<%= pl.images[0]?.url %>" alt="<%= pl.name %>">
+            <div class="glow-overlay"></div>
           </div>
           <div class="playlist-card__meta">
             <h3 class="type--xs type--caps type--x-bold type--white"><%= pl.name %></h3>
@@ -61,7 +64,7 @@
       <% }) %>
     </section>
 
-    <section class="playlist-detail__header section--m-m-b" data-hero>
+    <section class="playlist-detail__header" data-hero>
       <div class="container">
         <h1 class="type--l type--display type--white type--caps type--x-bold type--l-margin" data-main-title data-split-text>
           <%- playlist.name %>

@@ -51,11 +51,19 @@
       }
 
       .playlist-card__meta {
+        opacity: 0;
+        transition: opacity 350ms ease;
+        padding-top: spacing(2);
+
         @include media-query($breakpoint--large - 1, max-width) {
           display: none;
         }
       }
-      
+
+      &:hover .playlist-card__meta {
+        opacity: 1;
+        transition: opacity 350ms ease;
+      }
     }
   }
 }
@@ -82,6 +90,11 @@
   margin-top: spacing(8);
   margin-bottom: spacing(8);
   max-width: 120rem;
+
+  @include media-query($breakpoint--medium) {
+    margin-top: spacing(12);
+    margin-bottom: spacing(12);
+  }
 }
 
 .playlist-detail-header__meta {
@@ -96,4 +109,22 @@
   span {
     flex: 50%;
   }
+}
+
+.playlist-card__img {
+  position: relative;
+  overflow: hidden;
+}
+
+.glow-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  pointer-events: none;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.2) 0%, transparent 60%);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
