@@ -56,15 +56,11 @@ export default class Playlists extends Page {
     let playlistScroll = this.elements.playlistGroup
     if (!playlistScroll) return
     
-    const scrollRect = playlistScroll.getBoundingClientRect()
-    const targetRect = targetEl.getBoundingClientRect()
+    const scrollLeft = playlistScroll.scrollLeft;
+    const offset = targetEl.getBoundingClientRect().left - playlistScroll.getBoundingClientRect().left;
 
-    // How far the card is from the left edge of the scroll container
-    const deltaX = targetRect.left - scrollRect.left
-    const targetX = -deltaX
-    
     gsap.to(playlistScroll, {
-      x: targetX,
+      scrollLeft: scrollLeft + offset,
       duration: 0.4,
       ease: "power3.out"
     })
@@ -76,7 +72,6 @@ export default class Playlists extends Page {
 
     // only hide cards that have NOT been animated
     gsap.set(cards, { opacity: (i, el) => el.dataset.animated === "true" ? 1 : 0 });
-    //gsap.set(cards, { opacity: 0 }); // start all cards invisible
 
     const animateBatch = (batch) => {
       gsap.fromTo(batch,
@@ -141,8 +136,6 @@ export default class Playlists extends Page {
       const splitText = document.querySelectorAll('[data-split-text]')
       const trackListSection = this.elements.trackList
 
-      console.log(trackListSection)
-
       splitText.forEach((el, i) => {
         let divs = el.querySelectorAll('div > div')
         this.tl.to(divs, { 
@@ -200,13 +193,14 @@ export default class Playlists extends Page {
           duration: 0.6,
           ease: 'zoom',
           onComplete: () => {
+
+            const state = Flip.getState(cards, { absolute: true })
+
             if (mainTitleSection) mainTitleSection.remove()
 
             this.elements.container.classList.remove('hero--l-p-t')
             this.elements.container.classList.add('hero--s-p-t')
             
-            const state = Flip.getState(cards, { absolute: true })
-
             gridEl.classList.add('playlist-group--row')
 
             Flip.from(state, {
@@ -226,18 +220,12 @@ export default class Playlists extends Page {
 
   detailToGridTransition() {
     const splitText = document.querySelectorAll('[data-split-text]')
-    const cards = Array.from(this.elements.playlistCards || [])
     const trackListSection = this.elements.trackList
-    const hero = this.elements.hero
-    const gridEl = this.elements.playlistGroup
-
-    if (!cards.length || !gridEl) return Promise.resolve()
-
+    const hero = document.querySelector('[data-hero]')
+    
     return new Promise((resolve) => {
       this.lockScroll(true)
     
-      const state = Flip.getState(cards, { absolute: true })
-
       splitText.forEach((el, i) => {
         let divs = el.querySelectorAll('div > div')
         this.tl.to(divs, { 
@@ -258,17 +246,7 @@ export default class Playlists extends Page {
 
       this.tl.add(() => {
         hero.remove()
-        gridEl.classList.remove('playlist-group--row')
-
-        Flip.from(state, {
-          duration: 0.6,
-          ease: 'zoom',
-          absolute: true
-        })
-      }, )
-
-      this.tl.add(() => {
-        return Promise.resolve()
+        resolve()
       })
     })
 
@@ -317,6 +295,7 @@ export default class Playlists extends Page {
         if (newHero) {
           gsap.set(newHero, { opacity: 0, pointerEvents: "none" })
           pageWrapper.appendChild(newHero)
+          this.elements.hero = newHero
         }
 
       } else if (currentType === "detail" && nextType === "detail") {
@@ -334,8 +313,23 @@ export default class Playlists extends Page {
         // this bit is what i need for grid to detail and detail to detail 
 
       } else if (currentType === "detail" && nextType === "grid") {
+        const cards = Array.from(this.elements.playlistCards || [])
+        const gridEl = this.elements.playlistGroup
+        
+        const state = Flip.getState(cards, { absolute: true })
+        gridEl.classList.remove('playlist-group--row')
+        this.updatePageViewType(nextType)
+        
         gsap.set(newHero, { opacity: 0 })
-        pageWrapper.prepend(newHero)
+        container.prepend(newHero)
+
+        Flip.from(state, {
+          duration: 0.6,
+          ease: 'zoom',
+          absolute: true
+        })
+
+        this.elements.hero = newHero
       }
 
       if (newTrackListSection) {
@@ -381,11 +375,11 @@ export default class Playlists extends Page {
     return new Promise((resolve) => {
       const currentType = this.viewPageType; // current page type
       
-      const hero = document.querySelector('[data-hero]')
+      const hero = this.elements.hero
       const trackSection = this.elements.trackList
       const pTitles = hero.querySelectorAll('[data-split-text]')
       const items = Array.from(this.elements.trackListItems);
-    
+
       let titlesArr = []
 
       this.tl.to(hero, {
@@ -537,10 +531,10 @@ export default class Playlists extends Page {
 
     window.addEventListener('popstate', async () => {
       const url = window.location.href;
-      // call the same beforeNavigate logic, no card in this case
       await this.beforeNavigate(null, url);
-      await this.handleNavigation(url, { replaceState: true });
-      await this.afterNavigateAnimations();
+      if(await this.handleNavigation(url, { replaceState: true })) {
+        await this.afterNavigateAnimations();
+      }
     })
   }
 }
