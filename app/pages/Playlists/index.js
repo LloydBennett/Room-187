@@ -259,6 +259,7 @@ export default class Playlists extends Page {
           onComplete: () => {
             gridEl.classList.add('relative')
             this.updateIndicator(selectedCard)
+            this.tl.to(meta, { clearProps: "opacity" } )
             resolve()
           }
         }) 
@@ -364,9 +365,11 @@ export default class Playlists extends Page {
         const cards = Array.from(this.elements.playlistCards || [])
         const gridEl = this.elements.playlistGroup
         const indicator = this.elements.indicator
+        const meta = this.elements.playlistCardMeta
 
         gsap.to(indicator, { opacity: 0, duration: 0.3, ease: "power2.out" })
-
+        gsap.to(meta, { opacity: 0, duration: 0.2, ease: "power2.out" })
+         
         gridEl.classList.remove('relative')
         
         const state = Flip.getState(cards, { absolute: true })
@@ -379,7 +382,12 @@ export default class Playlists extends Page {
         Flip.from(state, {
           duration: 0.6,
           ease: 'zoom',
-          absolute: true
+          absolute: true,
+          onComplete: () => {
+            gsap.to(meta, { opacity: 1, duration: 0.4, delay: 0.2, ease: "power2.out" })
+            cards.forEach(card => card.dataset.animated = "true");
+          }
+          
         })
 
         this.elements.hero = newHero
@@ -468,7 +476,6 @@ export default class Playlists extends Page {
       if (currentType === "detail") {
         trackSection.style.visibility = "visible"
         trackSection.style.opacity = 1
-        trackSection.style.pointerEvents = "auto"
 
         items.forEach(i => i.style.visibility = "visible")
 
@@ -479,13 +486,15 @@ export default class Playlists extends Page {
        
         this.tl.to(items,
         { 
-          opacity: 1,
-          pointerEvents: "auto", 
+          opacity: 1, 
           duration: 0.4, 
           ease: "power2.out", 
-          stagger: 0.05 
+          stagger: 0.05,
+          onComplete: () => {
+            trackSection.style.pointerEvents = "auto"
+            gsap.set(items, { pointerEvents: "auto"})
+          } 
         }, "-=0.2")
-        
 
       } else {
         this.tl.add(() => {
@@ -621,7 +630,7 @@ export default class Playlists extends Page {
       element.addEventListener('mouseenter', () => {
         element.classList.add('active')
         this.clickEfx.currentTime = 0
-        this.clickEfx.play()
+        this.clickEfx.play().catch(() => {})
         gsap.to(bg, { clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)', duration: 0.3, ease: 'zoom' })
         gsap.to(albumImg, { clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)', duration: 0.3, ease: 'zoom' })
       })
@@ -649,7 +658,11 @@ export default class Playlists extends Page {
 
     window.addEventListener('popstate', async () => {
       const url = window.location.href;
-      await this.beforeNavigate(null, url);
+      const activeCard = Array.from(document.querySelectorAll('[data-playlist-trigger]') || []).find(card =>
+        card.href.includes(window.location.pathname)
+      );
+
+      await this.beforeNavigate(activeCard, url);
       if(await this.handleNavigation(url, { replaceState: true })) {
         await this.afterNavigateAnimations();
       }
