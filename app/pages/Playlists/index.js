@@ -54,29 +54,60 @@ export default class Playlists extends Page {
   }
 
   updateIndicator(targetEl) {
-    const playlistScroll = this.elements.playlistGroup
-    const indicator = this.elements.indicator
-    if (!playlistScroll || !indicator || !targetEl) return
+    const playlistScroll = this.elements.playlistGroup;
+    const indicator = this.elements.indicator;
+    if (!playlistScroll || !indicator || !targetEl) return;
 
-    const scrollLeft = playlistScroll.scrollLeft
-    const paddingLeft = parseFloat(getComputedStyle(playlistScroll).paddingLeft) || 0
+    // Keep track of the currently active card so the resize handler can re-align it.
+    this._activeIndicatorTarget = targetEl;
 
-    // Current position of target relative to container (including scroll)
-    const targetX = targetEl.offsetLeft + targetEl.offsetWidth / 2 - paddingLeft
+    // Always recompute padding / offsets when called
+    const paddingLeft = parseFloat(getComputedStyle(playlistScroll).paddingLeft) || 0;
+    const offset = targetEl.offsetLeft - paddingLeft;
+    const width = targetEl.offsetWidth;
 
-    // Animate scroll to align target’s left edge (existing working logic)
-    const offset = targetEl.offsetLeft - paddingLeft
+    // kill any previous tweens that might conflict
+    gsap.killTweensOf(playlistScroll, "scrollLeft");
+    gsap.killTweensOf(indicator, ["x", "width"]);
+
+    // Animate scroll (as before)
     gsap.to(playlistScroll, {
       scrollLeft: offset,
       duration: 0.6,
       ease: "power3.out"
-    })
+    });
 
+    // Animate indicator to match position + size of the card
     gsap.to(indicator, {
       x: offset,
+      width: width,
       duration: 0.6,
       ease: "power3.out"
-    })
+    });
+
+    // --- Robust, low-latency resize handling (bound once) ---
+    if (!this._indicatorResizeBound) {
+      this._indicatorResizeBound = true;
+
+      this._indicatorResizeRaf = null;
+      this._onIndicatorResize = () => {
+        if (this._indicatorResizeRaf) cancelAnimationFrame(this._indicatorResizeRaf);
+        this._indicatorResizeRaf = requestAnimationFrame(() => {
+          const t = this._activeIndicatorTarget;
+          if (!t || !playlistScroll || !indicator) return;
+
+          // Recompute values every resize
+          const paddingLeftNow = parseFloat(getComputedStyle(playlistScroll).paddingLeft) || 0;
+          const newOffset = t.offsetLeft - paddingLeftNow;
+          const newWidth = t.offsetWidth;
+
+          gsap.set(playlistScroll, { scrollLeft: newOffset });
+          gsap.set(indicator, { x: newOffset, width: newWidth });
+        });
+      };
+
+      window.addEventListener("resize", this._onIndicatorResize);
+    }
   }
 
   scrollCardAnimations() {
@@ -232,7 +263,7 @@ export default class Playlists extends Page {
           }
         }) 
       })
-      .to(indicator, {opacity: 1, duration: 0.3, ease: "power2.out"})
+      .to(indicator, {opacity: 1, duration: 0.3, ease: "power2.out"}, '+=1')
     })
   }
 
@@ -553,20 +584,17 @@ export default class Playlists extends Page {
   }
 
   playListIndicatorSetup() {
-    const activeCard = Array.from(this.elements.playlistCards || []).find(card =>
+    const activeCard = Array.from(document.querySelectorAll('[data-playlist-trigger]') || []).find(card =>
       card.href.includes(window.location.pathname)
     );
 
-    gsap.set(this.elements.indicator, { opacity: 1 })
-
+    if(this.viewPageType === "detail") {
+      gsap.set(this.elements.indicator, { opacity: 1 }) 
+    }
+   
     if (!activeCard) return;
 
-    // Use GSAP zero-duration set to wait for layout to finalize
-    gsap.set({}, {
-      onComplete: () => {
-        this.updateIndicator(activeCard);
-      }
-    });
+    this.updateIndicator(activeCard)
   }
 
 
