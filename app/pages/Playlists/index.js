@@ -53,34 +53,31 @@ export default class Playlists extends Page {
     }
   }
 
-updateIndicator(targetEl) {
-  const playlistScroll = this.elements.playlistGroup
-  const indicator = this.elements.indicator
-  if (!playlistScroll || !indicator || !targetEl) return
+  updateIndicator(targetEl) {
+    const playlistScroll = this.elements.playlistGroup
+    const indicator = this.elements.indicator
+    if (!playlistScroll || !indicator || !targetEl) return
 
-  const scrollLeft = playlistScroll.scrollLeft
-  const paddingLeft = parseFloat(getComputedStyle(playlistScroll).paddingLeft) || 0
+    const scrollLeft = playlistScroll.scrollLeft
+    const paddingLeft = parseFloat(getComputedStyle(playlistScroll).paddingLeft) || 0
 
-  // Current position of target relative to container (including scroll)
-  const targetX = targetEl.offsetLeft + targetEl.offsetWidth / 2 - paddingLeft
+    // Current position of target relative to container (including scroll)
+    const targetX = targetEl.offsetLeft + targetEl.offsetWidth / 2 - paddingLeft
 
-  // Animate scroll to align target’s left edge (existing working logic)
-  const offset = targetEl.offsetLeft - paddingLeft
-  gsap.to(playlistScroll, {
-    scrollLeft: offset,
-    duration: 0.6,
-    ease: "power3.out"
-  })
+    // Animate scroll to align target’s left edge (existing working logic)
+    const offset = targetEl.offsetLeft - paddingLeft
+    gsap.to(playlistScroll, {
+      scrollLeft: offset,
+      duration: 0.6,
+      ease: "power3.out"
+    })
 
-  // Animate indicator to center over target
-  const indicatorX = targetX - indicator.offsetWidth / 2
-  gsap.to(indicator, {
-    x: indicatorX,
-    duration: 0.6,
-    ease: "power3.out"
-  })
-}
-
+    gsap.to(indicator, {
+      x: offset,
+      duration: 0.6,
+      ease: "power3.out"
+    })
+  }
 
   scrollCardAnimations() {
     const cards = this.elements.playlistCards;
@@ -184,10 +181,11 @@ updateIndicator(targetEl) {
     const cards = Array.from(this.elements.playlistCards || [])
     const mainTitleSection = this.elements.hero
     const meta = this.elements.playlistCardMeta
+    const indicator = this.elements.indicator
     const mainTitleMask = this.elements.mainTitle.querySelectorAll('div > div')
 
     if (!gridEl || !cards.length ) return Promise.resolve() 
-
+    
     return new Promise((resolve) => {
       this.lockScroll(true)
 
@@ -199,40 +197,42 @@ updateIndicator(targetEl) {
 
       this.tl.to(meta, { opacity: 0, duration: 0.4, ease: "power2.out"})
       
-      this.tl.to(window, {
+      .to(window, {
         scrollTo: { y: 0 },
         duration: 0.8,
         ease: 'power2.out'
       })
 
-      this.tl.to(mainTitleMask, 
+      .to(mainTitleMask, 
         { 
           yPercent: 100,
           duration: 0.6,
-          ease: 'zoom',
-          onComplete: () => {
-
-            const state = Flip.getState(cards, { absolute: true })
-
-            if (mainTitleSection) mainTitleSection.remove()
-
-            this.elements.container.classList.remove('hero--l-p-t')
-            this.elements.container.classList.add('hero--s-p-t')
-            
-            gridEl.classList.add('playlist-group--row')
-
-            Flip.from(state, {
-              duration: 0.6,
-              ease: 'zoom',
-              absolute: true,
-              onComplete: () => {
-                this.updateIndicator(selectedCard)
-                resolve()
-              }
-            }) 
-          }
+          ease: 'zoom'
         }, 
       '-=0.2')
+
+      .add(() => {
+        const state = Flip.getState(cards, { absolute: true })
+
+        if (mainTitleSection) mainTitleSection.remove()
+
+        this.elements.container.classList.remove('hero--l-p-t')
+        this.elements.container.classList.add('hero--s-p-t')
+            
+        gridEl.classList.add('playlist-group--row')
+
+        Flip.from(state, {
+          duration: 0.6,
+          ease: 'zoom',
+          absolute: true,
+          onComplete: () => {
+            gridEl.classList.add('relative')
+            this.updateIndicator(selectedCard)
+            resolve()
+          }
+        }) 
+      })
+      .to(indicator, {opacity: 1, duration: 0.3, ease: "power2.out"})
     })
   }
 
@@ -288,7 +288,6 @@ updateIndicator(targetEl) {
     }
   }
 
-
   async handleNavigation(url, { replaceState = false } = {}) {
     try {
       // Determine page types
@@ -333,6 +332,11 @@ updateIndicator(targetEl) {
       } else if (currentType === "detail" && nextType === "grid") {
         const cards = Array.from(this.elements.playlistCards || [])
         const gridEl = this.elements.playlistGroup
+        const indicator = this.elements.indicator
+
+        gsap.to(indicator, { opacity: 0, duration: 0.3, ease: "power2.out" })
+
+        gridEl.classList.remove('relative')
         
         const state = Flip.getState(cards, { absolute: true })
         gridEl.classList.remove('playlist-group--row')
@@ -548,6 +552,24 @@ updateIndicator(targetEl) {
     })
   }
 
+  playListIndicatorSetup() {
+    const activeCard = Array.from(this.elements.playlistCards || []).find(card =>
+      card.href.includes(window.location.pathname)
+    );
+
+    gsap.set(this.elements.indicator, { opacity: 1 })
+
+    if (!activeCard) return;
+
+    // Use GSAP zero-duration set to wait for layout to finalize
+    gsap.set({}, {
+      onComplete: () => {
+        this.updateIndicator(activeCard);
+      }
+    });
+  }
+
+
   hideCards() {
     gsap.set(this.elements.playlistCards, { opacity: 0 })
   }
@@ -589,6 +611,7 @@ updateIndicator(targetEl) {
     this.playListCardListeners()
     this.hideCards()
     this.hideTracks()
+    this.playListIndicatorSetup()
 
     window.addEventListener('pageLoaded', (e) => {
       if (e.detail.template === 'playlists') {

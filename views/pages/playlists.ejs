@@ -48,7 +48,7 @@
     const minutes = totalMinutes % 60;
   %>
   <div class="section--l-m-b" data-playlist-page-wrapper>
-    <section class="playlist-group playlist-group--row" data-playlist-group>
+    <section class="playlist-group playlist-group--row relative" data-playlist-group>
       <div class="playlist__indicator" data-playlist-indicator></div>
       <% spotifyPlaylists.forEach(pl => { %>
         <a href="/playlists/<%= pl.id %>" class="playlist-card" data-playlist-id="<%= pl.id %>" data-playlist-trigger>

@@ -20,7 +20,6 @@
     width: 100%;
     padding-left: 2.5%;
     column-gap: spacing(2);
-    position: relative;
 
     overflow-x: auto;
     scroll-behavior: auto;
@@ -41,6 +40,10 @@
 
     &:-webkit-scrollbar {
       display: none;
+    }
+
+    .playlist__indicator {
+      display: block;
     }
 
     .playlist-card {
@@ -131,11 +134,16 @@
 }
 
 .playlist__indicator {
-  width: 0; 
-  height: 0; 
-  border-left: 15px solid transparent;
-  border-right: 15px solid transparent;
-  border-bottom: 15px solid $colour--gold-300;
+  width: 20%;
+  border: 0.5rem solid $colour--gold-400;
   position: absolute;
-  bottom: 0;
+  aspect-ratio: 1 / 1;
+  z-index: 2;
+  pointer-events: none;
+  display: none;
+  opacity: 0;
+
+  @include media-query($breakpoint--large) {
+    width: 15%;
+  }
 }
