@@ -1,0 +1,185 @@
+{
+  "playlists": [
+    {
+      "collaborative": false,
+      "description": "Our selection of Slow Jams from the 2000s",
+      "external_urls": {
+        "spotify": "https://open.spotify.com/playlist/0W3Y0GyrA2W6RU3V5C85mb"
+      },
+      "href": "https://api.spotify.com/v1/playlists/0W3Y0GyrA2W6RU3V5C85mb",
+      "id": "0W3Y0GyrA2W6RU3V5C85mb",
+      "images": [
+        {
+          "height": null,
+          "url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da84b9b076c6ec646bd9f03b55e8",
+          "width": null
+        }
+      ],
+      "name": "#ROOM187 presents: 2000s SLOW JAMS",
+      "owner": {
+        "display_name": "Room 187 UK",
+        "external_urls": {
+          "spotify": "https://open.spotify.com/user/314dhjc7jtmoesipcgwewzxgeqfu"
+        },
+        "href": "https://api.spotify.com/v1/users/314dhjc7jtmoesipcgwewzxgeqfu",
+        "id": "314dhjc7jtmoesipcgwewzxgeqfu",
+        "type": "user",
+        "uri": "spotify:user:314dhjc7jtmoesipcgwewzxgeqfu"
+      },
+      "primary_color": null,
+      "public": true,
+      "snapshot_id": "AAAAX1D+uGQ92yMfjOSceRWl61WoXFcW",
+      "tracks": {
+        "href": "https://api.spotify.com/v1/playlists/0W3Y0GyrA2W6RU3V5C85mb/tracks",
+        "total": 86
+      },
+      "type": "playlist",
+      "uri": "spotify:playlist:0W3Y0GyrA2W6RU3V5C85mb"
+    },
+    {
+      "collaborative": false,
+      "description": "Some of the best Southern Hip-Hop, R&amp;B, Crunk and Trap hits from the late 90s and early 2000s.",
+      "external_urls": {
+        "spotify": "https://open.spotify.com/playlist/5juZGqoMGrV1g6AgU2dgWK"
+      },
+      "href": "https://api.spotify.com/v1/playlists/5juZGqoMGrV1g6AgU2dgWK",
+      "id": "5juZGqoMGrV1g6AgU2dgWK",
+      "images": [
+        {
+          "height": null,
+          "url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da84033375a2b1705321621238aa",
+          "width": null
+        }
+      ],
+      "name": "#ROOM187 presents: SOUTHERN HOSPITALITY",
+      "owner": {
+        "display_name": "Room 187 UK",
+        "external_urls": {
+          "spotify": "https://open.spotify.com/user/314dhjc7jtmoesipcgwewzxgeqfu"
+        },
+        "href": "https://api.spotify.com/v1/users/314dhjc7jtmoesipcgwewzxgeqfu",
+        "id": "314dhjc7jtmoesipcgwewzxgeqfu",
+        "type": "user",
+        "uri": "spotify:user:314dhjc7jtmoesipcgwewzxgeqfu"
+      },
+      "primary_color": null,
+      "public": true,
+      "snapshot_id": "AAAAZ33woV2NRYMxvhobdJpmXVi2N/1W",
+      "tracks": {
+        "href": "https://api.spotify.com/v1/playlists/5juZGqoMGrV1g6AgU2dgWK/tracks",
+        "total": 84
+      },
+      "type": "playlist",
+      "uri": "spotify:playlist:5juZGqoMGrV1g6AgU2dgWK"
+    },
+    {
+      "collaborative": false,
+      "description": "Some of the best R&amp;B songs from all-male and female vocal groups between 1990-2008.",
+      "external_urls": {
+        "spotify": "https://open.spotify.com/playlist/0UFVq7KmHSDdEnqrUtMQf7"
+      },
+      "href": "https://api.spotify.com/v1/playlists/0UFVq7KmHSDdEnqrUtMQf7",
+      "id": "0UFVq7KmHSDdEnqrUtMQf7",
+      "images": [
+        {
+          "height": null,
+          "url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da8436049593cfc3ae9f416e4a8e",
+          "width": null
+        }
+      ],
+      "name": "#ROOM187 presents: BOYBANDS vs GIRL GROUPS",
+      "owner": {
+        "display_name": "Room 187 UK",
+        "external_urls": {
+          "spotify": "https://open.spotify.com/user/314dhjc7jtmoesipcgwewzxgeqfu"
+        },
+        "href": "https://api.spotify.com/v1/users/314dhjc7jtmoesipcgwewzxgeqfu",
+        "id": "314dhjc7jtmoesipcgwewzxgeqfu",
+        "type": "user",
+        "uri": "spotify:user:314dhjc7jtmoesipcgwewzxgeqfu"
+      },
+      "primary_color": null,
+      "public": true,
+      "snapshot_id": "AAAAXNv+CLhw2Ben8ulS0y0r38H+DFiu",
+      "tracks": {
+        "href": "https://api.spotify.com/v1/playlists/0UFVq7KmHSDdEnqrUtMQf7/tracks",
+        "total": 88
+      },
+      "type": "playlist",
+      "uri": "spotify:playlist:0UFVq7KmHSDdEnqrUtMQf7"
+    },
+    {
+      "collaborative": false,
+      "description": "Our selection of R&amp;B and Hip-Hop songs between 1990-2008 to start off your summer!",
+      "external_urls": {
+        "spotify": "https://open.spotify.com/playlist/5x8QB5rk1ziDqT1bttDX6c"
+      },
+      "href": "https://api.spotify.com/v1/playlists/5x8QB5rk1ziDqT1bttDX6c",
+      "id": "5x8QB5rk1ziDqT1bttDX6c",
+      "images": [
+        {
+          "height": null,
+          "url": "https://image-cdn-fa.spotifycdn.com/image/ab67706c0000da846ec77ff0a69360a93fca89cc",
+          "width": null
+        }
+      ],
+      "name": "#ROOM187 presents: SUMMER STARTER",
+      "owner": {
+        "display_name": "Room 187 UK",
+        "external_urls": {
+          "spotify": "https://open.spotify.com/user/314dhjc7jtmoesipcgwewzxgeqfu"
+        },
+        "href": "https://api.spotify.com/v1/users/314dhjc7jtmoesipcgwewzxgeqfu",
+        "id": "314dhjc7jtmoesipcgwewzxgeqfu",
+        "type": "user",
+        "uri": "spotify:user:314dhjc7jtmoesipcgwewzxgeqfu"
+      },
+      "primary_color": null,
+      "public": true,
+      "snapshot_id": "AAAAtVp2ViA2shqSVrGES7ltzH13plSj",
+      "tracks": {
+        "href": "https://api.spotify.com/v1/playlists/5x8QB5rk1ziDqT1bttDX6c/tracks",
+        "total": 175
+      },
+      "type": "playlist",
+      "uri": "spotify:playlist:5x8QB5rk1ziDqT1bttDX6c"
+    },
+    {
+      "collaborative": false,
+      "description": "Our selection of the best R&amp;B slow jams from the &#x27;90s.",
+      "external_urls": {
+        "spotify": "https://open.spotify.com/playlist/2g7VVp5TI90QkNDdIZY4um"
+      },
+      "href": "https://api.spotify.com/v1/playlists/2g7VVp5TI90QkNDdIZY4um",
+      "id": "2g7VVp5TI90QkNDdIZY4um",
+      "images": [
+        {
+          "height": null,
+          "url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a805ef710ed421303e02fbd",
+          "width": null
+        }
+      ],
+      "name": "#ROOM187 presents: '90s SLOW JAMS",
+      "owner": {
+        "display_name": "Room 187 UK",
+        "external_urls": {
+          "spotify": "https://open.spotify.com/user/314dhjc7jtmoesipcgwewzxgeqfu"
+        },
+        "href": "https://api.spotify.com/v1/users/314dhjc7jtmoesipcgwewzxgeqfu",
+        "id": "314dhjc7jtmoesipcgwewzxgeqfu",
+        "type": "user",
+        "uri": "spotify:user:314dhjc7jtmoesipcgwewzxgeqfu"
+      },
+      "primary_color": null,
+      "public": true,
+      "snapshot_id": "AAAAXeb1ZjRr2edhdYAF+AAnhZ06m1/F",
+      "tracks": {
+        "href": "https://api.spotify.com/v1/playlists/2g7VVp5TI90QkNDdIZY4um/tracks",
+        "total": 83
+      },
+      "type": "playlist",
+      "uri": "spotify:playlist:2g7VVp5TI90QkNDdIZY4um"
+    }
+  ],
+  "fetchedAt": 1757375280021
+}

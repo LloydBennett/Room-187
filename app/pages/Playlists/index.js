@@ -606,7 +606,6 @@ export default class Playlists extends Page {
     this.updateIndicator(activeCard)
   }
 
-
   hideCards() {
     gsap.set(this.elements.playlistCards, { opacity: 0 })
   }
