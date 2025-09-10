@@ -106,6 +106,8 @@ export default class SubscriptionForm extends Components {
   }
 
   addEventListener() {
+    if(!this.elements.form || this.elements.submitBtn) return
+    
     this.elements.closeToastIcon.addEventListener("click", () => {
       this.closeToast()
     })

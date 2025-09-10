@@ -28,4 +28,14 @@
     <div class="nav-menu__hover" data-nav-hover></div>
     <% } %>
   </li>
+  <li class="<%- list_class %>">
+    <a href="/playlists" class="<%- list_text_class %> relative" <% if(dataAttr) {%><%- dataAttr %><%}%> data-page-trigger>
+      <span class="block" data-nav-link-text>
+        Playlists
+      </span>
+    </a>
+    <% if(mainMenu) {%>
+    <div class="nav-menu__hover" data-nav-hover></div>
+    <% } %>
+  </li>
 </ul>
