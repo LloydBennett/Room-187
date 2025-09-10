@@ -149,7 +149,6 @@ export default class About extends Page {
     })
   }
 
-
   enableDraggableCarousel() {
     const carousel = this.elements.imageCarousel
     const items = carousel.querySelectorAll(".image-carousel__item")
