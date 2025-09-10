@@ -1,0 +1,118 @@
+<% if (pageViewType === 'grid') { %>
+<div class="section--l-m-b" data-playlist-page-wrapper>
+  <section class="section--l-m-b" data-hero>
+    <div class="container">
+      <div>
+        <h1 class="type--l type--x-bold type--display type--caps type--white" data-main-title data-split-text>
+          <%- document.data.title %>
+        </h1>
+      </div>
+    </div>
+  </section>
+  <section class="playlist-group" data-playlist-group>
+    <div class="playlist__indicator" data-playlist-indicator></div>
+    <% spotifyPlaylists.forEach(pl => { %>
+      <% 
+        const totalMinutes = Math.floor(pl.total_duration_ms / 60000);
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
+      %>
+      <a href="/playlists/<%= pl.id %>" class="playlist-card" data-playlist-id="<%= pl.id %>" data-playlist-card data-playlist-trigger>
+        
+        <div class="thumbnail playlist-card__img">
+          <img src="<%= pl.images[0]?.url %>" alt="<%= pl.name %>">
+          <div class="glow-overlay"></div>
+        </div>
+        <div class="playlist-card__meta" data-playlist-meta>
+          <div class="playlist-card-meta__details">
+            <span class="type--xs type--caps type--reg type--white"><%= pl.tracks.total %> tracks</span>
+          </div>
+          
+        </div>
+        
+      </a>
+    <% }) %>
+  </section>
+
+</div>
+  
+<% } %>
+
+<% if (pageViewType === 'detail') { %>
+  <% const playlistData = playlist; %>
+
+  <% 
+    const totalMinutes = Math.floor(playlist.total_duration_ms / 60000);
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+  %>
+  <div class="section--l-m-b" data-playlist-page-wrapper>
+    <section class="playlist-group playlist-group--row relative" data-playlist-group>
+      <div class="playlist__indicator" data-playlist-indicator></div>
+      <% spotifyPlaylists.forEach(pl => { %>
+        <a href="/playlists/<%= pl.id %>" class="playlist-card" data-playlist-id="<%= pl.id %>" data-playlist-trigger>
+          <div class="thumbnail playlist-card__img">
+            <img src="<%= pl.images[0]?.url %>" alt="<%= pl.name %>">
+            <div class="glow-overlay"></div>
+          </div>
+          <div class="playlist-card__meta">
+            <div>
+              <span class="type--xs type--caps type--reg type--white"><%= pl.tracks.total %> tracks</span>
+            </div>
+          </div>
+        </a>
+      <% }) %>
+    </section>
+
+    <section class="playlist-detail__header" data-hero>
+      <div class="container">
+        <h1 class="type--l type--display type--white type--caps type--x-bold type--l-margin" data-main-title data-split-text>
+          <%- playlist.name %>
+        </h1>
+        <div class="playlist-detail-header__meta">
+          <span class="type--xs type--caps type--white type--bold" data-split-text><%- spotifyTracks.length %>&nbsp;tracks</span>
+          <span class="type--xs type--caps type--white type--bold no-margin" data-split-text>
+            <% if (hours > 0) { %>
+              <%= hours %> hr <%= minutes %> min
+            <% } else { %>
+              <%= minutes %> min
+            <% } %>
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <section data-track-list>
+      <ol class="track-list">
+        <% spotifyTracks.forEach((item, i) => {
+          const track = item.track;
+          const artistName = track.artists[0]?.name || 'Unknown Artist';
+          const durationMs = track.duration_ms;
+          const minutes = Math.floor(durationMs / 60000);
+          const seconds = Math.floor((durationMs % 60000) / 1000).toString().padStart(2, '0');
+          const durationFormatted = `${minutes}:${seconds}`;
+          const albumImage = track.album.images[0]?.url;
+        %>
+        <li data-track-list-item class="track-list__item relative">
+          <a href="<%- playlist.external_urls.spotify %>" target="_blank" class="track-list-item__wrapper relative z-index--2">
+            <span class="type--caps track__text track__no relative"><span class="digit"><%= i + 1 %></span><span class="absolute icon">&#9654;</span></span>
+            <span class="type--caps track__text track__titles"><%= artistName %></span>
+            <span class="type--caps track__text track__titles"><%= track.name %></span>
+            <span class="type--caps track__text track__duration"><%= durationFormatted %></span>
+            <div class="relative track-list-item__img">
+              <% if (albumImage) { %>
+                <img src="<%= albumImage %>" alt="<%= artistName %>" class="clip-path--hide z-index--2" data-track-list-img />
+              <% } else { %>
+                <div style="width:100px; height:100px; background:#ccc; display:flex;align-items:center;justify-content:center;" data-track-list-img></div>
+              <% } %>
+            </div>
+          </a>
+          <div class="overlay bg--gold-400 clip-path--hide" data-track-list-bg></div>
+        </li>
+      <% }) %>
+      </ol>
+    </section>
+
+
+  </div>   
+<% } %>

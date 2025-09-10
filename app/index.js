@@ -6,6 +6,7 @@ import About from 'pages/About'
 import Home from 'pages/Home'
 import Gallery from 'pages/Gallery'
 import Contact from './pages/Contact'
+import Playlists from './pages/Playlists'
 import Navigation from 'components/Navigation'
 import TextSplit from 'components/TextSplit'
 import VideoPlayer from './components/VideoPlayer'
@@ -76,7 +77,8 @@ class App {
       home: Home,
       about: About,
       gallery: Gallery,
-      contact: Contact
+      contact: Contact,
+      playlists: Playlists
     }
 
     const id = this.template
@@ -89,6 +91,10 @@ class App {
     await this.page.show(this.isFirstVisit)
 
     this.isFirstVisit = false
+
+    window.dispatchEvent(new CustomEvent('pageLoaded', {
+      detail: { page: this.page, template: this.template }
+    }))
   }
 
   onPopState () {
@@ -150,6 +156,12 @@ class App {
     
     this.template = divContent.getAttribute('data-page')
     this.content.setAttribute('data-page', this.template)
+
+    if(this.template === "playlists") {
+      this.content.setAttribute('data-page-view-type', 'grid')
+    } else {
+      this.content.removeAttribute('data-page-view-type')
+    }
 
     if(this.template !== "error") {
       if(body.classList.contains('error')) {
