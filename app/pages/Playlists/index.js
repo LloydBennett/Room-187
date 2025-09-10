@@ -368,7 +368,7 @@ export default class Playlists extends Page {
         const meta = this.elements.playlistCardMeta
 
         gsap.to(indicator, { opacity: 0, duration: 0.3, ease: "power2.out" })
-        gsap.to(meta, { opacity: 0, duration: 0.2, ease: "power2.out" })
+        gsap.set(meta, { opacity: 0, duration: 0.2, ease: "power2.out" })
          
         gridEl.classList.remove('relative')
         
@@ -441,8 +441,6 @@ export default class Playlists extends Page {
       const pTitles = hero.querySelectorAll('[data-split-text]')
       const items = Array.from(this.elements.trackListItems);
 
-      let titlesArr = []
-
       this.tl.to(hero, {
         opacity: 1,
         clearProps: "pointerEvents"
@@ -456,14 +454,15 @@ export default class Playlists extends Page {
           mask: "lines",
           autoSplit: true,
         })
-        gsap.set(el, { opacity: 1, clearProps: "pointerEvents" })
+        
+         // Always reset starting position before animating
+        gsap.set(el, { opacity: 1,  clearProps: "pointerEvents" });
 
-        titlesArr.push(split.lines)
-      })
-      
-      titlesArr.forEach((text) => {
-        this.tl.fromTo(text,
-          { yPercent: 100 },
+        // Force browser to register layout before animating
+        split.lines.forEach(line => line.getBoundingClientRect())
+        this.tl.set(split.lines, { yPercent: 100, immediateRender: true })
+
+        this.tl.to(split.lines,
           {
             yPercent: 0, 
             duration: 0.8, 
@@ -472,6 +471,7 @@ export default class Playlists extends Page {
           }
         ,'titles -=0.2')
       })
+      
       
       if (currentType === "detail") {
         trackSection.style.visibility = "visible"

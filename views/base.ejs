@@ -17,7 +17,7 @@
         <% if (page !== "home" && page !== "about" && page !== "gallery" && page !== "error") { %>
           class="<% if (page === "playlists") { %>min-height no-overflow <% if (pageViewType === "grid") { %>hero--l-p-t<% } else if (pageViewType === "detail") { %>hero--s-p-t<% } %>
             <% } else { %>
-              hero--p-t
+              hero--l-p-t
             <% } %>
           "
         <% } %>
