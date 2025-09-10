@@ -34,7 +34,9 @@ let sideImage = document.data.side_image
       <% } %>
     </div>
   </section>
-  
+
+  <%- include('../SliceZone.ejs', { SliceZone: document.data.body }) %>
+
   <%- include('../partials/team-members') -%>
   <%- include('../partials/stats') -%>
   <%- include('../partials/cta-block') -%>
