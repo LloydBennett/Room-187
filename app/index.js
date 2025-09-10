@@ -196,6 +196,7 @@ class App {
   }
 
   async bootstrap() {
+    this.setUpScrollTrigger()
     await this.init()
   }
 

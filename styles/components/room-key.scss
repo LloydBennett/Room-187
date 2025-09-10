@@ -29,7 +29,11 @@
   height: fit-content;
   left: 50%;
   transform: translateX(-50%);
-  position: absolute;
+  position: relative;
+
+  @include media-query($breakpoint--medium) {
+    position: absolute;
+  }
 
   &.flip .room-key {
     transform: rotateY(-180deg);

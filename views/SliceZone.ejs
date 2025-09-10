@@ -19,6 +19,9 @@
       case 'video_gallery_item':
         return prevSlices + include('./slices/VideoGalleryItem.ejs', { slice: slice })
         break;
+      case 'image_carousel':
+        return prevSlices + include('./slices/ImageCarousel.ejs', { slice: slice })
+        break;
       default :
         return '<h1>No Slices found</h1>'
     }
