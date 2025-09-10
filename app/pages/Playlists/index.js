@@ -441,6 +441,8 @@ export default class Playlists extends Page {
       const pTitles = hero.querySelectorAll('[data-split-text]')
       const items = Array.from(this.elements.trackListItems);
 
+      let titlesArr = []
+
       this.tl.to(hero, {
         opacity: 1,
         clearProps: "pointerEvents"
@@ -462,7 +464,12 @@ export default class Playlists extends Page {
         split.lines.forEach(line => line.getBoundingClientRect())
         this.tl.set(split.lines, { yPercent: 100, immediateRender: true })
 
-        this.tl.to(split.lines,
+        titlesArr.push(split.lines)
+      })
+      
+      titlesArr.forEach((text) => {
+        console.log(`for animation: ${text}`)
+        this.tl.to(text,
           {
             yPercent: 0, 
             duration: 0.8, 
@@ -471,7 +478,6 @@ export default class Playlists extends Page {
           }
         ,'titles -=0.2')
       })
-      
       
       if (currentType === "detail") {
         trackSection.style.visibility = "visible"
