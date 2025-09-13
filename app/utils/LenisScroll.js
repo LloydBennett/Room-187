@@ -1,11 +1,22 @@
 import Lenis from 'lenis'
 
-const isMobile = window.matchMedia('(max-width: 768px)').matches
+// Detect real mobile devices via user agent
+const isMobile = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+  navigator.userAgent
+)
 
-export const scroll = new Lenis({
-  autoRaf: false,
-  lerp: isMobile ? 0.15 : 0.08,
-  duration: undefined, // remove duration if you use lerp
-  smoothTouch: true,
-  touchMultiplier: 1.5
-});
+// Always export something so your imports never break
+export const scroll = isMobile
+  ? {
+      raf: () => {},   // does nothing
+      stop: () => {},  // does nothing
+      start: () => {}, // does nothing
+      on: () => {}     // does nothing
+    }
+  : new Lenis({
+      autoRaf: false,
+      lerp: 0.08,
+      duration: undefined, // remove duration if you use lerp
+      smoothTouch: true,
+      touchMultiplier: 1.5
+    })
