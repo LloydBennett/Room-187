@@ -10,7 +10,7 @@ export const scroll = isMobile
   ? {
       raf: () => {},   // does nothing
       stop: () => {},  // does nothing
-      start: () => {}, // does nothing
+      start: () => { console.log('this is running the mobile version')}, // does nothing
       on: () => {}     // does nothing
     }
   : new Lenis({
