@@ -25,6 +25,12 @@ class App {
 
   setUpScrollTrigger() {
     gsap.registerPlugin(ScrollTrigger)
+
+     // Bail out if we're on mobile (dummy Lenis object)
+    if (this.lenisScroll.__isDummy) {
+      // Let ScrollTrigger use native scroll
+      return;
+    }
     
     this.lenisScroll.on('scroll', ScrollTrigger.update);
 
