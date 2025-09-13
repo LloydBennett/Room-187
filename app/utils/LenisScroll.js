@@ -4,7 +4,7 @@ import Lenis from 'lenis'
 const isMobile = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
   navigator.userAgent
 )
-
+console.log(isMobile)
 // Always export something so your imports never break
 export const scroll = isMobile
   ? {
