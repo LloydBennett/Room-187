@@ -24,12 +24,12 @@ export default class Preloader extends Components {
     let size = this.getHeroImageSize()
     let startPos = size === "large"? '50% center': '50% 40%'
     
+    this.mm.add("(max-width: 549px)", () => {
+      this.heroContentAnim('50% center')
+      this.heroImgAnim(startPos)
+    })
+
     if(size === "small") {
-      this.mm.add("(max-width: 549px)", () => {
-        this.heroContentAnim('50% center')
-        this.heroImgAnim(startPos)
-      })
-    
       this.mm.add("(min-width: 550px) and (max-width: 1199px)", () => {
         this.heroContentAnim('80% center')
         this.heroImgAnim('80% center')
@@ -41,8 +41,12 @@ export default class Preloader extends Components {
       })
 
     } else {
-      this.heroContentAnim(startPos)
-      this.heroImgAnim(startPos)
+
+      this.mm.add("(min-width: 550px)", () => {
+        this.heroContentAnim(startPos)
+        this.heroImgAnim(startPos)
+      })
+      
     }
   }
   
