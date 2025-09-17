@@ -28,6 +28,8 @@ export default class Navigation extends Components {
     this.feTurbulence = document.querySelector(`${this.filterId} > feTurbulence`);
     this.primitiveValues = { turbulence: 0 };
 
+    this.hoverHandlers = new Map() // to track listeners for cleanup
+
     this.createLinkTimeLine()
     this.addEventListeners()
   }
@@ -45,11 +47,13 @@ export default class Navigation extends Components {
         this.isOpen ? this.closeMenu() : this.openMenu()
       }
     })
+  }
 
+  bindHoverEffects() {
     this.elements.navLinks.forEach(link => {
       let linkHover = link.nextElementSibling;
 
-      if (!linkHover) return;
+      if (!linkHover || this.isAnimating) return;
   
       let linkTl = gsap.timeline({
         paused: true,
@@ -69,6 +73,9 @@ export default class Navigation extends Components {
   
       link.addEventListener('mouseenter', onMouseEnterFn);
       link.addEventListener('mouseleave', onMouseLeaveFn);
+
+      // save refs so we can remove later
+      this.hoverHandlers.set(link, { onMouseEnterFn, onMouseLeaveFn })
   
       linkTl.to(this.primitiveValues, { 
         duration: 0.6,
@@ -78,6 +85,14 @@ export default class Navigation extends Components {
       });
 
     });
+  }
+
+   unbindHoverEffects() {
+    this.hoverHandlers.forEach(({ onMouseEnterFn, onMouseLeaveFn }, link) => {
+      link.removeEventListener('mouseenter', onMouseEnterFn)
+      link.removeEventListener('mouseleave', onMouseLeaveFn)
+    })
+    this.hoverHandlers.clear()
   }
 
   openMenu() {
@@ -96,18 +111,28 @@ export default class Navigation extends Components {
     this.tl.fromTo(this.elements.navLinkText, { y: "100%" }, { y: 0, duration: 0.8, ease: "zoom",
       onComplete: () => {
         this.isAnimating = false
+        this.elements.navLinks.forEach(link => {
+          link.style.pointerEvents = ''
+        })
+        this.bindHoverEffects()
       }
     }, '-=0.1')
   }
 
   closeMenu() {
     this.elements.trigger.classList.remove('open')
+    this.unbindHoverEffects()
+    
+    this.elements.navLinks.forEach(link => {
+      link.style.pointerEvents = 'none'
+    })
+
     this.tl.to(this.elements.menu, {
       clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
       duration: 0.6,
       ease: "zoom",
     })
-    console.log(this.elements.navLinkText)
+
     this.tl.fromTo(this.elements.navLinkText, { y: 0 }, { y: "100%", duration: 0.01, 
       onComplete: () => {
         this.isAnimating = false
