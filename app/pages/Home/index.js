@@ -31,21 +31,31 @@ export default class Home extends Page {
     this.pinnedHeight = this.elements.roomKeySection? this.elements.roomKeySection.offsetHeight : 100
     this.isProgressBarVisible = false
     this.currentActiveIndex = -1
+    this.roomKeyCtx = null;
 
     this.init()
   }
 
   init() {
     this.setUpScrollAnimations()
+
+    window.addEventListener("resize", () => {
+      if(this.roomKeyCtx) this.roomKeyCtx.revert()
+
+      this.buildRoomKeyAnimations()
+      ScrollTrigger.refresh()
+      this.updateProcessHighlight()
+    })
   }
 
   animateIndexHighlighter(newIndex) {
-    if(newIndex !== this.currentActiveIndex) {
-      let yPosCalc = newIndex * 100
-      let yPos = `${yPosCalc}%`
+    const maxIndex = this.elements.steps.length - 1;
+    const clampedIndex = Math.min(Math.max(newIndex, 0), maxIndex);
 
-      gsap.to(this.elements.progressHighlight, { y: yPos, duration: 0.4, ease: "power2.out" })
-      this.currentActiveIndex = newIndex
+    if(clampedIndex !== this.currentActiveIndex) {
+      let yPos = `${clampedIndex * 100}%`;
+      gsap.to(this.elements.progressHighlight, { y: yPos, duration: 0.4, ease: "power2.out" });
+      this.currentActiveIndex = clampedIndex;
     }
   }
 
@@ -71,7 +81,7 @@ export default class Home extends Page {
 
   setUpScrollAnimations() {
     this.polaroidParallax()
-    this.roomKeyAnimations()
+    this.buildRoomKeyAnimations()
     this.artistSectionAnimations()
   }
   
@@ -114,219 +124,232 @@ export default class Home extends Page {
     })
   }
   
-  roomKeyAnimations() {
+  buildRoomKeyAnimations() {
     if (!this.elements.roomKey || !this.elements.steps || !this.elements.roomKeyHeader || !this.elements.stepContainer || !this.elements.progressBar) return;
 
-    let totalStepsHeight = this.elements.steps? Array.from(this.elements.steps).reduce((total, step) => total + step.offsetHeight, 0) : null;
-    let adjustedPinDuration = totalStepsHeight - (this.elements.roomKey.offsetHeight + (this.elements.roomKey.offsetHeight / 4));
-    let scrollOptions = {
-      trigger: this.elements.roomKey,
-      start: "center center",
-      end: `+=${this.elements.steps[0].offsetHeight}`,
-      scrub: true,
-      onEnter: () => gsap.set(this.elements.steps, { opacity: 0 })
-    }
-
-    gsap.set(this.elements.steps, { opacity: 0, y: 50 })
-    gsap.set(this.elements.progressBar, { opacity: 0 })
-
-    this.mm.add("(max-width: 767px)", () => {
-      const roomKeyPinStart = "center 30%";
-      const roomKeyPinEnd = adjustedPinDuration + this.elements.steps.length * window.innerHeight;
-      
-      ScrollTrigger.create({
-        id: "roomKeyPin",
-        trigger: this.elements.roomKeyHeader,
-        start: "top top",
-        end: () => {
-          const headerRect = this.elements.roomKeyHeader.getBoundingClientRect();
-          const roomKeyRect = this.elements.roomKey.getBoundingClientRect();
-          const distance = (roomKeyRect.top - headerRect.top) + this.elements.roomKey.offsetHeight;
-          return `+=${distance}`;
-        },
-        pin: true,
-        pinSpacing: false,
-        scrub: true
-      });
-
-      gsap.to(this.elements.roomKeyHeader, {
-        opacity: 0,
-        scrollTrigger: {
-          trigger: this.elements.roomKey,
-          start: "top 70%",
-          end: "top 30%",
-          scrub: true
-        }
-      })
-
-      // master pin
-      ScrollTrigger.create({
+    this.roomKeyCtx = gsap.context(() => {
+      let totalStepsHeight = this.elements.steps? Array.from(this.elements.steps).reduce((total, step) => total + step.offsetHeight, 0) : null;
+      let adjustedPinDuration = totalStepsHeight - (this.elements.roomKey.offsetHeight + (this.elements.roomKey.offsetHeight / 4));
+      let scrollOptions = {
         trigger: this.elements.roomKey,
-        start: roomKeyPinStart,
-        end: `+=${roomKeyPinEnd}`,
-        pin: this.elements.roomKeySection,
-        pinSpacing: true,
-        anticipatePin: 0.5,
-        scrub: true
-      });
+        start: "center center",
+        end: `+=${this.elements.steps[0].offsetHeight}`,
+        scrub: true,
+        onEnter: () => gsap.set(this.elements.steps, { opacity: 0 })
+      }
 
-      ScrollTrigger.create({
-        trigger: this.elements.stepContainer,
-        start: "bottom bottom",
-        end: `+=${roomKeyPinEnd}`,
-        scrub: true
-      });
+      gsap.set(this.elements.steps, { opacity: 0, y: 50 })
+      gsap.set(this.elements.progressBar, { opacity: 0 })
 
-      gsap.set(this.elements.steps, { opacity: 0, position: "absolute", width: "100%" });
+      if (window.innerWidth < 768) {
+        const roomKeyPinStart = "center 30%";
+        const roomKeyPinEnd = adjustedPinDuration + this.elements.steps.length * window.innerHeight;
+        
+        ScrollTrigger.create({
+          id: "roomKeyPin",
+          trigger: this.elements.roomKeyHeader,
+          start: "top top",
+          end: () => {
+            const headerRect = this.elements.roomKeyHeader.getBoundingClientRect();
+            const roomKeyRect = this.elements.roomKey.getBoundingClientRect();
+            const distance = (roomKeyRect.top - headerRect.top) + this.elements.roomKey.offsetHeight;
+            return `+=${distance}`;
+          },
+          pin: true,
+          pinSpacing: false,
+          scrub: true
+        });
 
-      let stepTl = gsap.timeline({
-        scrollTrigger: {
+        gsap.to(this.elements.roomKeyHeader, {
+          opacity: 0,
+          scrollTrigger: {
+            trigger: this.elements.roomKey,
+            start: "top 70%",
+            end: "top 30%",
+            scrub: true
+          }
+        })
+
+        // master pin
+        ScrollTrigger.create({
+          trigger: this.elements.roomKey,
+          start: roomKeyPinStart,
+          end: `+=${roomKeyPinEnd}`,
+          pin: this.elements.roomKeySection,
+          pinSpacing: true,
+          anticipatePin: 0.5,
+          scrub: true
+        });
+
+        ScrollTrigger.create({
           trigger: this.elements.stepContainer,
           start: "bottom bottom",
           end: `+=${roomKeyPinEnd}`,
-          scrub: true,
-          onUpdate: self => {
-            let totalSteps = this.elements.steps.length;
-            let rawIndex = Math.floor(self.progress * totalSteps); // 0..totalSteps-1
+          scrub: true
+        });
 
-            // Clamp to valid index
-            let activeIndex = Math.min(Math.max(rawIndex, 1), totalSteps - 1);
+        gsap.set(this.elements.steps, { opacity: 0, position: "absolute", width: "100%" });
 
-            this.animateIndexHighlighter(activeIndex - 1);
+        let stepTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: this.elements.stepContainer,
+            start: "bottom bottom",
+            end: `+=${roomKeyPinEnd}`,
+            scrub: true,
+            onUpdate: self => {
+              let totalSteps = this.elements.steps.length;
+              let rawIndex = Math.floor(self.progress * totalSteps); // 0..totalSteps-1
 
-            if (activeIndex === 2) {
-              this.elements.roomKey.classList.add("flip");
-            }
-            if (activeIndex < 2) {
-              this.elements.roomKey.classList.remove("flip");
+              // Clamp to valid index
+              let activeIndex = Math.min(Math.max(rawIndex, 1), totalSteps - 1);
+
+              this.animateIndexHighlighter(activeIndex - 1);
+
+              if (activeIndex === 2) {
+                this.elements.roomKey.classList.add("flip");
+              }
+              if (activeIndex < 2) {
+                this.elements.roomKey.classList.remove("flip");
+              }
             }
           }
-        }
-      });
+        });
 
-      this.elements.steps.forEach((step, index) => {
-        stepTl.to(step, { opacity: 1, duration: 0.8 })
+        this.elements.steps.forEach((step, index) => {
+          stepTl.to(step, { opacity: 1, duration: 0.8 })
 
-        if (index < this.elements.steps.length - 1) {
-          stepTl.to(step, { opacity: 0, duration: 0.8 }, "+=1.5");
-        }
-          
-      });
+          if (index < this.elements.steps.length - 1) {
+            stepTl.to(step, { opacity: 0, duration: 0.8 }, "+=1.5");
+          }
+            
+        });
+
+        ScrollTrigger.create({
+          trigger: this.elements.steps[1],
+          start: "top 60%",
+          end: "top 40%",
+          onEnter: () => this.showProgressBar(),
+          onLeaveBack: () => this.hideProgressBar(),
+          scrub: true,
+          pinSpacing: false
+        });
+      } else {
+        ScrollTrigger.create({
+          id: "roomKeyPin",
+          trigger: this.elements.roomKeyHeader,
+          start: "top top",
+          end: () => `+=${this.elements.roomKey.offsetHeight * 1.5}`, // Keep it pinned while roomKey moves over
+          pin: true,
+          pinSpacing: false,
+          scrub: true
+        });
+
+        gsap.to(this.elements.roomKeyHeader, {
+          opacity: 0,
+          scrollTrigger: {
+            trigger: this.elements.roomKey,
+            start: "top 55%",
+            end: "top 30%",
+            scrub: true
+          }
+        })
+
+        ScrollTrigger.create({
+          trigger: this.elements.roomKey,
+          start: "center center",
+          end: `+=${adjustedPinDuration}`,
+          pin: true,
+          scrub: true
+        });
+        
+        gsap.to(this.elements.roomKey, {
+          x: "85%",
+          rotate: "5deg",
+          ease: "power2.out",
+          scrollTrigger: scrollOptions
+        })
+
+        // Step opacity should be scroll-based (fade in/out based on scroll)
+        this.elements.steps.forEach((step, index) => { 
+          ScrollTrigger.create({
+            trigger: step,
+            start: "top 70%",
+            end: "top 50%",
+            scrub: true,
+            toggleActions: "play none none reverse",
+            onEnter: () => gsap.to(step, { opacity: 1, y: 0, duration: 0.3 }),
+            onLeaveBack: () => gsap.to(step, { opacity: 0, y: 50, duration: 0.3 })
+          });
+
+          // **Flip room-key when the second step appears**
+          if (index === 2) {
+            ScrollTrigger.create({
+              trigger: step,
+              start: "top center",
+              onEnter: () => this.elements.roomKey.classList.add("flip"),
+              onLeaveBack: () => this.elements.roomKey.classList.remove("flip")
+            });
+          }
+
+          ScrollTrigger.create({
+            trigger: step,
+            start: "top 50%", // When the step reaches 50% of the viewport
+            end: "top 30%", // When the step is almost fully in view
+            onEnter: () => {
+              if(index === 0) {
+                this.animateIndexHighlighter(index); // Highlight the corresponding dot for the current step
+              } else {
+                this.animateIndexHighlighter(index - 1); // Highlight the corresponding dot for the current step
+              }
+            },
+            onLeaveBack: () => {
+              if(index === 1) {
+                this.animateIndexHighlighter(index - 1);
+              } else {
+                this.animateIndexHighlighter(index - 2);
+              }
+            }
+          });
+        })
+      }
+
+      // Pin progress bar at all times (only show/hide)
+      ScrollTrigger.create({
+        trigger: this.elements.roomKeySection,
+        start: "top top",
+        end: "bottom bottom",
+        pin: this.elements.progressBar
+      })
+
+      // Show progress bar when roomKey is fully in view
 
       ScrollTrigger.create({
         trigger: this.elements.steps[1],
-        start: "top 60%",
-        end: "top 40%",
+        start: "top center", // When the first step reaches the center of the viewport
         onEnter: () => this.showProgressBar(),
         onLeaveBack: () => this.hideProgressBar(),
-        scrub: true,
-        pinSpacing: false
+        markers: false
       });
 
-      window.addEventListener("resize", () => ScrollTrigger.refresh());
-    });
-    
-    
-    this.mm.add("(min-width: 768px)", () => {
-      ScrollTrigger.create({
-        id: "roomKeyPin",
-        trigger: this.elements.roomKeyHeader,
-        start: "top top",
-        end: () => `+=${this.elements.roomKey.offsetHeight * 1.5}`, // Keep it pinned while roomKey moves over
-        pin: true,
-        pinSpacing: false,
-        scrub: true
-      });
+    }, this.elements.roomKeySection)
+  }
 
-      gsap.to(this.elements.roomKeyHeader, {
-        opacity: 0,
-        scrollTrigger: {
-          trigger: this.elements.roomKey,
-          start: "top 55%",
-          end: "top 30%",
-          scrub: true
-        }
-      })
+  updateProcessHighlight() {
+    const steps = this.elements.steps;
+    if (!steps) return;
 
-      ScrollTrigger.create({
-        trigger: this.elements.roomKey,
-        start: "center center",
-        end: `+=${adjustedPinDuration}`,
-        pin: true,
-        scrub: true
-      });
-      
-      gsap.to(this.elements.roomKey, {
-        x: "85%",
-        rotate: "5deg",
-        ease: "power2.out",
-        scrollTrigger: scrollOptions
-      })
-
-      // Step opacity should be scroll-based (fade in/out based on scroll)
-      this.elements.steps.forEach((step, index) => { 
-        ScrollTrigger.create({
-          trigger: step,
-          start: "top 70%",
-          end: "top 50%",
-          scrub: true,
-          toggleActions: "play none none reverse",
-          onEnter: () => gsap.to(step, { opacity: 1, y: 0, duration: 0.3 }),
-          onLeaveBack: () => gsap.to(step, { opacity: 0, y: 50, duration: 0.3 })
-        });
-
-        // **Flip room-key when the second step appears**
-        if (index === 2) {
-          ScrollTrigger.create({
-            trigger: step,
-            start: "top center",
-            onEnter: () => this.elements.roomKey.classList.add("flip"),
-            onLeaveBack: () => this.elements.roomKey.classList.remove("flip")
-          });
-        }
-
-        ScrollTrigger.create({
-          trigger: step,
-          start: "top 50%", // When the step reaches 50% of the viewport
-          end: "top 30%", // When the step is almost fully in view
-          onEnter: () => {
-            if(index === 0) {
-              this.animateIndexHighlighter(index); // Highlight the corresponding dot for the current step
-            } else {
-              this.animateIndexHighlighter(index - 1); // Highlight the corresponding dot for the current step
-            }
-          },
-          onLeaveBack: () => {
-            if(index === 1) {
-              this.animateIndexHighlighter(index - 1);
-            } else {
-              this.animateIndexHighlighter(index - 2);
-            }
-          }
-        });
-      })
-    })
-
-    // Pin progress bar at all times (only show/hide)
-    ScrollTrigger.create({
-      trigger: this.elements.roomKeySection,
-      start: "top top",
-      end: "bottom bottom",
-      pin: this.elements.progressBar
-    })
-
-    // Show progress bar when roomKey is fully in view
-
-    ScrollTrigger.create({
-      trigger: this.elements.steps[1],
-      start: "top center", // When the first step reaches the center of the viewport
-      onEnter: () => this.showProgressBar(),
-      onLeaveBack: () => this.hideProgressBar(),
-      markers: false
+    let foundIndex = Array.from(steps).findIndex(step => {
+      const rect = step.getBoundingClientRect();
+      // Middle of step is in viewport
+      return rect.top + rect.height / 2 >= 0 && rect.top + rect.height / 2 <= window.innerHeight;
     });
 
-    window.addEventListener("resize", () => ScrollTrigger.refresh());
+    if (foundIndex === -1) {
+      // If no step is in viewport, highlight last step scrolled past
+      foundIndex = steps.length - 1;
+    }
 
+    this.animateIndexHighlighter(foundIndex);
   }
 
   artistSectionAnimations() {
