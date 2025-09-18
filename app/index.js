@@ -14,6 +14,7 @@ import Stats from './components/Stats'
 import Hero from './components/Hero'
 import Tooltip from './components/tooltip'
 import SubscriptionForm from './components/SubscriptionForm'
+import Carousel from './components/Carousel'
 
 class App {
   constructor() {
@@ -76,6 +77,10 @@ class App {
 
   createSubscriptionForm() {
     this.subscriptionForm = new SubscriptionForm()
+  }
+
+  createCarousel() {
+    this.Carousel = new Carousel()
   }
 
   async initPages() {
@@ -230,6 +235,7 @@ class App {
     this.createHero()
     this.createTooltip()
     this.createSubscriptionForm()
+    this.createCarousel()
   }
 }
 

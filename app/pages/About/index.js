@@ -27,7 +27,6 @@ export default class About extends Page {
     this.tl = new gsap.timeline()
     this.mm = gsap.matchMedia()
     this.addEventListeners()
-    this.enableDraggableCarousel()
   }
 
   onPopState () {
@@ -149,99 +148,6 @@ export default class About extends Page {
     })
   }
 
-  enableDraggableCarousel() {
-    const carousel = this.elements.imageCarousel
-    const items = carousel.querySelectorAll(".image-carousel__item")
-
-    if (!carousel || items.length === 0) return
-
-    let isDragging = false
-    let startX = 0
-    let lastX = 0
-    let velocity = 0
-    let rafId = null
-
-    const friction = 0.925
-    const speedMultiplier = 1.35
-    const rotationIntensity = 0.04 // ⬅️ Subtle swing
-
-    const resetRotation = () => {
-      items.forEach((item) => {
-        gsap.to(item, {
-          rotationZ: 0, // Reset swing
-          duration: 0.6,
-          ease: "power3.out",
-          overwrite: true
-        })
-      })
-    }
-
-    const updateItemRotations = (v) => {
-      items.forEach((item, index) => {
-        const factor = (index + 1) / items.length
-        const rotateZ = gsap.utils.clamp(-2, 2, v * rotationIntensity * factor)
-
-        gsap.to(item, {
-          rotationZ: rotateZ,
-          duration: isDragging ? 0.1 : 0.4,
-          ease: "power2.out",
-          overwrite: true
-        })
-      })
-    }
-
-    const inertiaLoop = () => {
-      if (Math.abs(velocity) < 0.2) {
-        resetRotation()
-        return
-      }
-
-      carousel.scrollLeft -= velocity
-      updateItemRotations(velocity)
-
-      velocity *= friction
-      rafId = requestAnimationFrame(inertiaLoop)
-    }
-
-    const startDrag = (e) => {
-      isDragging = true
-      carousel.classList.add("is-dragging")
-
-      startX = e.type.includes("mouse") ? e.pageX : e.touches[0].pageX
-      lastX = startX
-      cancelAnimationFrame(rafId)
-    }
-
-    const onDrag = (e) => {
-      if (!isDragging) return
-
-      const x = e.type.includes("mouse") ? e.pageX : e.touches[0].pageX
-      const delta = (x - lastX) * speedMultiplier
-
-      carousel.scrollLeft -= delta
-      velocity = delta
-      lastX = x
-
-      updateItemRotations(velocity)
-    }
-
-    const endDrag = () => {
-      isDragging = false
-      carousel.classList.remove("is-dragging")
-      inertiaLoop()
-    }
-
-    // Mouse Events
-    carousel.addEventListener("mousedown", startDrag)
-    window.addEventListener("mousemove", onDrag)
-    window.addEventListener("mouseup", endDrag)
-
-    // Touch Events
-    carousel.addEventListener("touchstart", startDrag, { passive: true })
-    window.addEventListener("touchmove", onDrag, { passive: false })
-    window.addEventListener("touchend", endDrag)
-  }
-
   addEventListeners() {
     if (!this.elements.bioTrigger || !this.elements.close) return
     
@@ -295,8 +201,6 @@ export default class About extends Page {
     requestAnimationFrame(raf)
 
     this.modalScroll.stop()
-    
-    this.enableDraggableCarousel()
 
   }
   

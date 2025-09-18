@@ -1,20 +1,25 @@
 .carousel {
-  overflow-x: scroll;
+  cursor: grab;
+  display: flex;
+  touch-action: none;
+  user-select: none;
+  overflow: hidden;
+  scrollbar-width: none;
+
+  &.is-dragging {
+    cursor: grabbing;
+  }
+
+  &::-webkit-scrollbar { 
+    display: none;
+  }
 }
 
-.carousel__container {
-  scrollbar-width: thin;
-  scrollbar-color: $colour--purple-300 white;
-
-  display: flex;
+.carousel--layout {
   padding-left: 2.5%;
-  scroll-padding-left: 2.5%;
   padding-right: 2.5%;
-  scroll-padding-right: 2.5%;
   gap: 5%;
-  overflow-x: auto;
   padding-bottom: spacing(7);
-  scroll-snap-type: x mandatory;
 
   @include media-query($breakpoint--small) {
     gap: 10%;
@@ -26,22 +31,6 @@
 
   @include media-query($breakpoint--large) {
     padding-left: spacing(4);
-    scroll-padding-left: spacing(4);
-  }
-  
-  /* Webkit scrollbar styles */
-  &::-webkit-scrollbar {
-    height: 8px; 
-    width: 8px;
-  }
-  
-  &::-webkit-scrollbar-thumb {
-    background: $colour--purple-300; /* Thumb color */
-    border-radius: 0;
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background: $colour--purple-200; /* Thumb color on hover */
   }
 }
 
@@ -51,7 +40,6 @@
   flex-direction: column;
   justify-content: space-between;
   width: 95%;
-  scroll-snap-align: start;
 
   @include media-query($breakpoint--small) {
     width: 70%;
