@@ -22,7 +22,8 @@ export default class Stats extends Components {
             trigger: stats,
             start: "top bottom",
             onEnter: () => this.count(stats),
-            markers: false
+            markers: false,
+            once: true
           })
         })
       }
@@ -31,7 +32,8 @@ export default class Stats extends Components {
           trigger: this.elements.stats,
           start: "top bottom",
           onEnter: () => this.count(this.elements.stats),
-          markers: false
+          markers: false,
+          once: true
         })
       }
     } else {
