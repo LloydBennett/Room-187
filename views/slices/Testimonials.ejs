@@ -41,14 +41,14 @@
     </div> 
   </div>
 
-  <div>
+  <div data-carousel-wrapper>
     <div class="carousel carousel--layout" data-carousel>
       <% if(quotes != null) { %>
         <% quotes.forEach((q) => { %>
           <% let qid = q.supporting_quotes.id %>
           <% testimonials.forEach((testimony) => { %>
             <% if(testimony.id === qid) { %>
-              <div class="carousel__item">
+              <div class="carousel__item" data-carousel-item>
                 
                 <span class="block type--s type--white type--l-margin type--base-l-h">
                   <%- testimony.data.quote %>
@@ -72,6 +72,9 @@
           <% }) %>
         <% }) %>
       <% } %>
+    </div>
+    <div class="carousel__indicator" data-carousel-indicator>
+      <div class="carousel-indicator__progress" data-carousel-progress></div>
     </div>
   </div>
 </section>

@@ -19,15 +19,11 @@ export default class Carousel extends Components {
   init() {
     if (this.elements.carousel === null) return
 
-    console.log(typeof this.elements.carousel)
-
     let carousels = []
 
-    // multiple carousels
     if (this.elements.carousel instanceof NodeList || Array.isArray(this.elements.carousel)) {
       carousels = Array.from(this.elements.carousel)
     } 
-    // single carousel
     else {
       carousels = [this.elements.carousel]
     }
@@ -37,76 +33,121 @@ export default class Carousel extends Components {
 
   setCarouselType(carousel) {
     const type = carousel.getAttribute('data-carousel')
-    console.log(type)
+    const wrapper = carousel.closest('[data-carousel-wrapper]')
+    let progressEl = null
 
-    // always enable dragging
-    this.enableDraggableCarousel(carousel)
+    if (wrapper) {
+      const indicator = wrapper.querySelector('[data-carousel-indicator]')
+      const progress = wrapper.querySelector('[data-carousel-progress]')
+      if (indicator && progress) progressEl = progress
+    }
+
+    this.enableDraggableCarousel(carousel, progressEl)
 
     // add extra behavior if requested
     if (type === "motion") {
       this.enableRotations(carousel)
-    }
+    }    
   }
 
-  enableDraggableCarousel(carousel) {
+  enableDraggableCarousel(carousel, progressEl = null) {
     let isDragging = false
     let startX = 0
     let lastX = 0
     let velocity = 0
     let rafId = null
+    const items = carousel.querySelectorAll('[data-carousel-item]')
+    if (!items.length) return
 
     const friction = 0.925
     const speedMultiplier = 1.35
 
+    const updateProgress = () => {
+      if (!progressEl) return
+      const scrollLeft = carousel.scrollLeft
+      const maxScroll = carousel.scrollWidth - carousel.clientWidth
+      const percent = Math.min(Math.max((scrollLeft / maxScroll) * 100, 0), 100)
+      gsap.to(progressEl, { width: `${percent}%`, duration: 0.15, ease: 'power2.out' })
+    }
+
+    const snapToNearestItem = () => {
+      if (!items.length) return
+      let nearestIndex = 0
+      let minDistance = Infinity
+
+      items.forEach((item, index) => {
+        const distance = Math.abs(carousel.scrollLeft - item.offsetLeft)
+        if (distance < minDistance) {
+          minDistance = distance
+          nearestIndex = index
+        }
+      })
+
+      const paddingLeft = parseFloat(getComputedStyle(carousel).paddingLeft) || 0
+      const targetScrollLeft = items[nearestIndex].offsetLeft - paddingLeft
+
+      gsap.to(carousel, {
+        scrollLeft: targetScrollLeft,
+        duration: 0.4,
+        ease: 'power3.out',
+        onUpdate: updateProgress,
+        onComplete: updateProgress
+      })
+    }
+
     const inertiaLoop = () => {
       if (Math.abs(velocity) < 0.2) return
       carousel.scrollLeft -= velocity
+      updateProgress()
       velocity *= friction
       rafId = requestAnimationFrame(inertiaLoop)
     }
 
     const startDrag = (e) => {
-       // ignore right/middle clicks
-      if (e.type === "mousedown" && e.button !== 0) return
-      
+      if (e.type === 'mousedown' && e.button !== 0) return
       isDragging = true
-      carousel.classList.add("is-dragging")
-
-      startX = e.type.includes("mouse") ? e.pageX : e.touches[0].pageX
+      carousel.classList.add('is-dragging')
+      startX = e.type.includes('mouse') ? e.pageX : e.touches[0].pageX
       lastX = startX
       cancelAnimationFrame(rafId)
     }
 
     const onDrag = (e) => {
       if (!isDragging) return
-
-      const x = e.type.includes("mouse") ? e.pageX : e.touches[0].pageX
+      const x = e.type.includes('mouse') ? e.pageX : e.touches[0].pageX
       const delta = (x - lastX) * speedMultiplier
-
       carousel.scrollLeft -= delta
       velocity = delta
       lastX = x
 
-      // broadcast so optional features can hook in
-      carousel.dispatchEvent(new CustomEvent("carousel:drag", { detail: { velocity, isDragging } }))
+      // Desktop: update progress live
+      if (window.innerWidth > 768) updateProgress()
     }
 
     const endDrag = () => {
       isDragging = false
-      carousel.classList.remove("is-dragging")
-      inertiaLoop()
-      carousel.dispatchEvent(new CustomEvent("carousel:end", { detail: { velocity } }))
+      carousel.classList.remove('is-dragging')
+
+      if (window.innerWidth <= 768) {
+        snapToNearestItem()
+      } else {
+        inertiaLoop()
+      }
     }
 
-    // Mouse Events
-    carousel.addEventListener("mousedown", startDrag)
-    window.addEventListener("mousemove", onDrag)
-    window.addEventListener("mouseup", endDrag)
+    // Events
+    carousel.addEventListener('mousedown', startDrag)
+    window.addEventListener('mousemove', onDrag)
+    window.addEventListener('mouseup', endDrag)
 
-    // Touch Events
-    carousel.addEventListener("touchstart", startDrag, { passive: true })
-    window.addEventListener("touchmove", onDrag, { passive: false })
-    window.addEventListener("touchend", endDrag)
+    carousel.addEventListener('touchstart', startDrag, { passive: true })
+    window.addEventListener('touchmove', onDrag, { passive: false })
+    window.addEventListener('touchend', endDrag)
+
+    window.addEventListener('resize', updateProgress)
+
+    // Initial progress update
+    updateProgress()
   }
 
   enableRotations(carousel) {
