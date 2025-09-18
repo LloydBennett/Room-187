@@ -83,7 +83,7 @@
       "images": [
         {
           "height": null,
-          "url": "https://image-cdn-fa.spotifycdn.com/image/ab67706c0000da8436049593cfc3ae9f416e4a8e",
+          "url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da8436049593cfc3ae9f416e4a8e",
           "width": null
         }
       ],
@@ -155,7 +155,7 @@
       "images": [
         {
           "height": null,
-          "url": "https://image-cdn-fa.spotifycdn.com/image/ab67706c0000da844a805ef710ed421303e02fbd",
+          "url": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da844a805ef710ed421303e02fbd",
           "width": null
         }
       ],
@@ -181,5 +181,5 @@
       "uri": "spotify:playlist:2g7VVp5TI90QkNDdIZY4um"
     }
   ],
-  "fetchedAt": 1758204875739
+  "fetchedAt": 1758212804432
 }
