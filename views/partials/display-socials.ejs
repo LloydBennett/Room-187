@@ -2,7 +2,7 @@
   <a href="<%- d.platform_link.url %>" class="thumbnail" target="_blank">
     <% 
       let channelName = d.platform.toLowerCase() 
-      let iconPath = `../partials/svg/socials/${channelName}`
+      let iconPath = `../partials/svg/socials/${channelName.toLowerCase()}`
     %>
     <%- include(iconPath) -%>
   </a>
