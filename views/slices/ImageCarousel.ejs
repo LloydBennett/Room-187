@@ -1,9 +1,9 @@
 <% let imgs = slice.items %>
 
 <section class="section section--l-m-b">
-  <div class="image-carousel" data-image-carousel>
+  <div class="carousel image-carousel" data-carousel="motion">
     <% imgs.forEach((img, i) => { %>
-      <picture class="image-carousel__item">
+      <picture class="image-carousel__item" data-carousel-item>
         <source media="(max-width: 550px)" srcset="<%- img.carousel_image.mobile.url %>" />
         <source media="(min-width: 550px)" srcset="<%- img.url %>" />
         <img class="thumbnail" src="<%- img.carousel_image.url %>" alt="<%- img.alt %>">

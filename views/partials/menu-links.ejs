@@ -1,10 +1,17 @@
-<% let menu = navigation.data.menu_links
+<% 
+let menu = navigation.data.menu_links
+let contact
 %>
 
 <ul class="<%- container_class %>">
   <% menu.forEach((l, i) => { %>
     <% let uid = l.link.uid.replace(/[_-]/g, " ");
        let name = uid.replace(/\b\w/g, a => a.toUpperCase());
+
+       if(l.link.uid === "contact-us") {
+         contact = l
+         return
+       }
     %>
   
     <li class="<%- list_class %>">
@@ -38,4 +45,20 @@
     <div class="nav-menu__hover" data-nav-hover></div>
     <% } %>
   </li>
+  <% 
+  if(contact) { 
+    let uid = contact.link.uid.replace(/[_-]/g, " ");
+    let name = uid.replace(/\b\w/g, a => a.toUpperCase());
+  %>
+    <li class="<%- list_class %>">
+      <a href="<%- contact.link.url %>" class="<%- list_text_class %> relative" <% if(dataAttr) {%><%- dataAttr %><%}%> data-page-trigger>
+        <span class="block" data-nav-link-text>
+          <%- name %>
+        </span>
+      </a>
+      <% if(mainMenu) {%>
+      <div class="nav-menu__hover" data-nav-hover></div>
+      <% } %>
+    </li>
+  <% } %>
 </ul>

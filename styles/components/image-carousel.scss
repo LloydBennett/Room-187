@@ -1,12 +1,7 @@
 .image-carousel {
-  display: flex;
-  overflow: scroll;
   gap: 2.5%;
   padding: spacing(2) 2.5%;
   scrollbar-width: none;
-  cursor: grab;
-  touch-action: pan-y;
-  user-select: none;
   perspective: 1000px;
   
   @include media-query($breakpoint--medium) {
@@ -15,14 +10,6 @@
 
   @include media-query($breakpoint--large) {
     padding: spacing(2) spacing(4);
-  }
-
-  &::-webkit-scrollbar { 
-    display: none;
-  }
-
-  &.is-dragging {
-    cursor: grabbing;
   }
 }
 
